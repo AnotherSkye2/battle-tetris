@@ -1,7 +1,6 @@
-export default function Chat() {
+export default function Chat(socket) {
   window.onload = () => {
     console.log("page is fully loaded");
-    var socket = io();
     
     var messages = document.getElementById('messages');
     var form = document.getElementById('form');
