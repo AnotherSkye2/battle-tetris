@@ -1,5 +1,6 @@
 export default function Home() {
     const self = this
+    console.log("self, this: ", self, this);
 
     self.displayInfo = () => {
         self.buttons.classList.toggle("hidden")
