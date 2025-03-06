@@ -14,6 +14,7 @@ export default function App() {
       <Router>
           <Route path="/" :controller="${Home}" />
           <Route path="/chat" :controller="${Chat}" />
+          <Route path="/lobby" :controller="${Lobby}" />
           <Route path="/create" :controller="${Home}" />
       </Router>
   </>`;
