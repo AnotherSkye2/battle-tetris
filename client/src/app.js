@@ -1,6 +1,7 @@
-import Home from './pages/Home';
+import Game from './pages/Game';
+import Lobby from './pages/Lobby';
 import Chat from './pages/Chat';
-import CreateGame from './pages/CreateGame';
+import Home from './pages/Home';
 
 export default function App() {
   let self = this;
@@ -13,7 +14,7 @@ export default function App() {
       <Router>
           <Route path="/" :controller="${Home}" />
           <Route path="/chat" :controller="${Chat}" />
-          <Route path="/create" :controller="${CreateGame}" />
+          <Route path="/create" :controller="${Home}" />
       </Router>
   </>`;
 }
