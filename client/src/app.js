@@ -1,4 +1,5 @@
 import Home from './pages/Home';
+import Chat from './pages/Chat';
 
 export default function App() {
   let self = this;
@@ -9,7 +10,8 @@ export default function App() {
 
   return (render) => render`<>
       <Router>
-          <Route path="(.*)" :controller="${Home}" />
+          <Route path="/" :controller="${Home}" />
+          <Route path="/chat" :controller="${Chat}" />
       </Router>
       <Toolbar>
           <Icon content="inbox" title="Inbox" route="/tests/home" />
