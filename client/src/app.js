@@ -13,10 +13,5 @@ export default function App() {
           <Route path="/" :controller="${Home}" />
           <Route path="/chat" :controller="${Chat}" />
       </Router>
-      <Toolbar>
-          <Icon content="inbox" title="Inbox" route="/tests/home" />
-          <Icon content="create" title="New message" route="/tests/compose" />
-          <Icon content="person" title="Profile" route="/tests/profile" />
-      </Toolbar>
   </>`;
 }
