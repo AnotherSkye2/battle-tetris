@@ -66,8 +66,30 @@ main {
 .center {
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
 .hidden {
   display: none;
+}
+
+/*
+Lobby page
+*/
+
+.chat-container {
+  justify-content: end;
+  display: flex;
+  flex-direction: column;
+}
+
+.button-container {
+  justify-content: end;
+}
+
+.content-wrap {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  flex: 1;
 }
