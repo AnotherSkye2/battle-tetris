@@ -8,7 +8,7 @@ export default function Home() {
     }
 
     const toLobby = () => {
-      window.location = "./lobby"
+      window.location = "./lobby/1"
     }
 
 

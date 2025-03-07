@@ -1,37 +1,41 @@
+import {useState, useEffect} from 'react'
+import Chat from "../components/Chat"
+
 
 export default function Lobby() {
-  
-  const self = this
-  self.socket = io()
-  self.inputValue = "wee"
+  const [inputValue, setInputValue] = useState("")
 
-  self.copyToClipboard = () => {
+  const copyToClipboard = (e) => {
     async function copyPageUrl() {
       try {
-        await navigator.clipboard.writeText(self.inputValue);
+        await navigator.clipboard.writeText(inputValue);
         console.log('Page URL copied to clipboard');
       } catch (err) {
         console.error('Failed to copy: ', err);
       }
     }
-    copyPageUrl().then(() => {self.copyButton.innerHTML = "Copied!"})
+    copyPageUrl().then(() => {e.target.innerHTML = "Copied!"})
   }
 
+  useEffect(() => {
+    setInputValue("wee")
+  }, [])
+
   return(
-  <div class="create-game page-wrap">
-    <header class="center">Tetris Game</header>
-    <div class="content-wrap">
-      <div class="chat-container" >
-        <Chat />
-      </div>
-      <main class="center" >
-        <div class="lobby-container" >
-          <input type="text" id="display" readonly></input>
-          <button id="create">Copy!</button>
+    <div className="create-game page-wrap">
+      <header className="center">Tetris Game</header>
+      <div className="content-wrap">
+        <div className="chat-container" >
+          <Chat />
         </div>
-      </main>
+        <main className="center" >
+          <div className="lobby-container" >
+            <input type="text" id="display" readOnly></input>
+            <button id="create" onClick={copyToClipboard}>Copy!</button>
+          </div>
+        </main>
+      </div>
+      <footer className="center">Wee-woo!</footer>
     </div>
-    <footer class="center">Wee-woo!</footer>
-  </div>
   )
 }
