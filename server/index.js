@@ -21,14 +21,29 @@ app.get('*', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  socket.broadcast.emit('chat message', `A player (${socket.id}) has joined!`);
   console.log('a user connected', socket.id);
+
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-  socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
-  });
+
+  socket.on('join', (roomId) => {
+    console.log("roomId:", roomId)
+    if(!socket.rooms.has(roomId)){
+      socket.join(roomId)
+      socket.to(roomId).emit('chat message', `A player (${socket.id}) has joined!`);
+      socket.on('chat message', (msg) => {
+        io.to(roomId).emit('chat message', msg);
+      });
+    }
+  })
+
+  socket.on('leave', (roomId) => {
+    socket.to(roomId).emit('chat message', `A player (${socket.id}) has left!`);
+    socket.removeAllListeners('chat message')
+    socket.leave(roomId)
+  })
+
 });
 
 server.listen(PORT, () => {
