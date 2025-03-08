@@ -32,7 +32,7 @@ export default function Chat() {
 
 
     return ( <>
-      <ul id="messages" >{chatMessages.map((message) => <li>{message}</li>)}</ul>
+      <ul id="messages" >{chatMessages.map((message, i) => <li key={i}>{message}</li>)}</ul>
       <form id="form" onSubmit={handleSubmit} >
       <input id="input" autoComplete="off" onChange={handleChange}/><button type="submit">Send</button>
       </form>

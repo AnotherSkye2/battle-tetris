@@ -21,6 +21,7 @@ app.get('*', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+  socket.broadcast.emit('chat message', `A player (${socket.id}) has joined!`);
   console.log('a user connected', socket.id);
   socket.on('disconnect', () => {
     console.log('user disconnected');
