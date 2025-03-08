@@ -5,6 +5,8 @@ import { useParams } from "react-router";
 export default function Chat() {
   const [inputValue, setInputValue] = useState("")
   const [chatMessages, setChatMessages] = useState([])
+  const [socketIds, setSocketIds] = useState([])
+  // const [users, setUsers] = useState([])
   const {roomId} = useParams();
   
   const handleSubmit = (e) => {
@@ -33,8 +35,16 @@ export default function Chat() {
   }, [chatMessages])
   
   useEffect(() => {
+    console.log("socketIds: ", socketIds)
+    socket.on("join", (newSocketId) => {setSocketIds([...socketIds, newSocketId])})
+  },[socketIds])
+
+  useEffect(() => {
     socket.connect();
-    socket.emit('join', roomId);
+    socket.emit('join', roomId, (roomSocketIds) => {
+      console.log("roomSocketIds, socket.id:", roomSocketIds, socket.id)
+      setSocketIds([...socketIds, ...roomSocketIds])
+    });
     return () => {
       socket.emit('leave', roomId)
       socket.disconnect();
@@ -43,6 +53,7 @@ export default function Chat() {
 
 
   return ( <>
+    <ul id="users" >{socketIds.map((id, i) => <li key={i}>{id}</li>)}</ul>
     <ul id="messages" >{chatMessages.map((message, i) => <li key={i}>{message}</li>)}</ul>
     <form id="form" onSubmit={handleSubmit} >
     <input id="input" autoComplete="off" onChange={handleChange}/><button type="submit">Send</button>

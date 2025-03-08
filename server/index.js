@@ -27,7 +27,7 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
 
-  socket.on('join', (roomId) => {
+  socket.on('join', (roomId, callback) => {
     console.log("roomId:", roomId)
     if(!socket.rooms.has(roomId)){
       socket.join(roomId)
@@ -35,6 +35,10 @@ io.on('connection', (socket) => {
       socket.on('chat message', (msg) => {
         io.to(roomId).emit('chat message', msg);
       });
+      const clients = io.sockets.adapter.rooms.get(roomId)
+      console.log("clients: ", clients, socket.id)
+      socket.to(roomId).emit('join', socket.id);
+      callback([...clients])
     }
   })
 
