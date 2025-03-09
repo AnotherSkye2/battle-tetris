@@ -65,6 +65,11 @@ io.on('connection', (socket) => {
     socket.leave(roomId)
   })
 
+  socket.on('start', (roomId) => {
+    console.log('start event called')
+    io.to(roomId).emit('start', `${socket.username} has started the game!`)
+  })
+
 });
 
 server.listen(PORT, () => {

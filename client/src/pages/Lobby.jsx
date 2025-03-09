@@ -42,8 +42,7 @@ export default function Lobby() {
 
   const handleStart = () => {
     console.log("Start!")
-    sessionStorage.setItem('users', JSON.stringify(users))
-    window.location = `../game/${roomId}`
+    socket.emit('start', roomId)
   }
 
   useEffect(() => {
@@ -58,6 +57,7 @@ export default function Lobby() {
     });
     return () => {
         socket.off("chat message")
+        socket.off('start')
     }
   }, [chatMessages])
   
@@ -67,6 +67,11 @@ export default function Lobby() {
     socket.on("join", (user) => {setUsers([...users, user])})
     socket.on("leave", (userToRemove) => {
       setUsers([...users.filter((user) => user.socketId != userToRemove.socketId)])
+    })
+    socket.on('start', (msg) => {
+      console.log(msg, users)
+      sessionStorage.setItem('users', JSON.stringify(users))
+      window.location = `../game/${roomId}`
     })
     return () => {
       setIsHost(false)
