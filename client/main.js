@@ -4,8 +4,9 @@ import { moveTetrominoDown,moveTetrominoLeft,moveTetrominoRight, moveTetrominoLo
 import { checkCollisions, wallCollisionCheck } from './collisionCheck.js';
 import { gameLoop } from './gameLoop.js';
 import { TETROMINOES } from './tetrominoes.js';
-import { arrowDown$,arrowLeft$,arrowRight$,arrowUp$,spaceBar$ } from './observables.js';
+import { arrowDown$,arrowLeft$,arrowRight$,arrowUp$,spaceBar$,escKey$ } from './observables.js';
 import { position, gameState } from './gameDefaultValues.js';
+import { pauseGame, resumeGame } from './pauseGame.js';
 
 const { gameBoardElement, gameBoard } = InitializeGameBoard();
 
@@ -14,6 +15,7 @@ renderGameBoard(gameBoardElement, gameBoard);
 gameLoop(0,gameBoard,TETROMINOES,position,gameBoardElement,gameState)
 
 arrowUp$.subscribe(() => {
+    if (gameState.isGamePaused) return;
     if (!gameState.activeTetromino) return; 
 
     clearTetromino(gameBoard, gameState.activeTetromino, position); 
@@ -34,6 +36,7 @@ arrowUp$.subscribe(() => {
 });
 
 arrowDown$.subscribe(() =>{
+    if (gameState.isGamePaused) return;
     clearTetromino(gameBoard, gameState.activeTetromino, position);
 
     const collision = checkCollisions(gameState.activeTetromino,position,"down",gameBoard)
@@ -43,6 +46,7 @@ arrowDown$.subscribe(() =>{
 })
 
 arrowLeft$.subscribe(() => {
+    if (gameState.isGamePaused) return;
      clearTetromino(gameBoard, gameState.activeTetromino, position);
     const collision = checkCollisions(gameState.activeTetromino,position,"left",gameBoard)
     if(!collision){
@@ -52,6 +56,8 @@ arrowLeft$.subscribe(() => {
 });
 
 arrowRight$.subscribe(() =>{
+    if (gameState.isGamePaused) return;
+
     clearTetromino(gameBoard, gameState.activeTetromino, position);
     
     const collision = checkCollisions(gameState.activeTetromino,position,"right",gameBoard)
@@ -61,6 +67,7 @@ arrowRight$.subscribe(() =>{
 })
 
 spaceBar$.subscribe(() =>{
+    if (gameState.isGamePaused) return;
     if (!gameState.activeTetromino) return;
 
     clearTetromino(gameBoard, gameState.activeTetromino, position);
@@ -71,7 +78,15 @@ spaceBar$.subscribe(() =>{
     
 })
 
-// TODO: exclude activeTetro blocks, gamepause = koik functionid loppevad
+escKey$.subscribe(() =>{
+    if(gameState.isGamePaused){
+        resumeGame(gameBoard,TETROMINOES,position,gameBoardElement,gameState)
+    }else{
+        pauseGame(gameState)
+    }
+})
+
+// TODO: exclude activeTetro blocks, 
 
 
 

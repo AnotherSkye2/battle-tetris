@@ -10,7 +10,7 @@ let timeSinceLastMove = 0;
 const moveInterval = 1000; 
 
 export function gameLoop(timestamp, gameBoard, tetrominoes, position, gameBoardElement,gameState) {
-    if(gameState.isGameOver){
+    if(gameState.isGameOver || gameState.isGamePaused ){
         return;
     }
     const deltaTime = timestamp - lastTime;

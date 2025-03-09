@@ -20,3 +20,8 @@ export const spaceBar$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === " "),
     throttleTime(100)  
 );
+
+export const escKey$ = fromEvent(document, "keydown").pipe(
+    filter((event) => event.key === "Escape"),
+    throttleTime(100)
+)
