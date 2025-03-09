@@ -2,6 +2,8 @@ export function InitializeGameBoard() {
     const COLS = 10;
     const ROWS = 20;
 
+    const gameElement = document.createElement("div")
+    gameElement.classList.add("game");
     const gameBoardElement = document.createElement("div");
     gameBoardElement.classList.add("game-board");
 
@@ -18,8 +20,8 @@ export function InitializeGameBoard() {
             gameBoardElement.appendChild(cell);
         }
     }
-    document.body.appendChild(gameBoardElement);
-    
+    gameElement.appendChild(gameBoardElement);
+    document.body.appendChild(gameElement)
     return {gameBoardElement,gameBoard};
 }
 

@@ -39,7 +39,7 @@ function updateGame(dTime,gameBoard,tetromino,position,tetrominoes,gameState){
 
             placeTetromino(gameBoard,tetromino,position)
 
-            const { newBoard, clearedLines,garbageLines } = clearFullLine(gameBoard);
+            const { newBoard } = clearFullLine(gameBoard);
             gameBoard.length = 0;
             gameBoard.push(...newBoard); 
 
