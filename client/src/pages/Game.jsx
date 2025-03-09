@@ -7,14 +7,19 @@ import { TETROMINOES } from '../methods/tetrominoes.js';
 import { arrowDown$,arrowLeft$,arrowRight$,arrowUp$,spaceBar$,escKey$ } from '../methods/observables.js';
 import { position,gameState } from '../methods/gameDefaultValues.js';
 import { pauseGame,resumeGame } from '../methods/pauseGame.js';
+import { startTimer } from '../methods/createTimer.js';
 
 
 export default function Game() {
-    const { gameBoardElement, gameBoard } = InitializeGameBoard();
+    const { gameBoardElement, gameBoard } = InitializeGameBoard();  
 
 renderGameBoard(gameBoardElement, gameBoard);
 
 gameLoop(0,gameBoard,TETROMINOES,position,gameBoardElement,gameState)
+
+
+startTimer()
+
 
 arrowUp$.subscribe(() => {
     if (gameState.isGamePaused || gameState.isGameOver) return;
@@ -88,15 +93,14 @@ spaceBar$.subscribe(() =>{
 escKey$.subscribe(() =>{
     if(gameState.isGamePaused){
         resumeGame(gameBoard,TETROMINOES,position,gameBoardElement,gameState)
+        startTimer()
     }else{
         pauseGame(gameState)
     }
 })
+
 }
 
 
 
-
-
-
-
+// bag randomizer

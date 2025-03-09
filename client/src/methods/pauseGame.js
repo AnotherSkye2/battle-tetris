@@ -2,6 +2,7 @@ import { gameLoop } from "./gameLoop.js";
 
 export function pauseGame(gameState){
     gameState.isGamePaused = true
+    gameState.isTimerRunning = false;
 }
 
 

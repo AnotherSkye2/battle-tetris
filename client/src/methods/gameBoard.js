@@ -19,7 +19,6 @@ export function InitializeGameBoard() {
         }
     }
     document.body.appendChild(gameBoardElement);
-    
     return {gameBoardElement,gameBoard};
 }
 
