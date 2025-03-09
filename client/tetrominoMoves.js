@@ -56,3 +56,15 @@ export function moveTetrominoRight(gameBoard,tetromino,position){
    }
    position.col += 1
 }
+
+export function moveTetrominoLowestPoint(gameBoard, tetromino, position) {
+    let dropY = position.row;
+
+    while (!checkCollisions(tetromino, { row: dropY + 1, col: position.col }, "down", gameBoard)) {
+        dropY++; 
+    }
+
+    position.row = dropY;
+
+    placeTetromino(gameBoard, tetromino, position);
+}
