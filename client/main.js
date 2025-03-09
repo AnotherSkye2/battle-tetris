@@ -1,44 +1,17 @@
-import { fromEvent,filter,throttleTime } from 'https://cdn.jsdelivr.net/npm/rxjs@7.8.1/+esm';
 import { renderGameBoard, InitializeGameBoard } from './gameBoard.js';
 import { placeTetromino,rotateTetromino,clearTetromino} from './tetrominoManipulation.js';
 import { moveTetrominoDown,moveTetrominoLeft,moveTetrominoRight, moveTetrominoLowestPoint } from './tetrominoMoves.js';
 import { checkCollisions, wallCollisionCheck } from './collisionCheck.js';
 import { gameLoop } from './gameLoop.js';
 import { TETROMINOES } from './tetrominoes.js';
-
-
-
-const position = {row: 0, col: 3}; 
-const gameState = { activeTetromino: null };
+import { arrowDown$,arrowLeft$,arrowRight$,arrowUp$,spaceBar$ } from './observables.js';
+import { position, gameState } from './gameDefaultValues.js';
 
 const { gameBoardElement, gameBoard } = InitializeGameBoard();
-
-// placeTetromino(gameBoard,TETROMINOES.L_PIECE,position)
 
 renderGameBoard(gameBoardElement, gameBoard);
 
 gameLoop(0,gameBoard,TETROMINOES,position,gameBoardElement,gameState)
-
-const arrowUp$ = fromEvent(document, "keydown").pipe(
-    filter((event) => event.key === "ArrowUp"),
-    throttleTime(100)  
-);
-const arrowDown$ = fromEvent(document, "keydown").pipe(
-    filter((event) => event.key === "ArrowDown"),
-    throttleTime(100)  
-);
-const arrowLeft$ = fromEvent(document, "keydown").pipe(
-    filter((event) => event.key === "ArrowLeft"),
-    throttleTime(100)  
-);
-const arrowRight$ = fromEvent(document, "keydown").pipe(
-    filter((event) => event.key === "ArrowRight"),
-    throttleTime(100)  
-);
-const spaceBar$ = fromEvent(document, "keydown").pipe(
-    filter((event) => event.key === " "),
-    throttleTime(100)  
-);
 
 arrowUp$.subscribe(() => {
     if (!gameState.activeTetromino) return; 
@@ -98,7 +71,7 @@ spaceBar$.subscribe(() =>{
     
 })
 
-// TODO: exclude activeTetro blocks, spacebar for instant bottom row, main.js kõik mis ei ole loogika importiks, gamepause = koik functionid loppevad
+// TODO: exclude activeTetro blocks, gamepause = koik functionid loppevad
 
 
 
