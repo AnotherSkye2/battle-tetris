@@ -1,13 +1,14 @@
 import { fromEvent,filter,throttleTime } from 'https://cdn.jsdelivr.net/npm/rxjs@7.8.1/+esm';
 import { renderGameBoard, InitializeGameBoard } from './gameBoard.js';
 import { placeTetromino,rotateTetromino,clearTetromino} from './tetrominoManipulation.js';
-import { moveTetrominoDown,moveTetrominoLeft,moveTetrominoRight } from './tetrominoMoves.js';
+import { moveTetrominoDown,moveTetrominoLeft,moveTetrominoRight, moveTetrominoLowestPoint } from './tetrominoMoves.js';
 import { checkCollisions, wallCollisionCheck } from './collisionCheck.js';
 import { gameLoop } from './gameLoop.js';
 import { TETROMINOES } from './tetrominoes.js';
 
 
-const position = {row: 0, col: 4}; 
+
+const position = {row: 0, col: 3}; 
 const gameState = { activeTetromino: null };
 
 const { gameBoardElement, gameBoard } = InitializeGameBoard();
@@ -32,6 +33,10 @@ const arrowLeft$ = fromEvent(document, "keydown").pipe(
 );
 const arrowRight$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "ArrowRight"),
+    throttleTime(100)  
+);
+const spaceBar$ = fromEvent(document, "keydown").pipe(
+    filter((event) => event.key === " "),
     throttleTime(100)  
 );
 
@@ -82,8 +87,18 @@ arrowRight$.subscribe(() =>{
     }
 })
 
+spaceBar$.subscribe(() =>{
+    if (!gameState.activeTetromino) return;
 
-// TODO: exclude activeTetro blocks, spacebar for instant bottom row, main.js kõik mis ei ole loogika importiks
+    clearTetromino(gameBoard, gameState.activeTetromino, position);
+
+    moveTetrominoLowestPoint(gameBoard, gameState.activeTetromino, position);
+
+    renderGameBoard(gameBoardElement, gameBoard);
+    
+})
+
+// TODO: exclude activeTetro blocks, spacebar for instant bottom row, main.js kõik mis ei ole loogika importiks, gamepause = koik functionid loppevad
 
 
 
