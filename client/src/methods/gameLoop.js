@@ -9,7 +9,7 @@ let lastTime = 0;
 let timeSinceLastMove = 0;
 const moveInterval = 400; 
 
-export function gameLoop(timestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState) {
+export function gameLoop(timestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState, opponentGridDataArray) {
     if(gameState.isGameOver || gameState.isGamePaused ){
         return;
     }
@@ -23,9 +23,13 @@ export function gameLoop(timestamp, gameGridArray, tetrominoes, position, gameBo
     }
     updateGame(deltaTime, gameGridArray, gameState.activeTetromino, position,tetrominoes,gameState);  
     renderGameBoard(gameBoardGrid, gameGridArray);  
-
+    for (let i = 0; i < opponentGridDataArray.length; i++) {
+        const opponentGameBoardGrid = opponentGridDataArray[i].gameBoardGrid 
+        const opponentGameGridArray = opponentGridDataArray[i].gameGridArray 
+        renderGameBoard(opponentGameBoardGrid, opponentGameGridArray)
+    }
     requestAnimationFrame((newTimestamp) => 
-        gameLoop(newTimestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState)
+        gameLoop(newTimestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState, opponentGridDataArray)
     ); 
 }
 

@@ -12,13 +12,13 @@ import { pauseGame,resumeGame } from '../methods/pauseGame.js';
 export default function Game() {
     const users = JSON.parse(sessionStorage.getItem("users"))
 
-    const { gameBoardElement, gameBoardGrid, gameGridArray } = InitializeGameBoard(users);
+    const { gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(users);
 
     console.log(gameBoardElement, gameBoardGrid, gameGridArray)
 
     renderGameBoard(gameBoardGrid, gameGridArray);
 
-    gameLoop(0,gameGridArray,TETROMINOES,position,gameBoardGrid,gameState)
+    gameLoop(0,gameGridArray,TETROMINOES,position,gameBoardGrid,gameState,opponentGridDataArray)
 
     arrowUp$.subscribe(() => {
         if (gameState.isGamePaused || gameState.isGameOver) return;

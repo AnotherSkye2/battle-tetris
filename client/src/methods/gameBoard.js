@@ -15,18 +15,18 @@ export function InitializeGameBoard(users) {
         for (let col = 0; col < COLS; col++) {
             const cell = document.createElement('div');
             cell.classList.add('cell');
-            if (gameGridArray[row][col] === 1) {
-                cell.classList.add('filled');
-            }
-
             gameBoardGrid.appendChild(cell);
         }
     }
     gameBoardElement.append(gameBoardGrid)
     gameElement.append(gameBoardElement)
 
+    let opponentGridDataArray = [];
+
     for (let i = 1; i < users.length; i++) {
         console.log(users)
+        const opponentGameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(1));
+
         const opponentGameBoardElement = document.createElement("div");
         opponentGameBoardElement.classList.add("opponent", "game-board");
 
@@ -37,22 +37,20 @@ export function InitializeGameBoard(users) {
             for (let col = 0; col < COLS; col++) {
                 const cell = document.createElement('div');
                 cell.classList.add('cell');
-                if (gameGridArray[row][col] === 1) {
-                    cell.classList.add('filled');
-                }
-    
                 opponentGameBoardGrid.appendChild(cell);
             }
         }
-        console.log("opponentGameBoardElement, opponentGameBoardGrid: ", opponentGameBoardElement, opponentGameBoardGrid)
-        console.log(gameElement)
         opponentGameBoardElement.appendChild(opponentGameBoardGrid)
+        opponentGridDataArray.push({
+            gameBoardGrid: opponentGameBoardGrid,
+            gameGridArray: opponentGameGridArray
+        })
         gameElement.appendChild(opponentGameBoardElement);
     }
 
     document.body.appendChild(gameElement)
     console.log(gameElement, gameBoardGrid)
-    return { gameBoardElement, gameBoardGrid, gameGridArray };
+    return { gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray};
 }
 
 export function renderGameBoard(gameBoardGrid,gameGridArray){
