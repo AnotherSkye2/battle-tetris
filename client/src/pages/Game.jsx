@@ -15,7 +15,6 @@ export default function Game() {
     }
     
     function moveShapeDown(){
-        const activeShape = document.getElementById("activeBlock");
         const container = document.getElementById("container")
         if (container) {
             const currentTop = parseInt(container.style.top) || 0; 
@@ -39,8 +38,9 @@ export default function Game() {
         },1000)
     })   
 
-    return  `<div id="container">
-    <div id="activeBlock" class="l-shape">
+    return (
+    <div id="container">
+        <div id="activeBlock" class="l-shape">
             <div class="row">
                 <div class="block"></div>
             </div>
@@ -52,5 +52,6 @@ export default function Game() {
                 <div class="block"></div>
             </div>
         </div>
-    </div>`
+    </div>
+    )
 }

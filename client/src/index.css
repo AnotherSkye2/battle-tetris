@@ -64,3 +64,72 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/*
+React Popup
+*/
+
+.popup-content {
+  margin: auto;
+  border-radius: 8px;
+  background-color: #242424;
+  width: 35%;
+  padding: 5px;
+}
+.popup-arrow {
+  color: rgb(255, 255, 255);
+}
+[role='tooltip'].popup-content {
+  width: 200px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
+
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+[data-popup='tooltip'].popup-overlay {
+  background: transparent;
+}
+
+.modal {
+  font-size: 12px;
+}
+.modal > .header {
+  width: 100%;
+  font-size: 18px;
+  text-align: center;
+  padding: 5px;
+}
+.modal > .content {
+  width: 100%;
+  padding: 10px 5px;
+}
+.modal > form {
+  display: grid;
+  width: 100%;
+  gap: 5px;
+  margin: auto;
+  text-align: center;
+}
+
+.modal > form > input {
+  border-radius: 8px;
+}
+
+.modal > .close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+}
+
+.w-100 {
+  width: 100%;
+}
