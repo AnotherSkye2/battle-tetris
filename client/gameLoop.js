@@ -43,14 +43,14 @@ function updateGame(dTime,gameBoard,tetromino,position,tetrominoes,gameState){
             gameBoard.length = 0;
             gameBoard.push(...newBoard); 
 
+            if (checkGameOver(gameBoard, gameState.activeTetromino, { row: 0, col: 4 })) {
+                gameOver();
+                return; 
+            }
             gameState.activeTetromino = selectRandomTetromino(tetrominoes);
             position.row = 0;
             position.col = 4; 
 
-            if (checkGameOver(gameBoard, gameState.activeTetromino, position)) {
-                gameOver(); 
-                return;
-            }
         }
         timeSinceLastMove = 0;
     }
