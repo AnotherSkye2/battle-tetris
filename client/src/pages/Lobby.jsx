@@ -47,6 +47,10 @@ export default function Lobby() {
   }
 
   useEffect(() => {
+    sessionStorage.clear();
+  }, [])
+
+  useEffect(() => {
     socket.on('chat message', function(msg) {
       console.log(msg)
         setChatMessages([...chatMessages, msg]);
