@@ -61,16 +61,15 @@ export function moveTetrominoRight(gameBoard,tetromino,position){
 export function moveTetrominoLowestPoint(gameBoard, tetromino, position, gameState) {
     let dropY = position.row;
 
-    while (!checkCollisions(tetromino, { row: dropY + 1, col: position.col }, "down", gameBoard)) {
+    while (!checkCollisions(tetromino, { row: dropY, col: position.col }, "down", gameBoard)) {
         dropY++; 
     }
 
-    position.row = dropY + 1 ;
+     position.row = dropY ;
 
     placeTetromino(gameBoard, tetromino, position);
     const { newBoard, clearedLines, garbageLines } = clearFullLine(gameBoard);
 
-    // Update the game board with the new cleared lines and reset to default values
     gameBoard.length = 0;
     gameBoard.push(...newBoard); 
 
@@ -79,3 +78,5 @@ export function moveTetrominoLowestPoint(gameBoard, tetromino, position, gameSta
     gameState.activeTetromino = null;
 
 }
+
+
