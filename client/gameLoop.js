@@ -4,12 +4,15 @@ import { selectRandomTetromino } from './selectTetromino.js';
 import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
-
+import { checkGameOver,gameOver } from './gameOver.js';
 let lastTime = 0;
 let timeSinceLastMove = 0;
 const moveInterval = 1000; 
 
 export function gameLoop(timestamp, gameBoard, tetrominoes, position, gameBoardElement,gameState) {
+    if(gameState.isGameOver){
+        return;
+    }
     const deltaTime = timestamp - lastTime;
     lastTime = timestamp;
 
@@ -43,6 +46,11 @@ function updateGame(dTime,gameBoard,tetromino,position,tetrominoes,gameState){
             gameState.activeTetromino = selectRandomTetromino(tetrominoes);
             position.row = 0;
             position.col = 4; 
+
+            if (checkGameOver(gameBoard, gameState.activeTetromino, position)) {
+                gameOver(); 
+                return;
+            }
         }
         timeSinceLastMove = 0;
     }
