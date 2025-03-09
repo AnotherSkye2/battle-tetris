@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 
 export default function Lobby() {
   const [link, setLink] = useState("")
-  const [inputValue, setInputValue] = useState("")
+  const [userName, setUserName] = useState("")
   const [chatMessages, setChatMessages] = useState([])
   const [users, setUsers] = useState([])
   const [userHasName, setUserHasName] = useState(false)
@@ -28,15 +28,15 @@ export default function Lobby() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(inputValue)
-    if (!inputValue) {
-      setInputValue(`Guest ${new Date().getMilliseconds()}`)
+    console.log(userName)
+    if (!userName) {
+      setUserName(`Guest ${new Date().getMilliseconds()}`)
     }
     setUserHasName(true)
   }
 
   const handleChange = (e) => {
-      setInputValue(e.target.value)
+      setUserName(e.target.value)
   }
 
   useEffect(() => {
@@ -52,8 +52,12 @@ export default function Lobby() {
   
   useEffect(() => {
     socket.on("join", (user) => {setUsers([...users, user])})
+    socket.on("leave", (userToRemove) => {
+      setUsers([...users.filter((user) => user.socketId != userToRemove.socketId)])
+    })
     return () => {
       socket.off("join")
+      socket.off("leave")
     }
   },[users])
 
@@ -61,13 +65,19 @@ export default function Lobby() {
     if (userHasName) {
       setLink(`http://localhost:5173/lobby/${roomId}`)
       socket.connect();
-      socket.username = inputValue;
+      socket.username = userName;
       console.log("socket.username:", socket.username)
-      socket.emit('join', roomId, inputValue, (roomUsers) => {
+      socket.emit('join', roomId, userName, (roomUsers) => {
         console.log("roomSocketIds, socket.id:", roomUsers, socket.id)
         setUsers(u => [...u, ...roomUsers])
       });
+      const listener = () => {
+        socket.emit('leave', roomId)
+        socket.disconnect();
+      }
+      window.addEventListener("pagehide", listener);
       return () => {
+        removeEventListener("pagehide", listener)
         socket.emit('leave', roomId)
         socket.disconnect();
       }
@@ -89,7 +99,7 @@ export default function Lobby() {
         </main>
         <div>
           <h4>Users:</h4>
-          <ul id='users'>{users.map((message, i) => <li key={i}>{Object.keys(message)[0]}</li>)}</ul>
+          <ul id='users'>{users.map((message, i) => <li key={i}>{message.name}</li>)}</ul>
         </div>
       </div>
       <footer className="center">Wee-woo!</footer>

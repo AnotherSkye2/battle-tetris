@@ -10,6 +10,7 @@ const io = new Server(server, {
   }
 });
 var path = require('path');
+const { SocketAddress } = require('net');
 require('dotenv').config()
 
 const PORT = process.env.PORT || 5000;
@@ -36,13 +37,19 @@ io.on('connection', (socket) => {
       socket.on('chat message', (msg) => {
         io.to(roomId).emit('chat message', msg);
       });
-      socket.to(roomId).emit('join', {[socket.username]: socket.id});
+      socket.to(roomId).emit('join', {         
+        name: socket.username,
+        socketId: socket.id
+      });
       
       const clients = io.sockets.adapter.rooms.get(roomId)
       console.log("clients: ", clients, socket.id)
       const users = [...clients].map((clientId) => {
         const socket = io.sockets.sockets.get(clientId);
-        return {[socket.username]: socket.id}
+        return {
+          name: socket.username,
+          socketId: socket.id
+        }
       })
       callback(users)
     }
@@ -50,6 +57,10 @@ io.on('connection', (socket) => {
 
   socket.on('leave', (roomId) => {
     socket.to(roomId).emit('chat message', `${socket.username} has left!`);
+    socket.to(roomId).emit('leave', {          
+      name: socket.username,
+      socketId: socket.id
+    });
     socket.removeAllListeners('chat message')
     socket.leave(roomId)
   })
