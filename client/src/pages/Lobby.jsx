@@ -10,6 +10,7 @@ export default function Lobby() {
   const [chatMessages, setChatMessages] = useState([])
   const [users, setUsers] = useState([])
   const [userHasName, setUserHasName] = useState(false)
+  const [isHost, setIsHost] = useState(false)
   const {roomId} = useParams();
 
 
@@ -51,11 +52,14 @@ export default function Lobby() {
   }, [chatMessages])
   
   useEffect(() => {
+    console.log("users: ", users)
+    if (users[0]?.socketId === socket.id) {setIsHost(true)}
     socket.on("join", (user) => {setUsers([...users, user])})
     socket.on("leave", (userToRemove) => {
       setUsers([...users.filter((user) => user.socketId != userToRemove.socketId)])
     })
     return () => {
+      setIsHost(false)
       socket.off("join")
       socket.off("leave")
     }
@@ -68,7 +72,7 @@ export default function Lobby() {
       socket.username = userName;
       console.log("socket.username:", socket.username)
       socket.emit('join', roomId, userName, (roomUsers) => {
-        console.log("roomSocketIds, socket.id:", roomUsers, socket.id)
+        console.log("roomUsers, socket.id", roomUsers, socket.id)
         setUsers(u => [...u, ...roomUsers])
       });
       const listener = () => {
@@ -99,7 +103,8 @@ export default function Lobby() {
         </main>
         <div>
           <h4>Users:</h4>
-          <ul id='users'>{users.map((message, i) => <li key={i}>{message.name}</li>)}</ul>
+          <ul id='users'>{users.map((user, i) => <li key={i}>{userName == user.name ? user.name + " (you!)": user.name}</li>)}</ul>
+          {isHost ? <button>Start!</button> : null}
         </div>
       </div>
       <footer className="center">Wee-woo!</footer>
