@@ -70,7 +70,7 @@ export function moveTetrominoLowestPoint(gameBoard, tetromino, position, gameSta
     placeTetromino(gameBoard, tetromino, position);
     const { newBoard, clearedLines, garbageLines } = clearFullLine(gameBoard);
 
-    // Update the game board with the new cleared lines
+    // Update the game board with the new cleared lines and reset to default values
     gameBoard.length = 0;
     gameBoard.push(...newBoard); 
 
