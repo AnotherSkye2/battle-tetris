@@ -43,6 +43,7 @@ export default function Lobby() {
   const handleStart = () => {
     console.log("Start!")
     sessionStorage.setItem('users', JSON.stringify(users))
+    window.location = `../game/${roomId}`
   }
 
   useEffect(() => {
