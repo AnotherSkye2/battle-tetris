@@ -43,16 +43,20 @@ arrowDown$.subscribe(() =>{
     if(!collision){
         moveTetrominoDown(gameBoard,gameState.activeTetromino,position)
     }
+    placeTetromino(gameBoard, gameState.activeTetromino, position);
 })
 
 arrowLeft$.subscribe(() => {
     if (gameState.isGamePaused) return;
      clearTetromino(gameBoard, gameState.activeTetromino, position);
+
     const collision = checkCollisions(gameState.activeTetromino,position,"left",gameBoard)
     if(!collision){
-        clearTetromino(gameBoard, gameState.activeTetromino, position);
         moveTetrominoLeft(gameBoard,gameState.activeTetromino,position);
     }
+
+    placeTetromino(gameBoard, gameState.activeTetromino, position);
+   
 });
 
 arrowRight$.subscribe(() =>{
@@ -64,6 +68,7 @@ arrowRight$.subscribe(() =>{
     if(!collision){
         moveTetrominoRight(gameBoard,gameState.activeTetromino,position);
     }
+    placeTetromino(gameBoard, gameState.activeTetromino, position);
 })
 
 spaceBar$.subscribe(() =>{
@@ -86,7 +91,7 @@ escKey$.subscribe(() =>{
     }
 })
 
-// TODO: exclude activeTetro blocks, 
+
 
 
 
