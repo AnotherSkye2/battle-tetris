@@ -1,11 +1,11 @@
 
-export function placeTetromino(gameBoard,tetromino,position){
+export function placeTetromino(gameGridArray,tetromino,position){
     const {row,col} = position
     
     for(let r = 0; r < tetromino.length; r++){
         for(let c = 0; c < tetromino[r].length; c++){
             if(tetromino[r][c] === 1){
-                gameBoard[row + r][col + c] = 1
+                gameGridArray[row + r][col + c] = 1
             }
 
         }
@@ -30,12 +30,13 @@ export function rotateTetromino(matrix){
 }
 
 
-export function clearTetromino(gameBoard, tetromino, position) {
+export function clearTetromino(gameGridArray, tetromino, position) {
+
     const { row, col } = position;
     for (let r = 0; r < tetromino.length; r++) {
         for (let c = 0; c < tetromino[r].length; c++) {
             if (tetromino[r][c] === 1) {
-                gameBoard[row + r][col + c] = 0; 
+                gameGridArray[row + r][col + c] = 0; 
             }
         }
     }

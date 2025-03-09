@@ -2,8 +2,8 @@ import { checkCollisions } from "./collisionCheck.js";
 import { gameState } from "./gameDefaultValues.js";
 
 
-export function checkGameOver(gameBoard, tetromino, position) {
-    return checkCollisions(tetromino, position, "down", gameBoard);
+export function checkGameOver(gameGridArray, tetromino, position) {
+    return checkCollisions(tetromino, position, "down", gameGridArray);
 }
 
 

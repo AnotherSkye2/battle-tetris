@@ -7,9 +7,9 @@ import { clearFullLine } from './clearLine.js';
 import { checkGameOver,gameOver } from './gameOver.js';
 let lastTime = 0;
 let timeSinceLastMove = 0;
-const moveInterval = 1000; 
+const moveInterval = 400; 
 
-export function gameLoop(timestamp, gameBoard, tetrominoes, position, gameBoardElement,gameState) {
+export function gameLoop(timestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState) {
     if(gameState.isGameOver || gameState.isGamePaused ){
         return;
     }
@@ -21,29 +21,28 @@ export function gameLoop(timestamp, gameBoard, tetrominoes, position, gameBoardE
     if (!gameState.activeTetromino) {
         gameState.activeTetromino = selectRandomTetromino(tetrominoes);
     }
-
-    updateGame(deltaTime, gameBoard, gameState.activeTetromino, position,tetrominoes,gameState);  
-    renderGameBoard(gameBoardElement, gameBoard);  
+    updateGame(deltaTime, gameGridArray, gameState.activeTetromino, position,tetrominoes,gameState);  
+    renderGameBoard(gameBoardGrid, gameGridArray);  
 
     requestAnimationFrame((newTimestamp) => 
-        gameLoop(newTimestamp, gameBoard, tetrominoes, position, gameBoardElement,gameState)
+        gameLoop(newTimestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState)
     ); 
 }
 
 
-function updateGame(dTime,gameBoard,tetromino,position,tetrominoes,gameState){
+function updateGame(dTime,gameGridArray,tetromino,position,tetrominoes,gameState){
     if(timeSinceLastMove >= moveInterval) {
-        clearTetromino(gameBoard, tetromino, position);
-        const moved = moveTetrominoDown(gameBoard,tetromino,position)
+        clearTetromino(gameGridArray, tetromino, position);
+        const moved = moveTetrominoDown(gameGridArray,tetromino,position)
         if(!moved){
 
-            placeTetromino(gameBoard,tetromino,position)
+            placeTetromino(gameGridArray,tetromino,position)
 
-            const { newBoard, clearedLines,garbageLines } = clearFullLine(gameBoard);
-            gameBoard.length = 0;
-            gameBoard.push(...newBoard); 
+            const { newBoard, clearedLines,garbageLines } = clearFullLine(gameGridArray);
+            gameGridArray.length = 0;
+            gameGridArray.push(...newBoard); 
 
-            if (checkGameOver(gameBoard, gameState.activeTetromino, { row: 0, col: 4 })) {
+            if (checkGameOver(gameGridArray, gameState.activeTetromino, { row: 0, col: 4 })) {
                 gameOver();
                 return; 
             }
