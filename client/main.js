@@ -15,7 +15,7 @@ renderGameBoard(gameBoardElement, gameBoard);
 gameLoop(0,gameBoard,TETROMINOES,position,gameBoardElement,gameState)
 
 arrowUp$.subscribe(() => {
-    if (gameState.isGamePaused) return;
+    if (gameState.isGamePaused || gameState.isGameOver) return;
     if (!gameState.activeTetromino) return; 
 
     clearTetromino(gameBoard, gameState.activeTetromino, position); 
@@ -36,7 +36,7 @@ arrowUp$.subscribe(() => {
 });
 
 arrowDown$.subscribe(() =>{
-    if (gameState.isGamePaused) return;
+    if (gameState.isGamePaused || gameState.isGameOver) return;
     clearTetromino(gameBoard, gameState.activeTetromino, position);
 
     const collision = checkCollisions(gameState.activeTetromino,position,"down",gameBoard)
@@ -47,7 +47,7 @@ arrowDown$.subscribe(() =>{
 })
 
 arrowLeft$.subscribe(() => {
-    if (gameState.isGamePaused) return;
+    if (gameState.isGamePaused || gameState.isGameOver) return;;
      clearTetromino(gameBoard, gameState.activeTetromino, position);
 
     const collision = checkCollisions(gameState.activeTetromino,position,"left",gameBoard)
@@ -60,7 +60,7 @@ arrowLeft$.subscribe(() => {
 });
 
 arrowRight$.subscribe(() =>{
-    if (gameState.isGamePaused) return;
+    if (gameState.isGamePaused || gameState.isGameOver) return;
 
     clearTetromino(gameBoard, gameState.activeTetromino, position);
     
@@ -72,12 +72,12 @@ arrowRight$.subscribe(() =>{
 })
 
 spaceBar$.subscribe(() =>{
-    if (gameState.isGamePaused) return;
+    if (gameState.isGamePaused || gameState.isGameOver) return;
     if (!gameState.activeTetromino) return;
 
     clearTetromino(gameBoard, gameState.activeTetromino, position);
 
-    moveTetrominoLowestPoint(gameBoard, gameState.activeTetromino, position);
+    moveTetrominoLowestPoint(gameBoard, gameState.activeTetromino, position,gameState);
 
     renderGameBoard(gameBoardElement, gameBoard);
     
