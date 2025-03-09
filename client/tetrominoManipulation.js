@@ -10,7 +10,6 @@ export function placeTetromino(gameBoard,tetromino,position){
 
         }
     }
-    console.log("placetetromino end:", gameBoard)
 }
 
 export function rotateTetromino(matrix){
