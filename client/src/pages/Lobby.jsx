@@ -40,6 +40,11 @@ export default function Lobby() {
       setUserName(e.target.value)
   }
 
+  const handleStart = () => {
+    console.log("Start!")
+    sessionStorage.setItem('users', JSON.stringify(users))
+  }
+
   useEffect(() => {
     socket.on('chat message', function(msg) {
       console.log(msg)
@@ -104,7 +109,7 @@ export default function Lobby() {
         <div>
           <h4>Users:</h4>
           <ul id='users'>{users.map((user, i) => <li key={i}>{userName == user.name ? user.name + " (you!)": user.name}</li>)}</ul>
-          {isHost ? <button>Start!</button> : null}
+          {isHost ? <button onClick={handleStart}>Start!</button> : null}
         </div>
       </div>
       <footer className="center">Wee-woo!</footer>
