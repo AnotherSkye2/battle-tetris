@@ -78,5 +78,3 @@ export function moveTetrominoLowestPoint(gameBoard, tetromino, position, gameSta
     gameState.activeTetromino = null;
 
 }
-
-
