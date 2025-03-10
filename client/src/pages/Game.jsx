@@ -5,20 +5,44 @@ import { checkCollisions } from '../methods/collisionCheck.js';
 import { gameLoop } from '../methods/gameLoop.js';
 import { TETROMINOES } from '../methods/tetrominoes.js';
 import { arrowDown$,arrowLeft$,arrowRight$,arrowUp$,spaceBar$,escKey$ } from '../methods/observables.js';
-import { position,gameState } from '../methods/gameDefaultValues.js';
+import { position,gameState, roomId } from '../methods/gameDefaultValues.js';
 import { pauseGame,resumeGame } from '../methods/pauseGame.js';
-
+import { socket } from '../socket.js';
 
 export default function Game() {
-    const users = JSON.parse(sessionStorage.getItem("users"))
 
-    const { gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(users);
+    const users = JSON.parse(sessionStorage.getItem("users"))
+    const userName = sessionStorage.getItem("userName")
+
+    const { gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(users, userName);
+
+    console.log(gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray)
+
+    if (socket) {
+        console.log(socket)
+        socket.connect();
+        socket.emit('join', roomId, userName, (roomUsers) => {
+            console.log("roomUsers, socket.id", roomUsers, socket.id)
+        });
+        socket.on('board state', (opponentGameGridArray, name) => {
+            for (let i = 0; i < opponentGridDataArray.length; i++) {
+                if (opponentGridDataArray[i].name == name) {
+                    opponentGridDataArray[i].gameGridArray = opponentGameGridArray 
+                }
+            }
+        })
+        const listener = () => {
+            socket.emit('leave', roomId)
+            socket.disconnect();
+          }
+        window.addEventListener("pagehide", listener);
+    }
 
     console.log(gameBoardElement, gameBoardGrid, gameGridArray)
 
     renderGameBoard(gameBoardGrid, gameGridArray);
 
-    gameLoop(0,gameGridArray,TETROMINOES,position,gameBoardGrid,gameState,opponentGridDataArray)
+    gameLoop(0,gameGridArray,TETROMINOES,position,gameBoardGrid,gameState,opponentGridDataArray, socket)
 
     arrowUp$.subscribe(() => {
         if (gameState.isGamePaused || gameState.isGameOver) return;
@@ -53,6 +77,7 @@ export default function Game() {
     })
 
     arrowLeft$.subscribe(() => {
+        console.log("arrowLeft")
         if (gameState.isGamePaused || gameState.isGameOver) return;;
         clearTetromino(gameGridArray, gameState.activeTetromino, position);
 
@@ -66,6 +91,7 @@ export default function Game() {
     });
 
     arrowRight$.subscribe(() =>{
+        console.log("arrowRight")
         if (gameState.isGamePaused || gameState.isGameOver) return;
 
         clearTetromino(gameGridArray, gameState.activeTetromino, position);
@@ -91,7 +117,7 @@ export default function Game() {
 
     escKey$.subscribe(() =>{
         if(gameState.isGamePaused){
-            resumeGame(gameGridArray,TETROMINOES,position,gameBoardGrid,gameState)
+            resumeGame(gameGridArray,TETROMINOES,position,gameBoardGrid,gameState,opponentGridDataArray, socket)
         }else{
             pauseGame(gameState)
         }

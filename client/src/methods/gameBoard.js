@@ -1,4 +1,4 @@
-export function InitializeGameBoard(users) {
+export function InitializeGameBoard(users, userName) {
     const COLS = 10;
     const ROWS = 20;
     const gameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
@@ -23,9 +23,10 @@ export function InitializeGameBoard(users) {
 
     let opponentGridDataArray = [];
 
-    for (let i = 1; i < users.length; i++) {
-        console.log(users)
-        const opponentGameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(1));
+    for (let i = 0; i < users.length; i++) {
+        if (users[i].name == userName) {continue}
+        console.log(users[i].name)
+        let opponentGameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
 
         const opponentGameBoardElement = document.createElement("div");
         opponentGameBoardElement.classList.add("opponent", "game-board");
@@ -42,6 +43,7 @@ export function InitializeGameBoard(users) {
         }
         opponentGameBoardElement.appendChild(opponentGameBoardGrid)
         opponentGridDataArray.push({
+            name: users[i].name,
             gameBoardGrid: opponentGameBoardGrid,
             gameGridArray: opponentGameGridArray
         })

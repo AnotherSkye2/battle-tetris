@@ -70,6 +70,10 @@ io.on('connection', (socket) => {
     io.to(roomId).emit('start', `${socket.username} has started the game!`)
   })
 
+  socket.on('board state', (roomId, gameGridArray) => {
+    console.log(roomId, gameGridArray)
+    socket.to(roomId).emit('board state', gameGridArray, socket.username)        
+  })
 });
 
 server.listen(PORT, () => {

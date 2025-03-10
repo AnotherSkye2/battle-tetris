@@ -5,11 +5,13 @@ import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
 import { checkGameOver,gameOver } from './gameOver.js';
+import { roomId } from './gameDefaultValues.js';
+
 let lastTime = 0;
 let timeSinceLastMove = 0;
 const moveInterval = 400; 
 
-export function gameLoop(timestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState, opponentGridDataArray) {
+export function gameLoop(timestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState, opponentGridDataArray, socket) {
     if(gameState.isGameOver || gameState.isGamePaused ){
         return;
     }
@@ -22,14 +24,17 @@ export function gameLoop(timestamp, gameGridArray, tetrominoes, position, gameBo
         gameState.activeTetromino = selectRandomTetromino(tetrominoes);
     }
     updateGame(deltaTime, gameGridArray, gameState.activeTetromino, position,tetrominoes,gameState);  
-    renderGameBoard(gameBoardGrid, gameGridArray);  
-    for (let i = 0; i < opponentGridDataArray.length; i++) {
-        const opponentGameBoardGrid = opponentGridDataArray[i].gameBoardGrid 
-        const opponentGameGridArray = opponentGridDataArray[i].gameGridArray 
-        renderGameBoard(opponentGameBoardGrid, opponentGameGridArray)
+    renderGameBoard(gameBoardGrid, gameGridArray);
+    if (socket) {   
+        socket.emit('board state', roomId, gameGridArray)
+        for (let i = 0; i < opponentGridDataArray.length; i++) {
+            const opponentGameBoardGrid = opponentGridDataArray[i].gameBoardGrid 
+            const opponentGameGridArray = opponentGridDataArray[i].gameGridArray 
+            renderGameBoard(opponentGameBoardGrid, opponentGameGridArray)
+        }
     }
     requestAnimationFrame((newTimestamp) => 
-        gameLoop(newTimestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState, opponentGridDataArray)
+        gameLoop(newTimestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState, opponentGridDataArray, socket)
     ); 
 }
 

@@ -50,38 +50,43 @@ export default function Lobby() {
   }, [])
 
   useEffect(() => {
-    socket.on('chat message', function(msg) {
-      console.log(msg)
+    if (socket) {
+      socket.on('chat message', function(msg) {
+        console.log(msg)
         setChatMessages([...chatMessages, msg]);
         window.scrollTo(0, document.body.scrollHeight);
-    });
-    return () => {
-        socket.off("chat message")
-        socket.off('start')
+      });
+      return () => {
+          socket.off("chat message")
+          socket.off('start')
+      }
     }
-  }, [chatMessages])
+  }, [chatMessages, socket])
   
   useEffect(() => {
-    console.log("users: ", users)
-    if (users[0]?.socketId === socket.id) {setIsHost(true)}
-    socket.on("join", (user) => {setUsers([...users, user])})
-    socket.on("leave", (userToRemove) => {
-      setUsers([...users.filter((user) => user.socketId != userToRemove.socketId)])
-    })
-    socket.on('start', (msg) => {
-      console.log(msg, users)
-      sessionStorage.setItem('users', JSON.stringify(users))
-      window.location = `../game/${roomId}`
-    })
-    return () => {
-      setIsHost(false)
-      socket.off("join")
-      socket.off("leave")
+    if (socket) {
+      console.log("users: ", users)
+      if (users[0]?.socketId === socket.id) {setIsHost(true)}
+      socket.on("join", (user) => {setUsers([...users, user])})
+      socket.on("leave", (userToRemove) => {
+        setUsers([...users.filter((user) => user.socketId != userToRemove.socketId)])
+      })
+      socket.on('start', (msg) => {
+        console.log(msg, users)
+        sessionStorage.setItem('users', JSON.stringify(users))
+        sessionStorage.setItem('userName', userName)
+        window.location = `../game/${roomId}`
+      })
+      return () => {
+        setIsHost(false)
+        socket.off("join")
+        socket.off("leave")
+      }
     }
-  },[users])
+  },[users, socket])
 
   useEffect(() => {
-    if (userHasName) {
+    if (userHasName && socket) {
       setLink(`http://localhost:5173/lobby/${roomId}`)
       socket.connect();
       socket.username = userName;
@@ -101,7 +106,7 @@ export default function Lobby() {
         socket.disconnect();
       }
     }
-  }, [userHasName])
+  }, [userHasName, socket])
 
   return(
     <div className="create-game page-wrap">
