@@ -9,6 +9,11 @@ export function InitializeGameBoard(users, userName) {
     const gameBoardElement = document.createElement("div");
     gameBoardElement.classList.add("player", "game-board");
 
+    const gameBoardName = document.createElement("h2");
+    gameBoardName.classList.add("name");
+    gameBoardName.innerHTML = userName
+    gameBoardElement.appendChild(gameBoardName)
+
     const gameBoardGrid = document.createElement("div");
     gameBoardGrid.classList.add("game-grid");
     for (let row = 0; row < ROWS; row++) {
@@ -18,8 +23,8 @@ export function InitializeGameBoard(users, userName) {
             gameBoardGrid.appendChild(cell);
         }
     }
-    gameBoardElement.append(gameBoardGrid)
-    gameElement.append(gameBoardElement)
+    gameBoardElement.appendChild(gameBoardGrid)
+    gameElement.appendChild(gameBoardElement)
 
     let opponentGridDataArray = [];
 

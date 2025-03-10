@@ -166,3 +166,8 @@ Game
 .cell.filled {
   background-color: #ff4757;
 }
+
+.name {
+  text-align: center;
+  color:black;
+}

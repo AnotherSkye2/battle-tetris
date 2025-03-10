@@ -12,6 +12,8 @@ const io = new Server(server, {
 var path = require('path');
 const { SocketAddress } = require('net');
 require('dotenv').config()
+const ngrok = require("@ngrok/ngrok");
+
 
 const PORT = process.env.PORT || 5000;
 
@@ -20,6 +22,20 @@ app.use(express.static(path.join(__dirname, '../client/dist')));
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/dist', 'index.html'));
 });
+
+// Require ngrok javascript sdk
+// import ngrok from '@ngrok/ngrok' // if inside a module
+if (process.env.NGROK == "true") {
+  (async function() {
+    // Establish connectivity
+    const listener = await ngrok.forward({ addr: PORT, authtoken_from_env: true });
+    
+    // Output ngrok url to console
+    console.log(`Ingress established at: ${listener.url()}`);
+  })();
+}
+
+process.stdin.resume();
 
 io.on('connection', (socket) => {
   console.log('a user connected', socket.id);
