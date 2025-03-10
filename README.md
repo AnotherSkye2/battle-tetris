@@ -15,10 +15,9 @@ Then clone the repository using:
 
 1.  Next Open a terminal
 2.  Navigate to the client directory
-3.  Run the following commands:
+3.  Run the following command:
 
-        npm i
-        npm run dev
+    npm run build
 
 4.  Now open another terminal and navigate to the server directory
 
@@ -32,4 +31,14 @@ Then clone the repository using:
 6.  Run the following commands:
 
         npm i
-        npm run dev
+        npm start
+
+# How to play 🎮
+
+After running npm start you should see a message like this in the terminal:
+
+    Ingress established at: https://bf87-146-255-182-177.ngrok-free.app
+
+Open the website in your browser using the link provided by the terminal.  
+Instructions how to create/join a game are listed in the website  
+Have fun :)
