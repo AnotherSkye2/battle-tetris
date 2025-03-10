@@ -5,59 +5,62 @@ import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
 import { checkGameOver,gameOver } from './gameOver.js';
-import { roomId } from './gameDefaultValues.js';
+import { roomId } from '../methods/gameDefaultValues.js';
+import { addScore, updateScore } from './gameScore.js';
 
-import { addScore } from './gameScore.js';
+
 let lastTime = 0;
 let timeSinceLastMove = 0;
 const moveInterval = 400; 
 
-export function gameLoop(timestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState, opponentGridDataArray, socket) {
-    if(gameState.isGameOver || gameState.isGamePaused ){
+export function gameLoop(gameloopObject) {
+    if(gameloopObject.gameState.isGameOver || gameloopObject.gameState.isGamePaused ){
         return;
     }
-    const deltaTime = timestamp - lastTime;
-    lastTime = timestamp;
+    const deltaTime = gameloopObject.timestamp - lastTime;
+    lastTime = gameloopObject.timestamp;
 
     timeSinceLastMove += deltaTime;
     
-    if (!gameState.activeTetromino) {
-        gameState.activeTetromino = selectRandomTetromino(tetrominoes);
+    if (!gameloopObject.gameState.activeTetromino) {
+        gameloopObject.gameState.activeTetromino = selectRandomTetromino(gameloopObject.tetrominoes);
     }
-    updateGame(deltaTime, gameGridArray, gameState.activeTetromino, position,tetrominoes,gameState);  
-    renderGameBoard(gameBoardGrid, gameGridArray);
-    if (socket) {   
-        socket.emit('board state', roomId, gameGridArray)
-        for (let i = 0; i < opponentGridDataArray.length; i++) {
-            const opponentGameBoardGrid = opponentGridDataArray[i].gameBoardGrid 
-            const opponentGameGridArray = opponentGridDataArray[i].gameGridArray 
+    updateGame(deltaTime, gameloopObject);  
+    renderGameBoard(gameloopObject.gameBoardGrid, gameloopObject.gameGridArray);
+    if (gameloopObject.socket) {   
+        gameloopObject.socket.emit('board state', roomId, gameloopObject.gameGridArray)
+        for (let i = 0; i < gameloopObject.opponentGridDataArray.length; i++) {
+            const opponentGameBoardGrid = gameloopObject.opponentGridDataArray[i].gameBoardGrid 
+            const opponentGameGridArray = gameloopObject.opponentGridDataArray[i].gameGridArray 
             renderGameBoard(opponentGameBoardGrid, opponentGameGridArray)
         }
     }
-    requestAnimationFrame((newTimestamp) => 
-        gameLoop(newTimestamp, gameGridArray, tetrominoes, position, gameBoardGrid,gameState, opponentGridDataArray, socket)
-    ); 
+    requestAnimationFrame((newTimestamp) => {
+        gameloopObject.timestamp = newTimestamp
+        gameLoop(gameloopObject)
+    }); 
 }
 
 
-function updateGame(dTime,gameGridArray,tetromino,position,tetrominoes,gameState){
+function updateGame(dTime,gameloopObject){
     if(timeSinceLastMove >= moveInterval) {
-        clearTetromino(gameGridArray, tetromino, position);
-        const moved = moveTetrominoDown(gameGridArray,tetromino,position)
+        clearTetromino(gameloopObject.gameGridArray, gameloopObject.gameState.activeTetromino, gameloopObject.position);
+        const moved = moveTetrominoDown(gameloopObject.gameGridArray,gameloopObject.gameState.activeTetromino,gameloopObject.position)
         if(!moved){
-            placeTetromino(gameGridArray,tetromino,position)
-            const { newBoard, clearedLines,garbageLines } = clearFullLine(gameGridArray);
-            addScore(clearedLines)
-            gameGridArray.length = 0;
-            gameGridArray.push(...newBoard); 
+            placeTetromino(gameloopObject.gameGridArray,gameloopObject.gameState.activeTetromino,gameloopObject.position)
+            const { newBoard, clearedLines,garbageLines } = clearFullLine(gameloopObject.gameGridArray);
+            addScore(clearedLines, gameloopObject.gameState)
+            updateScore(gameloopObject)
+            gameloopObject.gameGridArray.length = 0;
+            gameloopObject.gameGridArray.push(...newBoard); 
 
-            if (checkGameOver(gameGridArray, gameState.activeTetromino, { row: 0, col: 4 })) {
+            if (checkGameOver(gameloopObject.gameGridArray, gameloopObject.gameState.activeTetromino, { row: 0, col: 4 })) {
                 gameOver();
                 return; 
             }
-            gameState.activeTetromino = selectRandomTetromino(tetrominoes);
-            position.row = 0;
-            position.col = 4; 
+            gameloopObject.gameState.activeTetromino = selectRandomTetromino(gameloopObject.tetrominoes);
+            gameloopObject.position.row = 0;
+            gameloopObject.position.col = 4; 
 
         }
         timeSinceLastMove = 0;
