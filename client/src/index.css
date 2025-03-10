@@ -147,11 +147,13 @@ Game
   background-color: #979595; 
 }
 
-.game-board {
+.game-grid {
   display: grid;
   grid-template-rows: repeat(20, 40px); 
   grid-template-columns: repeat(10, 40px); 
   gap: 2px; 
+  margin: 10px;
+  padding: 10px;
   background-color: #444; 
   
 }
@@ -176,4 +178,9 @@ Game
 
 .cell.filled {
   background-color: #ff4757;
+}
+
+.name {
+  text-align: center;
+  color:black;
 }

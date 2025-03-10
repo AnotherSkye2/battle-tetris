@@ -7,10 +7,10 @@ export function pauseGame(gameState){
 
 
 
-export function resumeGame(gameBoard, tetrominoes, position, gameBoardElement, gameState) {
+export function resumeGame(gameBoard, tetrominoes, position, gameBoardGrid, gameState, opponentGridDataArray, socket) {
     if (!gameState.isGamePaused) return; 
     gameState.isGamePaused = false;
     requestAnimationFrame((timestamp) => 
-        gameLoop(timestamp, gameBoard, tetrominoes, position, gameBoardElement, gameState)
+        gameLoop(timestamp, gameBoard, tetrominoes, position, gameBoardGrid, gameState, opponentGridDataArray, socket)
     );
 }
