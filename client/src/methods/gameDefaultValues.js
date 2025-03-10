@@ -3,3 +3,5 @@ export const gameState = { activeTetromino: null, isGameOver: false, isGamePause
 const url = window.location.href.split("/")
 console.log("window.location.href.split(), url: ", window.location.href.split("/"), url)
 export const roomId = url[url.length-1]
+export const users = JSON.parse(sessionStorage.getItem("users"))
+export const userName = sessionStorage.getItem("userName")

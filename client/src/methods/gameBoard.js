@@ -10,7 +10,7 @@ export function InitializeGameBoard(users, userName) {
     gameBoardElement.classList.add("player", "game-board");
 
     const gameBoardName = document.createElement("h2");
-    gameBoardName.classList.add("name");
+    gameBoardName.classList.add("name", "micro-5-regular");
     gameBoardName.innerHTML = userName
     gameBoardElement.appendChild(gameBoardName)
 
@@ -36,6 +36,11 @@ export function InitializeGameBoard(users, userName) {
         const opponentGameBoardElement = document.createElement("div");
         opponentGameBoardElement.classList.add("opponent", "game-board");
 
+        const opponentGameBoardName = document.createElement("h2");
+        opponentGameBoardName.classList.add("name", "micro-5-regular");
+        opponentGameBoardName.innerHTML = users[i].name
+        opponentGameBoardElement.appendChild(opponentGameBoardName)
+
         const opponentGameBoardGrid = document.createElement("div");
         opponentGameBoardGrid.classList.add("game-grid");
 
@@ -57,7 +62,7 @@ export function InitializeGameBoard(users, userName) {
 
     document.body.appendChild(gameElement)
     console.log(gameElement, gameBoardGrid)
-    return { gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray};
+    return { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray};
 }
 
 export function renderGameBoard(gameBoardGrid,gameGridArray){
