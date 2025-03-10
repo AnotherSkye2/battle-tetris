@@ -18,14 +18,10 @@ Then clone the repository using:
 3.  Run the following commands:
 
         npm i
-        npm run build
-
-4.  Then run this commands:
-
-        npm i
         npm run dev
 
-5.  Now open another terminal and navigate to the server directory
-6.  Run the following command:
+4.  Now open another terminal and navigate to the server directory
+5.  Run the following commands:
 
+        npm i
         npm run dev
