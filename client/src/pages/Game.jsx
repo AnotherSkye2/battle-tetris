@@ -9,8 +9,8 @@ import { position,gameState,roomId, users, userName } from '../methods/gameDefau
 import { pauseGame,resumeGame } from '../methods/pauseGame.js';
 import { socket } from '../socket.js';
 import { startTimer } from '../methods/createTimer.js';
-
 import { createLeaderBoard } from '../methods/leaderboard.js';
+import { updateLeaderboard } from '../methods/gameScore.js';
 
 export default function Game() {
 
@@ -19,6 +19,17 @@ export default function Game() {
 
     const userScoreElementArray = createLeaderBoard(gameElement)
 
+    const gameloopObject = {
+        timestamp: 0,
+        gameGridArray: gameGridArray,
+        tetrominoes: TETROMINOES,
+        position: position,
+        gameBoardGrid: gameBoardGrid,
+        gameState: gameState,
+        opponentGridDataArray: opponentGridDataArray,
+        userScoreElementArray: userScoreElementArray,
+        socket: socket
+    } 
 
     console.log(gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray)
 
@@ -35,6 +46,9 @@ export default function Game() {
                 }
             }
         })
+        socket.on('score', (score, name) => {
+            updateLeaderboard(score, name, gameloopObject)
+        })
         const listener = () => {
             socket.emit('leave', roomId)
             socket.disconnect();
@@ -45,18 +59,6 @@ export default function Game() {
     console.log(gameBoardElement, gameBoardGrid, gameGridArray)
 
     renderGameBoard(gameBoardGrid, gameGridArray);
-
-    const gameloopObject = {
-        timestamp: 0,
-        gameGridArray: gameGridArray,
-        tetrominoes: TETROMINOES,
-        position: position,
-        gameBoardGrid: gameBoardGrid,
-        gameState: gameState,
-        opponentGridDataArray: opponentGridDataArray,
-        userScoreElementArray: userScoreElementArray,
-        socket: socket
-    } 
 
     gameLoop(gameloopObject)
 

@@ -5,8 +5,8 @@ import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
 import { checkGameOver,gameOver } from './gameOver.js';
-import { roomId } from '../methods/gameDefaultValues.js';
-import { addScore, updateScore } from './gameScore.js';
+import { roomId, userName } from '../methods/gameDefaultValues.js';
+import { addScore, updateLeaderboard } from './gameScore.js';
 
 
 let lastTime = 0;
@@ -49,8 +49,8 @@ function updateGame(dTime,gameloopObject){
         if(!moved){
             placeTetromino(gameloopObject.gameGridArray,gameloopObject.gameState.activeTetromino,gameloopObject.position)
             const { newBoard, clearedLines,garbageLines } = clearFullLine(gameloopObject.gameGridArray);
-            addScore(clearedLines, gameloopObject.gameState)
-            updateScore(gameloopObject)
+            const score = addScore(clearedLines, gameloopObject)
+            updateLeaderboard(score, userName, gameloopObject)
             gameloopObject.gameGridArray.length = 0;
             gameloopObject.gameGridArray.push(...newBoard); 
 

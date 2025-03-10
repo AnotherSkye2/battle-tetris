@@ -87,7 +87,6 @@ io.on('connection', (socket) => {
   })
 
   socket.on('board state', (roomId, gameGridArray) => {
-    console.log(roomId, gameGridArray)
     socket.to(roomId).emit('board state', gameGridArray, socket.username)        
   })
 

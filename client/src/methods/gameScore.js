@@ -1,6 +1,6 @@
-import { userName } from "./gameDefaultValues";
+import { roomId } from "./gameDefaultValues";
 
-export function addScore(clearedLines,gameState){
+export function addScore(clearedLines,gameloopObject){
     let score = 0;
     switch (clearedLines)  {
         case 0:
@@ -22,22 +22,24 @@ export function addScore(clearedLines,gameState){
             score = 999999
             break;
     }
-    gameState.gameScore = score
-    console.log(clearedLines, gameState, score)
+    gameloopObject.gameState.gameScore = score
+    console.log(clearedLines, gameloopObject.gameState, score)
+    gameloopObject.socket.emit("score", roomId, score)
+
     return score
 }
 
-export function updateScore(gameloopObject) {
+export function updateLeaderboard(score, name, gameloopObject) {
     const test = gameloopObject.userScoreElementArray
     console.log(test)
-    if (gameloopObject.gameState.gameScore > 0) {
-        console.log("gameloopObject.gameState.gameScore: ", gameloopObject.gameState.gameScore, gameloopObject.gameState.gameScore)
+    if (score > 0) {
+        console.log("score: ", score)
         const scoreElementArray = gameloopObject.userScoreElementArray
         const leaderboard = scoreElementArray[0].userScoreElement.parentNode.parentNode.parentNode
         console.log(leaderboard)
         for (let i = 0; i < scoreElementArray.length; i++) {
-            if (scoreElementArray[i].name == userName) {
-                scoreElementArray[i].userScoreElement.innerHTML = gameloopObject.gameState.gameScore + Number(scoreElementArray[i].userScoreElement.innerHTML)
+            if (scoreElementArray[i].name == name) {
+                scoreElementArray[i].userScoreElement.innerHTML = score + Number(scoreElementArray[i].userScoreElement.innerHTML)
             }
         }
         console.log("before", scoreElementArray)
@@ -53,8 +55,7 @@ export function updateScore(gameloopObject) {
         for (let i = 0; i < scoreContainerArray.length; i++) {
             leaderboard.appendChild(scoreContainerArray[i])
         }
-        // gameloopObject.socket.emit("score", roomId, score)
     } else {
-        console.log("score is:", gameloopObject.gameState.gameScore)
+        console.log("score is:", score)
     }
 }

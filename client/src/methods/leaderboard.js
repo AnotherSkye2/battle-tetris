@@ -39,6 +39,3 @@ export function createLeaderBoard(gameElement) {
 
     return userScoreElementArray
 }
-
-
-export function updateLeaderBoard() {}
