@@ -6,7 +6,7 @@ Multiplayer Tetris game.
 
 ## Setup
 
-First make sure you an account setup for ngrok, if not create an account
+First make sure you have an account setup for ngrok, if not create an account
 https://dashboard.ngrok.com/login
 
 Then clone the repository using:
