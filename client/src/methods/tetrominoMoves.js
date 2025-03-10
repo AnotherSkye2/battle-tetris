@@ -1,6 +1,7 @@
 import { placeTetromino } from "./tetrominoManipulation.js";
 import { checkCollisions,wallCollisionCheck } from "./collisionCheck.js";
 import { clearFullLine } from "./clearLine.js";
+import { addScore } from "./gameScore.js";
 
 export function moveTetrominoDown(gameBoard,tetromino,position){
     const shape  = tetromino; 
@@ -69,6 +70,7 @@ export function moveTetrominoLowestPoint(gameBoard, tetromino, position, gameSta
 
     placeTetromino(gameBoard, tetromino, position);
     const { newBoard, clearedLines, garbageLines } = clearFullLine(gameBoard);
+    addScore(clearedLines,gameState)
 
     gameBoard.length = 0;
     gameBoard.push(...newBoard); 

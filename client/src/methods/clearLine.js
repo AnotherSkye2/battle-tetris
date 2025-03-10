@@ -1,4 +1,5 @@
 export function clearFullLine(gameBoard){
+    console.log("didwe call")
     let newBoard = gameBoard.filter(row => row.some(cell => cell === 0));
 
     const clearedLines = gameBoard.length - newBoard.length;

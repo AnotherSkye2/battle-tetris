@@ -103,4 +103,4 @@ escKey$.subscribe(() =>{
 
 
 
-// bag randomizer
+// bag randomizer ( block selection), better game end logic 

@@ -5,6 +5,7 @@ import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
 import { checkGameOver,gameOver } from './gameOver.js';
+import { addScore } from './gameScore.js';
 let lastTime = 0;
 let timeSinceLastMove = 0;
 const moveInterval = 1000; 
@@ -35,16 +36,16 @@ function updateGame(dTime,gameBoard,tetromino,position,tetrominoes,gameState){
     if(timeSinceLastMove >= moveInterval) {
         clearTetromino(gameBoard, tetromino, position);
         const moved = moveTetrominoDown(gameBoard,tetromino,position)
+
         if(!moved){
-
             placeTetromino(gameBoard,tetromino,position)
-
             const { newBoard, clearedLines,garbageLines } = clearFullLine(gameBoard);
+            addScore(clearedLines)
             gameBoard.length = 0;
             gameBoard.push(...newBoard); 
 
             if (checkGameOver(gameBoard, gameState.activeTetromino, { row: 0, col: 4 })) {
-                gameOver();
+                gameOver(clearedLines,gameState);
                 return; 
             }
             gameState.activeTetromino = selectRandomTetromino(tetrominoes);

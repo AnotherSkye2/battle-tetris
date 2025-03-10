@@ -1,2 +1,2 @@
 export const position = {row: 0, col: 3}; // starting position of the tetromino
-export const gameState = { activeTetromino: null, isGameOver: false, isGamePaused: false, isTimerRunning: false }; 
+export const gameState = { activeTetromino: null, isGameOver: false, isGamePaused: false, isTimerRunning: false, gameScore: 0 }; 
