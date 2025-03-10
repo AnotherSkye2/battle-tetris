@@ -25,3 +25,10 @@ Then clone the repository using:
 
         npm i
         npm run dev
+
+6.  Create a .env file inside the server directory  
+    add the following content inside it:
+
+        PORT=4000
+        NGROK=true
+        NGROK_AUTHTOKEN=<auth-token>
