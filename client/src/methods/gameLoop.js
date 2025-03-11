@@ -17,13 +17,19 @@ export function gameLoop(gameloopObject) {
     if(gameloopObject.gameState.isGameOver || gameloopObject.gameState.isGamePaused ){
         return;
     }
+
+    if (gameloopObject.gameState.gameOverPending) {
+        gameOver(); 
+        gameloopObject.gameState.gameOverPending = false; 
+        return;
+    }
     const deltaTime = gameloopObject.timestamp - lastTime;
     lastTime = gameloopObject.timestamp;
 
     timeSinceLastMove += deltaTime;
     
     if (!gameloopObject.gameState.activeTetromino) {
-        [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.tetrominoes);
+        [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.gameState,gameloopObject.tetrominoes);
     }
     updateGame(deltaTime, gameloopObject);  
     renderGameBoard(gameloopObject.gameBoardGrid, gameloopObject.gameGridArray);
@@ -48,17 +54,18 @@ function updateGame(dTime,gameloopObject){
         const moved = moveTetrominoDown(gameloopObject)
         if(!moved){
             placeTetromino(gameloopObject)
-            const { newBoard, clearedLines,garbageLines } = clearFullLine(gameloopObject.gameGridArray);
+            const { newBoard, clearedLines } = clearFullLine(gameloopObject.gameGridArray);
             const score = addScore(clearedLines, gameloopObject)
             updateLeaderboard(score, userName, gameloopObject)
             gameloopObject.gameGridArray.length = 0;
             gameloopObject.gameGridArray.push(...newBoard); 
+            
 
             if (checkGameOver(gameloopObject.gameGridArray, gameloopObject.gameState.activeTetromino, { row: 0, col: 4 })) {
-                gameOver();
-                return; 
+                gameloopObject.gameState.gameOverPending = true; 
+                return;
             }
-            [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.tetrominoes);
+            [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.gameState,gameloopObject.tetrominoes);
             gameloopObject.position.row = 0;
             gameloopObject.position.col = 4; 
 

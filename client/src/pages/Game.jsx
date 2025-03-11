@@ -89,6 +89,10 @@ startTimer()
 
     arrowDown$.subscribe(() =>{
         if (gameState.isGamePaused || gameState.isGameOver) return;
+        if(!gameState.activeTetromino){
+            return
+        }
+        
         clearTetromino(gameloopObject)
 
         const collision = checkCollisions(gameState.activeTetromino,position,"down",gameGridArray)
@@ -101,6 +105,10 @@ startTimer()
     arrowLeft$.subscribe(() => {
         console.log("arrowLeft")
         if (gameState.isGamePaused || gameState.isGameOver) return;
+        if(!gameState.activeTetromino){
+            return
+        }
+        
         clearTetromino(gameloopObject)
 
         const collision = checkCollisions(gameState.activeTetromino,position,"left",gameGridArray)
@@ -115,6 +123,10 @@ startTimer()
     arrowRight$.subscribe(() =>{
         console.log("arrowRight")
         if (gameState.isGamePaused || gameState.isGameOver) return;
+        if(!gameState.activeTetromino){
+            return
+        }
+        
 
         clearTetromino(gameloopObject)
         
@@ -150,4 +162,4 @@ startTimer()
 
 
 
-// bag randomizer ( block selection), better game end logic 
+// ngrok url, origin index js serveri

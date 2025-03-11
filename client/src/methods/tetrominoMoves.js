@@ -1,5 +1,5 @@
 import { placeTetromino } from "./tetrominoManipulation.js";
-import { checkCollisions,wallCollisionCheck } from "./collisionCheck.js";
+import { checkCollisions } from "./collisionCheck.js";
 import { clearFullLine } from "./clearLine.js";
 import { addScore, updateLeaderboard } from "./gameScore.js";
 import { userName } from "./gameDefaultValues.js";
@@ -11,8 +11,10 @@ export function moveTetrominoDown(gameloopObject){
     const gameGridArray = gameloopObject.gameGridArray
     const { row, col } = position; 
 
-
-     const collisionDetected= checkCollisions(tetromino,position,"down",gameGridArray)
+    if(!tetromino){
+        return
+    }
+    const collisionDetected= checkCollisions(tetromino,position,"down",gameGridArray)
     if(collisionDetected){
         console.log("collisionDetected")
         placeTetromino(gameloopObject)
@@ -86,7 +88,7 @@ export function moveTetrominoLowestPoint(gameloopObject) {
      position.row = dropY ;
 
     placeTetromino(gameloopObject);
-    const { newBoard, clearedLines, garbageLines } = clearFullLine(gameloopObject.gameGridArray);
+    const { newBoard, clearedLines } = clearFullLine(gameloopObject.gameGridArray);
     const score = addScore(clearedLines, gameloopObject)
     updateLeaderboard(score, userName, gameloopObject)
     

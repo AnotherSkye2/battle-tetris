@@ -3,7 +3,10 @@ export function placeTetromino(gameloopObject){
     const {row,col} = gameloopObject.position
     const tetromino = gameloopObject.gameState.activeTetromino
     const type = gameloopObject.gameState.tetrominoType
-    
+
+    if(!tetromino){
+        return
+    }
     for(let r = 0; r < tetromino.length; r++){
         for(let c = 0; c < tetromino[r].length; c++){
             if(tetromino[r][c] === type){
@@ -37,6 +40,10 @@ export function clearTetromino(gameloopObject) {
     const type = gameloopObject.gameState.tetrominoType
     console.log(type)
     const { row, col } = gameloopObject.position;
+
+    if(!tetromino){
+        return
+    }
     for (let r = 0; r < tetromino.length; r++) {
         for (let c = 0; c < tetromino[r].length; c++) {
             if (tetromino[r][c] === type) {
