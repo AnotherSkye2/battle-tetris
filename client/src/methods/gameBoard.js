@@ -1,4 +1,4 @@
-export function InitializeGameBoard(users, userName) {
+export function InitializeGameBoard(userNames, userName) {
     const COLS = 10;
     const ROWS = 20;
     const gameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(""));
@@ -28,9 +28,9 @@ export function InitializeGameBoard(users, userName) {
 
     let opponentGridDataArray = [];
 
-    for (let i = 0; i < users.length; i++) {
-        if (users[i].name == userName) {continue}
-        console.log(users[i].name)
+    for (let i = 0; i < userNames.length; i++) {
+        if (userNames[i].name == userName) {continue}
+        console.log(userNames[i].name)
         let opponentGameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(""));
 
         const opponentGameBoardElement = document.createElement("div");
@@ -38,7 +38,7 @@ export function InitializeGameBoard(users, userName) {
 
         const opponentGameBoardName = document.createElement("h2");
         opponentGameBoardName.classList.add("name", "micro-5-regular");
-        opponentGameBoardName.innerHTML = users[i].name
+        opponentGameBoardName.innerHTML = userNames[i].name
         opponentGameBoardElement.appendChild(opponentGameBoardName)
 
         const opponentGameBoardGrid = document.createElement("div");
@@ -53,7 +53,7 @@ export function InitializeGameBoard(users, userName) {
         }
         opponentGameBoardElement.appendChild(opponentGameBoardGrid)
         opponentGridDataArray.push({
-            name: users[i].name,
+            name: userNames[i].name,
             gameBoardGrid: opponentGameBoardGrid,
             gameGridArray: opponentGameGridArray
         })

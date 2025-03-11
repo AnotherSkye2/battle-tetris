@@ -3,6 +3,7 @@ import { checkCollisions } from "./collisionCheck.js";
 import { clearFullLine } from "./clearLine.js";
 import { addScore, updateLeaderboard } from "./gameScore.js";
 import { userName } from "./gameDefaultValues.js";
+import { socket } from "../socket.js";
 
 export function moveTetrominoDown(gameloopObject){
     const tetromino = gameloopObject.gameState.activeTetromino
@@ -23,7 +24,6 @@ export function moveTetrominoDown(gameloopObject){
 
     for (let r = 0; r < tetromino.length; r++) {
         for (let c = 0; c < tetromino[r].length; c++) {
-            console.log(tetromino[r][c])
             if (tetromino[r][c] !== "") { 
                 gameGridArray[row + r][col + c] = ""; 
             }
@@ -91,6 +91,19 @@ export function moveTetrominoLowestPoint(gameloopObject) {
     const { newBoard, clearedLines } = clearFullLine(gameloopObject.gameGridArray);
     const score = addScore(clearedLines, gameloopObject)
     updateLeaderboard(score, userName, gameloopObject)
+    if (clearedLines > 0) {
+        const users = gameloopObject.users
+        let target = gameloopObject.gameState.target
+        for (let i = 0; i < users.length; i++) {
+            // TESTING ONLY
+            if (!target && users[i].name != userName) {target = users[i].name}
+            // TESTING ONLY
+            console.log("users, target", users, target)
+            if (users[i].name === target) {
+                socket.emit('garbage', users[i].socketId, clearedLines)
+            }
+        }
+    }
     
     gameGridArray.length = 0;
     gameGridArray.push(...newBoard); 

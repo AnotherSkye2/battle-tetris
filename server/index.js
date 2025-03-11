@@ -49,9 +49,10 @@ io.on('connection', (socket) => {
     console.log("clients: ", clients, socket.id)
     if (clients) {
       const users = [...clients].map((clientId) => {
-        const socket = io.sockets.sockets.get(clientId);
+        const clientSocket = io.sockets.sockets.get(clientId);
         return {
-          name: socket.userName,
+          name: clientSocket.userName,
+          socketId: clientSocket.id
         }
       })
       console.log(users)
@@ -105,6 +106,13 @@ io.on('connection', (socket) => {
   socket.on('score', (roomId, score) => {
     console.log(roomId, score)
     socket.to(roomId).emit('score', score, socket.userName)        
+  })
+
+  socket.on('garbage', (socketId, lines) => {
+    console.log("garbage", socketId, lines)
+    const client = io.sockets.adapter.rooms.get(socketId)
+    console.log("client: ", client, socketId)
+    socket.to(socketId).emit('garbage', lines, socket.userName)        
   })
 });
 

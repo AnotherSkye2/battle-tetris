@@ -87,7 +87,7 @@ export default function Lobby() {
       })
       socket.on('start', (msg) => {
         console.log(msg, users)
-        sessionStorage.setItem('users', JSON.stringify(users))
+        sessionStorage.setItem('userNames', JSON.stringify(users))
         sessionStorage.setItem('userName', userName)
         window.location = `../game/${roomId}`
       })
