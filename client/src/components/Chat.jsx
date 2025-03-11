@@ -18,11 +18,14 @@ export default function Chat({chatMessages}) {
       setInputValue(e.target.value)
   }
 
-  return ( <>
-    <ul id="messages" >{chatMessages.map((message, i) => <li key={i}>{message}</li>)}</ul>
-    <form id="form" onSubmit={handleSubmit} >
-    <input id="input" autoComplete="off" onChange={handleChange}/><button type="submit">Send</button>
-    </form>
-  </> 
+  return ( 
+  <div className='pixel-corners--wrapper'> 
+    <div className='chat'>
+      <ul id="messages" >{chatMessages.map((message, i) => <li key={i}>{message}</li>)}</ul>
+      <form id="form" className='flex-center' onSubmit={handleSubmit} >
+      <input id="input" className='pixel-corners micro-5-regular' autoComplete="off" onChange={handleChange}/><button type="submit" className='pixel-corners'>Send</button>
+      </form>
+    </div>
+  </div> 
   )
 }

@@ -15,21 +15,29 @@ export default function Home() {
 
     return ( <>
       <div className="create-game page-wrap">
-      <header className="center">Tetris Game</header>
-      <main className="content-wrap, center">
+      <header className="flex-center">Tetris Game</header>
+      <main className="content-wrap, flex-center">
         { showInfo ? 
-          <div className="button-container" >
-              <p>Info</p>
-              <button id="display" onClick={toggleInfo}>Go back</button>
+          <div className="grid-center" >
+              <h1>Welcome to Tetris Game!</h1>
+              <p>
+                To join a game, either:
+                <ul>
+                  <li>join a friend's lobby by inserting the URL they shared into your browser's search bar</li>
+                  <h4>OR...</h4>
+                  <li>create a lobby yourself!</li>
+                </ul>
+              </p>
+              <button id="display" className='pixel-corners' onClick={toggleInfo}>Go back</button>
           </div>
         :
           <div className="button-container" >
-            <button id="display" onClick={toggleInfo}>How to join a game?</button>
-            <button id="create" onClick={toLobby}>Create Lobby</button>
+            <button id="display" className='pixel-corners' onClick={toggleInfo}>How to join a game?</button>
+            <button id="create" className='pixel-corners' onClick={toLobby}>Create Lobby</button>
           </div>
         }
       </main>
-      <footer className="center">Wee-woo!</footer>
+      <footer className="center">by Robert and Skye!</footer>
       </div>
     </> 
     )

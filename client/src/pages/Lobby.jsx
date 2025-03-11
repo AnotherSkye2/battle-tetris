@@ -110,24 +110,24 @@ export default function Lobby() {
 
   return(
     <div className="create-game page-wrap">
-      <header className="center">Tetris Game</header>
+      <header className="flex-center">Tetris Game</header>
       <div className="content-wrap">
         <div className="chat-container" >
           <Chat chatMessages={chatMessages}/>
         </div>
-        <main className="center" >
+        <main className="flex-center" >
           <div className="lobby-container" >
             <input type="text" id="display" value={link} readOnly></input>
-            <button id="create" onClick={copyToClipboard}>Copy!</button>
+            <button id="create" className='pixel-corners' onClick={copyToClipboard}>Copy!</button>
           </div>
         </main>
         <div>
           <h4>Users:</h4>
           <ul id='users'>{users.map((user, i) => <li key={i}>{userName == user.name ? user.name + " (you!)": user.name}</li>)}</ul>
-          {isHost ? <button onClick={handleStart}>Start!</button> : null}
+          {isHost ? <button className='pixel-corners' onClick={handleStart}>Start!</button> : null}
         </div>
       </div>
-      <footer className="center">Wee-woo!</footer>
+      <footer className="flex-center">by Robert and Skye!</footer>
       <NamePopup handleSubmit={handleSubmit} handleChange={handleChange}/>
     </div>
   )
