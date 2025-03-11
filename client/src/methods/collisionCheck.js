@@ -6,7 +6,7 @@ export function wallCollisionCheck(tetromino,position){
    
     for(let r =0; r < tetromino.length; r++){
         for(let c =0; c < tetromino[r].length; c++){
-            if(tetromino[r][c] === 1){
+            if(tetromino[r][c] !== ""){
                 const boardX = col + c;
                 const boardY = row + r;
 
@@ -26,7 +26,7 @@ export function tetrominoCollisionCheck(tetromino, position, board) {
     for (let r = 0; r < tetromino.length; r++) {
         for (let c = 0; c < tetromino[r].length; c++) {
             
-            if (tetromino[r][c] === "o") {
+            if (tetromino[r][c] !== "") {
                 
                 const boardX = col + c;
                 const boardY = row + r;

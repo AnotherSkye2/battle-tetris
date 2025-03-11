@@ -31,7 +31,7 @@ export default function Game() {
         socket: socket
     } 
 
-    console.log(gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray)
+    console.log(gameloopObject)
 
     if (socket) {
         console.log(socket)
@@ -70,7 +70,7 @@ startTimer()
         if (gameState.isGamePaused || gameState.isGameOver) return;
         if (!gameState.activeTetromino) return; 
 
-        clearTetromino(gameGridArray, gameState.activeTetromino, position); 
+        clearTetromino(gameloopObject) 
 
         const rotatedTetro = rotateTetromino(gameState.activeTetromino)
         
@@ -83,32 +83,32 @@ startTimer()
             console.log("collision detected")
         }
         
-        placeTetromino(gameGridArray, gameState.activeTetromino, position); 
+        placeTetromino(gameloopObject); 
         renderGameBoard(gameBoardGrid, gameGridArray); 
     });
 
     arrowDown$.subscribe(() =>{
         if (gameState.isGamePaused || gameState.isGameOver) return;
-        clearTetromino(gameGridArray, gameState.activeTetromino, position);
+        clearTetromino(gameloopObject)
 
         const collision = checkCollisions(gameState.activeTetromino,position,"down",gameGridArray)
         if(!collision){
-            moveTetrominoDown(gameGridArray,gameState.activeTetromino,position)
+            moveTetrominoDown(gameloopObject)
         }
-        placeTetromino(gameGridArray, gameState.activeTetromino, position);
+        placeTetromino(gameloopObject);
     })
 
     arrowLeft$.subscribe(() => {
         console.log("arrowLeft")
-        if (gameState.isGamePaused || gameState.isGameOver) return;;
-        clearTetromino(gameGridArray, gameState.activeTetromino, position);
+        if (gameState.isGamePaused || gameState.isGameOver) return;
+        clearTetromino(gameloopObject)
 
         const collision = checkCollisions(gameState.activeTetromino,position,"left",gameGridArray)
         if(!collision){
-            moveTetrominoLeft(gameGridArray,gameState.activeTetromino,position);
+            moveTetrominoLeft(gameloopObject);
         }
 
-        placeTetromino(gameGridArray, gameState.activeTetromino, position);
+        placeTetromino(gameloopObject);
     
     });
 
@@ -116,22 +116,22 @@ startTimer()
         console.log("arrowRight")
         if (gameState.isGamePaused || gameState.isGameOver) return;
 
-        clearTetromino(gameGridArray, gameState.activeTetromino, position);
+        clearTetromino(gameloopObject)
         
         const collision = checkCollisions(gameState.activeTetromino,position,"right",gameGridArray)
         if(!collision){
-            moveTetrominoRight(gameGridArray,gameState.activeTetromino,position);
+            moveTetrominoRight(gameloopObject);
         }
-        placeTetromino(gameGridArray, gameState.activeTetromino, position);
+        placeTetromino(gameloopObject);
     })
 
     spaceBar$.subscribe(() =>{
         if (gameState.isGamePaused || gameState.isGameOver) return;
         if (!gameState.activeTetromino) return;
 
-        clearTetromino(gameGridArray, gameState.activeTetromino, position);
+        clearTetromino(gameloopObject)
 
-        moveTetrominoLowestPoint(gameGridArray, gameState.activeTetromino, position,gameState, gameloopObject);
+        moveTetrominoLowestPoint(gameloopObject);
 
         renderGameBoard(gameBoardGrid, gameGridArray);
         

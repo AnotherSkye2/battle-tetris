@@ -44,10 +44,10 @@ export function gameLoop(gameloopObject) {
 
 function updateGame(dTime,gameloopObject){
     if(timeSinceLastMove >= moveInterval) {
-        clearTetromino(gameloopObject.gameGridArray, gameloopObject.gameState.activeTetromino, gameloopObject.position);
-        const moved = moveTetrominoDown(gameloopObject.gameGridArray,gameloopObject.gameState.activeTetromino,gameloopObject.position)
+        clearTetromino(gameloopObject);
+        const moved = moveTetrominoDown(gameloopObject)
         if(!moved){
-            placeTetromino(gameloopObject.gameGridArray,gameloopObject.gameState.activeTetromino,gameloopObject.position)
+            placeTetromino(gameloopObject)
             const { newBoard, clearedLines,garbageLines } = clearFullLine(gameloopObject.gameGridArray);
             const score = addScore(clearedLines, gameloopObject)
             updateLeaderboard(score, userName, gameloopObject)
