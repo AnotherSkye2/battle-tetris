@@ -87,8 +87,12 @@ io.on('connection', (socket) => {
   })
 
   socket.on('board state', (roomId, gameGridArray) => {
-    console.log(roomId, gameGridArray)
     socket.to(roomId).emit('board state', gameGridArray, socket.username)        
+  })
+
+  socket.on('score', (roomId, score) => {
+    console.log(roomId, score)
+    socket.to(roomId).emit('score', score, socket.username)        
   })
 });
 
