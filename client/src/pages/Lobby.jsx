@@ -87,7 +87,7 @@ export default function Lobby() {
 
   useEffect(() => {
     if (userHasName && socket) {
-      setLink(`http://localhost:5173/lobby/${roomId}`)
+      setLink(window.location.href)
       socket.connect();
       socket.username = userName;
       console.log("socket.username:", socket.username)
