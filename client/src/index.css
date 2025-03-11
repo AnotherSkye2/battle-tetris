@@ -1,0 +1,374 @@
+:root {
+  font-family: "Micro 5", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 2em;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/*
+React Popup
+*/
+
+.popup-content {
+  margin: auto;
+  border-radius: 8px;
+  padding: 5px;
+}
+.popup-arrow {
+  color: rgb(255, 255, 255);
+}
+[role='tooltip'].popup-content {
+  width: 200px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
+
+.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+[data-popup='tooltip'].popup-overlay {
+  background: transparent;
+}
+
+.modal {
+  background-color: #242424;
+  padding: 10px;
+}
+
+.modal > .header {
+  width: 100%;
+  font-size: 2em;
+  text-align: center;
+  padding: 10px;
+}
+.modal > .content {
+  width: 100%;
+  padding: 10px 5px;
+}
+.modal > form {
+  display: grid;
+  width: 100%;
+  gap: 5px;
+  margin: auto;
+  text-align: center;
+}
+
+.modal > form > input {
+  border-radius: 8px;
+}
+
+.modal > .close {
+  cursor: pointer;
+  position: absolute;
+  display: block;
+  padding: 2px 5px;
+  line-height: 20px;
+  right: -10px;
+  top: -10px;
+  font-size: 24px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 1px solid #cfcece;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.chat input {
+  font-size: 1em;
+}
+
+/*
+Game
+*/
+
+.game {
+  margin: 0;
+  height: 100vh; 
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  background-color: #979595; 
+}
+
+.game h2 {
+  margin: 0;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-rows: repeat(20, 40px); 
+  grid-template-columns: repeat(10, 40px); 
+  gap: 2px; 
+  margin: 10px;
+  padding: 10px;
+  background-color: #444; 
+  
+}
+
+#timerDisplay {
+  width: 31.7%; 
+  position: absolute; 
+  top: 75%; 
+  left: 0%; 
+  font-size: 24px;
+  color: white;
+  background: rgba(0, 0, 0, 0.5); 
+  padding: 5px 10px;
+  text-align: center; 
+}
+
+.cell {
+  width: 40px; 
+  height: 40px; 
+  background-color: #222;
+}
+
+.i {
+  background-color: #00ffff;
+}
+.j {
+  background-color: #0000ff;
+}
+.t {
+  background-color: #800080;
+}
+.o {
+  background-color: #ffff00;
+}
+.l {
+  background-color: #ff7f00;
+}
+.s {
+  background-color: #00ff00;
+}
+.z {
+  background-color: #ff0000;
+}
+
+.name {
+  text-align: center;
+  color:black;
+
+}
+
+/*
+Leaderboard
+*/
+
+.leaderboard-container {
+  width: 30%;
+  height: 100vh;
+  display: flex;
+  align-items: start;
+}
+
+.leaderboard {
+  border-radius: 8px;
+  display: grid;
+  width: 100%;
+  background-color: #242424;
+  padding: 10px 20px;
+  gap: 10px;
+  margin-top: 100px;
+}
+
+.leaderboard p {
+  margin: 0;
+}
+
+.score-container {
+  display: flex;
+  background-color: #606060;
+  padding: 5px 15px;
+  border-radius: 8px;
+}
+
+.score-container{
+  margin: 0;
+}
+
+.user-score {
+  text-align: center;
+}
+
+.user-name{
+  margin-left: auto;
+}
+
+.kanit-medium {
+  font-family: "Kanit", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.kanit-regular {
+  font-family: "Kanit", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.micro-5-regular {
+  font-family: "Micro 5", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pixel-corners,
+.pixel-corners--wrapper {
+  clip-path: polygon(0px calc(100% - 8px),
+    4px calc(100% - 8px),
+    4px calc(100% - 4px),
+    8px calc(100% - 4px),
+    8px 100%,
+    calc(100% - 8px) 100%,
+    calc(100% - 8px) calc(100% - 4px),
+    calc(100% - 4px) calc(100% - 4px),
+    calc(100% - 4px) calc(100% - 8px),
+    100% calc(100% - 8px),
+    100% 8px,
+    calc(100% - 4px) 8px,
+    calc(100% - 4px) 4px,
+    calc(100% - 8px) 4px,
+    calc(100% - 8px) 0px,
+    8px 0px,
+    8px 4px,
+    4px 4px,
+    4px 8px,
+    0px 8px);
+  position: relative;
+}
+.pixel-corners {
+  border: 4px solid transparent;
+}
+.pixel-corners--wrapper {
+  width: fit-content;
+  height: fit-content;
+}
+.pixel-corners--wrapper .pixel-corners {
+  display: block;
+  clip-path: polygon(4px 8px,
+    8px 8px,
+    8px 4px,
+    calc(100% - 8px) 4px,
+    calc(100% - 8px) 8px,
+    calc(100% - 4px) 8px,
+    calc(100% - 4px) calc(100% - 8px),
+    calc(100% - 8px) calc(100% - 8px),
+    calc(100% - 8px) calc(100% - 4px),
+    8px calc(100% - 4px),
+    8px calc(100% - 8px),
+    4px calc(100% - 8px));
+}
+.pixel-corners::after,
+.pixel-corners--wrapper::after {
+  content: "";
+  position: absolute;
+  clip-path: polygon(0px calc(100% - 8px),
+    4px calc(100% - 8px),
+    4px calc(100% - 4px),
+    8px calc(100% - 4px),
+    8px 100%,
+    calc(100% - 8px) 100%,
+    calc(100% - 8px) calc(100% - 4px),
+    calc(100% - 4px) calc(100% - 4px),
+    calc(100% - 4px) calc(100% - 8px),
+    100% calc(100% - 8px),
+    100% 8px,
+    calc(100% - 4px) 8px,
+    calc(100% - 4px) 4px,
+    calc(100% - 8px) 4px,
+    calc(100% - 8px) 0px,
+    8px 0px,
+    8px 4px,
+    4px 4px,
+    4px 8px,
+    0px 8px,
+    0px 50%,
+    4px 50%,
+    4px 8px,
+    8px 8px,
+    8px 4px,
+    calc(100% - 8px) 4px,
+    calc(100% - 8px) 8px,
+    calc(100% - 4px) 8px,
+    calc(100% - 4px) calc(100% - 8px),
+    calc(100% - 8px) calc(100% - 8px),
+    calc(100% - 8px) calc(100% - 4px),
+    8px calc(100% - 4px),
+    8px calc(100% - 8px),
+    4px calc(100% - 8px),
+    4px 50%,
+    0px 50%);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #444;
+  display: block;
+  pointer-events: none;
+}
+.pixel-corners::after {
+  margin: -4px;
+}
