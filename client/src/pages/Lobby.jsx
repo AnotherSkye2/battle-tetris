@@ -132,7 +132,6 @@ export default function Lobby() {
           <div className="lobby-container" >
             <input type="text" id="display" value={link} readOnly></input>
             <button id="create" className='pixel-corners' onClick={copyToClipboard}>Copy!</button>
-            <button id="open" className='pixel-corners' onClick={() => setOpen(o => !o)}>Open!</button>
           </div>
         </main>
         <div>

@@ -8,6 +8,7 @@ import { checkGameOver,gameOver } from './gameOver.js';
 import { roomId, userName } from '../methods/gameDefaultValues.js';
 import { addScore, updateLeaderboard } from './gameScore.js';
 import { socket } from '../socket.js';
+import { addLines } from './addLine.js';
 
 
 let lastTime = 0;
@@ -56,7 +57,7 @@ function updateGame(dTime,gameloopObject){
         if(!moved){
             placeTetromino(gameloopObject)
 
-            const { newBoard, clearedLines } = clearFullLine(gameloopObject.gameGridArray);
+            let { newBoard, clearedLines } = clearFullLine(gameloopObject.gameGridArray);
             const score = addScore(clearedLines, gameloopObject)
             updateLeaderboard(score, userName, gameloopObject)
             if (clearedLines > 0) {
@@ -68,9 +69,15 @@ function updateGame(dTime,gameloopObject){
                     // TESTING ONLY
                     console.log("users, target", users, target)
                     if (users[i].name === target) {
+                        console.log("garbage send", users, target)
                         socket.emit('garbage', users[i].socketId, clearedLines)
                     }
                 }
+            }
+            if (gameloopObject.gameState.garbageLines > 0) {
+                newBoard = addLines(newBoard, gameloopObject.gameState.garbageLines)
+                console.log(newBoard, gameloopObject.gameGridArray)
+                gameloopObject.gameState.garbageLines = 0
             }
 
             gameloopObject.gameGridArray.length = 0;

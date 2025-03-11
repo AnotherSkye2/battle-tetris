@@ -17,6 +17,7 @@ export default function Game() {
 
     const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(userNames, userName);
 
+
     const userScoreElementArray = createLeaderBoard(gameElement)
 
     const gameloopObject = {
@@ -44,6 +45,13 @@ export default function Game() {
             console.log("users: ", users, socket.id)
             gameloopObject.users = users
         })
+        socket.on('join', (user) => {
+            console.log(user)
+            socket.emit('users', roomId, (users) => {
+                console.log("users: ", users, socket.id)
+                gameloopObject.users = users
+            })
+        })
         socket.on('board state', (opponentGameGridArray, name) => {
             for (let i = 0; i < opponentGridDataArray.length; i++) {
                 if (opponentGridDataArray[i].name == name) {
@@ -55,14 +63,28 @@ export default function Game() {
             updateLeaderboard(score, name, gameloopObject)
         })
         socket.on('garbage', (lines, name) => {
-            console.log("lines, name: ", lines, name)
+            console.log("garbage", lines, name)
+            gameloopObject.gameState.garbageLines += lines
         })
         const listener = () => {
             socket.emit('leave', roomId)
             socket.disconnect();
           }
         window.addEventListener("pagehide", listener);
-    }
+    }   
+
+// DEBUG
+    const debugButtonForTesting = document.createElement("button")
+    debugButtonForTesting.addEventListener("click", () => {
+        for (let i = 0; i < gameloopObject.users.length; i++) {
+            if (gameloopObject.users[i].name != userName) {
+                socket.emit('garbage', gameloopObject.users[i].socketId, 2)
+            }
+        }
+
+    })
+    gameElement.append(debugButtonForTesting)
+//DEBUG
 
     console.log(gameBoardElement, gameBoardGrid, gameGridArray)
 
