@@ -1,14 +1,17 @@
 export function selectRandomTetromino(gameState, tetrominoes) {
-    const { bag } = gameState;  
-    if (bag.length === 0) {
+    console.log("bag", gameState.bag, tetrominoes, Object.keys(tetrominoes))
+    if (gameState.bag.length === 0) {
         gameState.bag = Object.keys(tetrominoes);  
+        console.log("bag", gameState.bag)
         shuffleBag(gameState);  
+        console.log("bag", gameState.bag)
     }
-    const randomKey = bag.pop(); 
+    const randomKey = gameState.bag.pop(); 
+    console.log("bag", gameState.bag)
     if(!randomKey){
         return
     } 
-    // console.log("selected tetetrroomino", tetrominoes[randomKey])
+    console.log("selected tetetrroomino", tetrominoes[randomKey])
     const tetromino = tetrominoes[randomKey]
     const tetrominoType = getTetrominoType(tetromino)
     return [tetromino, tetrominoType];

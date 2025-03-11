@@ -9,7 +9,7 @@ export function wallCollisionCheck(tetromino,position){
             if(tetromino[r][c] !== ""){
                 const boardX = col + c;
                 const boardY = row + r;
-
+                // console.log("boardX, boardY: ", boardX, boardY)
                 if(boardX < 0 || boardX >= COLS || boardY >= ROWS){
                     return true
                 }

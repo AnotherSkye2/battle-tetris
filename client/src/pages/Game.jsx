@@ -152,7 +152,7 @@ startTimer()
     escKey$.subscribe(() =>{
         if(gameState.isGamePaused){
             resumeGame(gameloopObject)
-        startTimer()
+            startTimer()
         }else{
             pauseGame(gameState)
         }

@@ -61,7 +61,8 @@ function updateGame(dTime,gameloopObject){
             gameloopObject.gameGridArray.push(...newBoard); 
             
 
-            if (checkGameOver(gameloopObject.gameGridArray, gameloopObject.gameState.activeTetromino, { row: 0, col: 4 })) {
+            if (checkGameOver(gameloopObject.gameGridArray)) {
+                console.log("checkGameOver")
                 gameloopObject.gameState.gameOverPending = true; 
                 return;
             }
