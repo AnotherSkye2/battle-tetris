@@ -6,7 +6,7 @@ export function wallCollisionCheck(tetromino,position){
    
     for(let r =0; r < tetromino.length; r++){
         for(let c =0; c < tetromino[r].length; c++){
-            if(tetromino[r][c] === 1){
+            if(tetromino[r][c] !== ""){
                 const boardX = col + c;
                 const boardY = row + r;
 
@@ -25,15 +25,17 @@ export function tetrominoCollisionCheck(tetromino, position, board) {
 
     for (let r = 0; r < tetromino.length; r++) {
         for (let c = 0; c < tetromino[r].length; c++) {
-            
-            if (tetromino[r][c] === 1) {
+            console.log("tetrominoCollisionCheck: ", tetromino[r][c])
+            if (tetromino[r][c] !== "") {
                 
                 const boardX = col + c;
                 const boardY = row + r;
 
                
                 if (boardY >= 0 && boardY < board.length && boardX >= 0 && boardX < board[0].length) {
-                    if (board[boardY][boardX] !== 0) {
+                    console.log("tetrominoCollisionCheck: ", boardX, boardY, board.length, board[0].length)
+                    console.log("tetrominoCollisionCheck: board[boardY][boardX]:", board[boardY][boardX])
+                    if (board[boardY][boardX] !== "") {
                         return true;
                     }
                 } else {
@@ -66,10 +68,12 @@ export function checkCollisions(tetromino,position,direction,board){
             return true; 
     }
     if (wallCollisionCheck(tetromino, newPosition)) {
+        console.log("wallCollisionCheck")
         return true; 
     }
 
     if (tetrominoCollisionCheck(tetromino, newPosition, board)) {
+        console.log("tetrominoCollisionCheck")
        return true; 
    }
 

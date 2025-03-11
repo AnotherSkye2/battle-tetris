@@ -1,21 +1,22 @@
 
-export function placeTetromino(gameBoard,tetromino,position){
-    const {row,col} = position
+export function placeTetromino(gameloopObject){
+    const {row,col} = gameloopObject.position
+    const tetromino = gameloopObject.gameState.activeTetromino
+    const type = gameloopObject.gameState.tetrominoType
     
     for(let r = 0; r < tetromino.length; r++){
         for(let c = 0; c < tetromino[r].length; c++){
-            if(tetromino[r][c] === 1){
-                gameBoard[row + r][col + c] = 1
+            if(tetromino[r][c] === type){
+                gameloopObject.gameGridArray[row + r][col + c] = type
             }
 
         }
     }
-    console.log("placetetromino end:", gameBoard)
 }
 
 export function rotateTetromino(matrix){
     const rowsNr = matrix.length
-    let rotatedMatrix = Array.from({length: rowsNr}, () => Array(rowsNr).fill(0))
+    let rotatedMatrix = Array.from({length: rowsNr}, () => Array(rowsNr).fill(""))
 
 
     for(let i = 0; i <rowsNr; i++){
@@ -31,12 +32,15 @@ export function rotateTetromino(matrix){
 }
 
 
-export function clearTetromino(gameBoard, tetromino, position) {
-    const { row, col } = position;
+export function clearTetromino(gameloopObject) {
+    const tetromino = gameloopObject.gameState.activeTetromino
+    const type = gameloopObject.gameState.tetrominoType
+    console.log(type)
+    const { row, col } = gameloopObject.position;
     for (let r = 0; r < tetromino.length; r++) {
         for (let c = 0; c < tetromino[r].length; c++) {
-            if (tetromino[r][c] === 1) {
-                gameBoard[row + r][col + c] = 0; 
+            if (tetromino[r][c] === type) {
+                gameloopObject.gameGridArray[row + r][col + c] = ""; 
             }
         }
     }

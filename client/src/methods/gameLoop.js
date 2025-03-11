@@ -5,52 +5,63 @@ import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
 import { checkGameOver,gameOver } from './gameOver.js';
+import { roomId, userName } from '../methods/gameDefaultValues.js';
+import { addScore, updateLeaderboard } from './gameScore.js';
+
+
 let lastTime = 0;
 let timeSinceLastMove = 0;
-const moveInterval = 1000; 
+const moveInterval = 400; 
 
-export function gameLoop(timestamp, gameBoard, tetrominoes, position, gameBoardElement,gameState) {
-    if(gameState.isGameOver){
+export function gameLoop(gameloopObject) {
+    if(gameloopObject.gameState.isGameOver || gameloopObject.gameState.isGamePaused ){
         return;
     }
-    const deltaTime = timestamp - lastTime;
-    lastTime = timestamp;
+    const deltaTime = gameloopObject.timestamp - lastTime;
+    lastTime = gameloopObject.timestamp;
 
     timeSinceLastMove += deltaTime;
     
-    if (!gameState.activeTetromino) {
-        gameState.activeTetromino = selectRandomTetromino(tetrominoes);
+    if (!gameloopObject.gameState.activeTetromino) {
+        [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.tetrominoes);
     }
-
-    updateGame(deltaTime, gameBoard, gameState.activeTetromino, position,tetrominoes,gameState);  
-    renderGameBoard(gameBoardElement, gameBoard);  
-
-    requestAnimationFrame((newTimestamp) => 
-        gameLoop(newTimestamp, gameBoard, tetrominoes, position, gameBoardElement,gameState)
-    ); 
+    updateGame(deltaTime, gameloopObject);  
+    renderGameBoard(gameloopObject.gameBoardGrid, gameloopObject.gameGridArray);
+    if (gameloopObject.socket) {   
+        gameloopObject.socket.emit('board state', roomId, gameloopObject.gameGridArray)
+        for (let i = 0; i < gameloopObject.opponentGridDataArray.length; i++) {
+            const opponentGameBoardGrid = gameloopObject.opponentGridDataArray[i].gameBoardGrid 
+            const opponentGameGridArray = gameloopObject.opponentGridDataArray[i].gameGridArray 
+            renderGameBoard(opponentGameBoardGrid, opponentGameGridArray)
+        }
+    }
+    requestAnimationFrame((newTimestamp) => {
+        gameloopObject.timestamp = newTimestamp
+        gameLoop(gameloopObject)
+    }); 
 }
 
 
-function updateGame(dTime,gameBoard,tetromino,position,tetrominoes,gameState){
+function updateGame(dTime,gameloopObject){
     if(timeSinceLastMove >= moveInterval) {
-        clearTetromino(gameBoard, tetromino, position);
-        const moved = moveTetrominoDown(gameBoard,tetromino,position)
+        clearTetromino(gameloopObject);
+        const moved = moveTetrominoDown(gameloopObject)
         if(!moved){
+            placeTetromino(gameloopObject)
+            const { newBoard, clearedLines,garbageLines } = clearFullLine(gameloopObject.gameGridArray);
+            const score = addScore(clearedLines, gameloopObject)
+            updateLeaderboard(score, userName, gameloopObject)
+            gameloopObject.gameGridArray.length = 0;
+            gameloopObject.gameGridArray.push(...newBoard); 
 
-            placeTetromino(gameBoard,tetromino,position)
-
-            const { newBoard } = clearFullLine(gameBoard);
-            gameBoard.length = 0;
-            gameBoard.push(...newBoard); 
-
-            gameState.activeTetromino = selectRandomTetromino(tetrominoes);
-            position.row = 0;
-            position.col = 4; 
-
-            if (checkGameOver(gameBoard, gameState.activeTetromino, position)) {
-                gameOver(); 
-                return;
+            if (checkGameOver(gameloopObject.gameGridArray, gameloopObject.gameState.activeTetromino, { row: 0, col: 4 })) {
+                gameOver();
+                return; 
             }
+            [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.tetrominoes);
+            gameloopObject.position.row = 0;
+            gameloopObject.position.col = 4; 
+
         }
         timeSinceLastMove = 0;
     }
