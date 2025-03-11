@@ -23,7 +23,7 @@ export function gameLoop(gameloopObject) {
     timeSinceLastMove += deltaTime;
     
     if (!gameloopObject.gameState.activeTetromino) {
-        gameloopObject.gameState.activeTetromino = selectRandomTetromino(gameloopObject.tetrominoes);
+        [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.tetrominoes);
     }
     updateGame(deltaTime, gameloopObject);  
     renderGameBoard(gameloopObject.gameBoardGrid, gameloopObject.gameGridArray);

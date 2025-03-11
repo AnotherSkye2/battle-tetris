@@ -11,15 +11,17 @@ export function moveTetrominoDown(gameloopObject){
     const gameGridArray = gameloopObject.gameGridArray
     const { row, col } = position; 
 
-     const collisionDetected= checkCollisions(tetromino,position,"down",gameGridArray)
 
+     const collisionDetected= checkCollisions(tetromino,position,"down",gameGridArray)
     if(collisionDetected){
+        console.log("collisionDetected")
         placeTetromino(gameloopObject)
         return false;
     }
 
     for (let r = 0; r < tetromino.length; r++) {
         for (let c = 0; c < tetromino[r].length; c++) {
+            console.log(tetromino[r][c])
             if (tetromino[r][c] !== "") { 
                 gameGridArray[row + r][col + c] = ""; 
             }
