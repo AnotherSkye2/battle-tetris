@@ -8,7 +8,7 @@ export default function Home() {
     }
 
     const toLobby = () => {
-      window.location = "./lobby/1"
+      window.location = `./lobby/${Math.floor(Math.random() * 100000)}`
     }
 
 
@@ -25,7 +25,7 @@ export default function Home() {
         :
           <div className="button-container" >
             <button id="display" onClick={toggleInfo}>How to join a game?</button>
-            <button id="create" onClick={toLobby}>Create Game</button>
+            <button id="create" onClick={toLobby}>Create Lobby</button>
           </div>
         }
       </main>
