@@ -17,6 +17,12 @@ export function gameLoop(gameloopObject) {
     if(gameloopObject.gameState.isGameOver || gameloopObject.gameState.isGamePaused ){
         return;
     }
+
+    if (gameloopObject.gameState.gameOverPending) {
+        gameOver(); 
+        gameloopObject.gameState.gameOverPending = false; 
+        return;
+    }
     const deltaTime = gameloopObject.timestamp - lastTime;
     lastTime = gameloopObject.timestamp;
 
@@ -53,10 +59,11 @@ function updateGame(dTime,gameloopObject){
             updateLeaderboard(score, userName, gameloopObject)
             gameloopObject.gameGridArray.length = 0;
             gameloopObject.gameGridArray.push(...newBoard); 
+            
 
             if (checkGameOver(gameloopObject.gameGridArray, gameloopObject.gameState.activeTetromino, { row: 0, col: 4 })) {
-                gameOver();
-                return; 
+                gameloopObject.gameState.gameOverPending = true; 
+                return;
             }
             gameloopObject.gameState.activeTetromino = selectRandomTetromino(gameloopObject.tetrominoes);
             gameloopObject.position.row = 0;
