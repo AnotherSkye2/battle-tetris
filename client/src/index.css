@@ -170,18 +170,6 @@ Game
   
 }
 
-#timerDisplay {
-  width: 31.7%; 
-  position: absolute; 
-  top: 75%; 
-  left: 0%; 
-  font-size: 24px;
-  color: white;
-  background: rgba(0, 0, 0, 0.5); 
-  padding: 5px 10px;
-  text-align: center; 
-}
-
 .cell {
   width: 40px; 
   height: 40px; 
@@ -224,17 +212,27 @@ Leaderboard
   width: 30%;
   height: 100vh;
   display: flex;
-  align-items: start;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+#timerDisplay {
+  width: -webkit-fill-available;
+  color: white;
+  background: rgba(0, 0, 0, 0.5); 
+  padding: 5px 10px;
+  text-align: center; 
 }
 
 .leaderboard {
+  width: -webkit-fill-available;
   border-radius: 8px;
   display: grid;
-  width: 100%;
   background-color: #242424;
   padding: 10px 20px;
   gap: 10px;
-  margin-top: 100px;
+  margin-top: 10px;
 }
 
 .leaderboard p {
