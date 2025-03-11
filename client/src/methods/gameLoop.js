@@ -60,7 +60,7 @@ function updateGame(dTime,gameloopObject){
             let { newBoard, clearedLines } = clearFullLine(gameloopObject.gameGridArray);
             const score = addScore(clearedLines, gameloopObject)
             updateLeaderboard(score, userName, gameloopObject)
-            if (clearedLines > 0) {
+            if (clearedLines > 1) {
                 const users = gameloopObject.users
                 let target = gameloopObject.gameState.target
                 for (let i = 0; i < users.length; i++) {
