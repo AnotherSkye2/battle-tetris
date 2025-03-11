@@ -150,4 +150,4 @@ startTimer()
 
 
 
-// bag randomizer ( block selection), better game end logic, ngrok url, origin index js serveri
+// bag randomizer ( block selection), ngrok url, origin index js serveri

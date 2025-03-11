@@ -29,7 +29,7 @@ export function gameLoop(gameloopObject) {
     timeSinceLastMove += deltaTime;
     
     if (!gameloopObject.gameState.activeTetromino) {
-        gameloopObject.gameState.activeTetromino = selectRandomTetromino(gameloopObject.tetrominoes);
+        gameloopObject.gameState.activeTetromino = selectRandomTetromino(gameloopObject.gameState,gameloopObject.tetrominoes);
     }
     updateGame(deltaTime, gameloopObject);  
     renderGameBoard(gameloopObject.gameBoardGrid, gameloopObject.gameGridArray);
@@ -65,7 +65,7 @@ function updateGame(dTime,gameloopObject){
                 gameloopObject.gameState.gameOverPending = true; 
                 return;
             }
-            gameloopObject.gameState.activeTetromino = selectRandomTetromino(gameloopObject.tetrominoes);
+            gameloopObject.gameState.activeTetromino = selectRandomTetromino(gameloopObject.gameState,gameloopObject.tetrominoes);
             gameloopObject.position.row = 0;
             gameloopObject.position.col = 4; 
 
