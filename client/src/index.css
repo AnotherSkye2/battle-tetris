@@ -135,8 +135,11 @@ React Popup
   width: 100%;
 }
 
-.chat input {
+input {
   font-size: 1em;
+  font-family: "Micro 5", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /*
