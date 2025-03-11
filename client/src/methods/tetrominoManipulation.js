@@ -1,5 +1,9 @@
 
 export function placeTetromino(gameGridArray,tetromino,position){
+
+    if(!tetromino){
+                return
+     }
     const {row,col} = position
     
     for(let r = 0; r < tetromino.length; r++){
@@ -31,6 +35,10 @@ export function rotateTetromino(matrix){
 
 
 export function clearTetromino(gameGridArray, tetromino, position) {
+
+    if(!tetromino){
+        return
+    }
 
     const { row, col } = position;
     for (let r = 0; r < tetromino.length; r++) {

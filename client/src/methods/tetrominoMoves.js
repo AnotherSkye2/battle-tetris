@@ -5,6 +5,11 @@ import { addScore, updateLeaderboard } from "./gameScore.js";
 import { userName } from "./gameDefaultValues.js";
 
 export function moveTetrominoDown(gameBoard,tetromino,position){
+
+    if(!tetromino){
+        return
+    }
+    
     const shape  = tetromino; 
     const { row, col } = position; 
 

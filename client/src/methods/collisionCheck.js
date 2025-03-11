@@ -47,7 +47,14 @@ export function tetrominoCollisionCheck(tetromino, position, board) {
 }
 
 export function checkCollisions(tetromino,position,direction,board){
+
+    
+    if(!tetromino){
+        return
+    }
+    
     let newPosition = { ...position }; 
+    
 
     switch (direction) {
         case "left":

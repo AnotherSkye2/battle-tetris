@@ -16,6 +16,11 @@ export function selectRandomTetromino(gameState,tetrominoes) {
     }
 
     
-    const randomKey = bag.pop();  
+    const randomKey = bag.pop(); 
+    if(!randomKey){
+        return
+    } 
+
+    // console.log("selected tetetrroomino", tetrominoes[randomKey])
     return tetrominoes[randomKey]; 
 }

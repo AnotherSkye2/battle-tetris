@@ -89,6 +89,10 @@ startTimer()
 
     arrowDown$.subscribe(() =>{
         if (gameState.isGamePaused || gameState.isGameOver) return;
+        if(!gameState.activeTetromino){
+            return
+        }
+        
         clearTetromino(gameGridArray, gameState.activeTetromino, position);
 
         const collision = checkCollisions(gameState.activeTetromino,position,"down",gameGridArray)
@@ -100,7 +104,11 @@ startTimer()
 
     arrowLeft$.subscribe(() => {
         console.log("arrowLeft")
-        if (gameState.isGamePaused || gameState.isGameOver) return;;
+        if (gameState.isGamePaused || gameState.isGameOver) return;
+        if(!gameState.activeTetromino){
+            return
+        }
+        
         clearTetromino(gameGridArray, gameState.activeTetromino, position);
 
         const collision = checkCollisions(gameState.activeTetromino,position,"left",gameGridArray)
@@ -115,6 +123,10 @@ startTimer()
     arrowRight$.subscribe(() =>{
         console.log("arrowRight")
         if (gameState.isGamePaused || gameState.isGameOver) return;
+        if(!gameState.activeTetromino){
+            return
+        }
+        
 
         clearTetromino(gameGridArray, gameState.activeTetromino, position);
         
@@ -150,4 +162,4 @@ startTimer()
 
 
 
-// bag randomizer ( block selection), ngrok url, origin index js serveri
+// ngrok url, origin index js serveri
