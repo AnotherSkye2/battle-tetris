@@ -58,7 +58,7 @@ function updateGame(dTime,gameloopObject){
                 gameOver();
                 return; 
             }
-            gameloopObject.gameState.activeTetromino = selectRandomTetromino(gameloopObject.tetrominoes);
+            [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.tetrominoes);
             gameloopObject.position.row = 0;
             gameloopObject.position.col = 4; 
 

@@ -73,9 +73,9 @@ export function renderGameBoard(gameBoardGrid,gameGridArray){
         for (let col = 0; col < gameGridArray[row].length; col++) {
             const cell = cells[index];
             if (gameGridArray[row][col] !== "") {
-                cell.classList.add('filled');
+                cell.classList.add('filled', gameGridArray[row][col]);
             } else {
-                cell.classList.remove('filled');
+                cell.classList.remove('filled', 'l', 'j', 't', 'o', 'i', 's', 'z');
             }
             index++;
         }

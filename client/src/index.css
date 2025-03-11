@@ -181,8 +181,26 @@ Game
   background-color: #222;
 }
 
-.cell.filled {
-  background-color: #ff4757;
+.i {
+  background-color: #00ffff;
+}
+.j {
+  background-color: #0000ff;
+}
+.t {
+  background-color: #800080;
+}
+.o {
+  background-color: #ffff00;
+}
+.l {
+  background-color: #ff7f00;
+}
+.s {
+  background-color: #00ff00;
+}
+.z {
+  background-color: #ff0000;
 }
 
 .name {
@@ -190,6 +208,10 @@ Game
   color:black;
 
 }
+
+/*
+Leaderboard
+*/
 
 .leaderboard-container {
   width: 30%;

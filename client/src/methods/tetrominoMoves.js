@@ -96,5 +96,6 @@ export function moveTetrominoLowestPoint(gameloopObject) {
     position.row = 0
     position.col = 3;
     gameloopObject.gameState.activeTetromino = null;
+    gameloopObject.gameState.tetrominoType = null;
 
 }
