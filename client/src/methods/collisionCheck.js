@@ -26,14 +26,14 @@ export function tetrominoCollisionCheck(tetromino, position, board) {
     for (let r = 0; r < tetromino.length; r++) {
         for (let c = 0; c < tetromino[r].length; c++) {
             
-            if (tetromino[r][c] === 1) {
+            if (tetromino[r][c] === "o") {
                 
                 const boardX = col + c;
                 const boardY = row + r;
 
                
                 if (boardY >= 0 && boardY < board.length && boardX >= 0 && boardX < board[0].length) {
-                    if (board[boardY][boardX] !== 0) {
+                    if (board[boardY][boardX] !== "") {
                         return true;
                     }
                 } else {

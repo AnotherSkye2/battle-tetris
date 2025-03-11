@@ -1,7 +1,7 @@
 export function InitializeGameBoard(users, userName) {
     const COLS = 10;
     const ROWS = 20;
-    const gameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+    const gameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(""));
 
     const gameElement = document.createElement("div");
     gameElement.classList.add("game");
@@ -31,7 +31,7 @@ export function InitializeGameBoard(users, userName) {
     for (let i = 0; i < users.length; i++) {
         if (users[i].name == userName) {continue}
         console.log(users[i].name)
-        let opponentGameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+        let opponentGameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(""));
 
         const opponentGameBoardElement = document.createElement("div");
         opponentGameBoardElement.classList.add("opponent", "game-board");
@@ -72,7 +72,7 @@ export function renderGameBoard(gameBoardGrid,gameGridArray){
     for (let row = 0; row < gameGridArray.length; row++) {
         for (let col = 0; col < gameGridArray[row].length; col++) {
             const cell = cells[index];
-            if (gameGridArray[row][col] === 1) {
+            if (gameGridArray[row][col] === "o") {
                 cell.classList.add('filled');
             } else {
                 cell.classList.remove('filled');

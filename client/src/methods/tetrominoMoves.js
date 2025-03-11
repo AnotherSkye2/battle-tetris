@@ -17,8 +17,8 @@ export function moveTetrominoDown(gameBoard,tetromino,position){
 
     for (let r = 0; r < shape.length; r++) {
         for (let c = 0; c < shape[r].length; c++) {
-            if (shape[r][c] === 1) { 
-                gameBoard[row + r][col + c] = 0; 
+            if (shape[r][c] === "o") { 
+                gameBoard[row + r][col + c] = ""; 
             }
         }
     }
@@ -26,8 +26,9 @@ export function moveTetrominoDown(gameBoard,tetromino,position){
 
     for (let r = 0; r < shape.length; r++) {
         for (let c = 0; c < shape[r].length; c++) {
-            if (shape[r][c] === 1) { 
-                gameBoard[position.row + r][position.col + c] = 1; 
+            if (shape[r][c] === "o") { 
+                console.log(gameBoard[position.row + r][position.col + c], gameBoard)
+                gameBoard[position.row + r][position.col + c] = "o"; 
             }
         }
     }
@@ -39,8 +40,8 @@ export function moveTetrominoLeft(gameBoard,tetromino,position) {
 
    for(let r = 0; r < tetromino.length; r++){
     for(let c =0; c < tetromino[r].length; c++){
-        if(tetromino[r][c] === 1  ){
-            gameBoard[row + r][col + c - 1 ] = 1
+        if(tetromino[r][c] === "o"  ){
+            gameBoard[row + r][col + c - 1 ] = "o"
         }
     }
    }
@@ -52,8 +53,8 @@ export function moveTetrominoRight(gameBoard,tetromino,position){
 
    for(let r = 0; r < tetromino.length; r++){
     for(let c =0; c < tetromino[r].length; c++){
-        if(tetromino[r][c] === 1  ){
-            gameBoard[row + r][col + c + 1 ] = 1
+        if(tetromino[r][c] === "o"  ){
+            gameBoard[row + r][col + c + 1 ] = "o"
         }
     }
    }
