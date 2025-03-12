@@ -1,21 +1,25 @@
 import Popup from 'reactjs-popup';
+import { socket } from '../socket';
 
-export default function NamePopup({handleSubmit, handleChange})  {
+
+export default function NamePopup({open, handleSubmit, handleChange})  {
     return (
     <Popup
-        closeOnDocumentClick={false}
-        modal
-        defaultOpen>
+      open={open}
+      closeOnDocumentClick={false}
+      modal>
     {close => (
-      <div className="modal">
-        <div className="header"> Welocome to Tetris Game! </div>
+      <div className='pixel-corners--wrapper'>
+      <div className="modal ">
+        <div className="header"> Welcome to Tetris Game! </div>
         <div className='content'>
-            Enter a username or leave it blank for a random one!
+            Enter a userName or leave it blank for a random one!
         </div>
         <form id="form" className="grid" onSubmit={(e) => {handleSubmit(e), close()}} >
-            <input id="input" autoComplete="off" onChange={handleChange}/>
-            <button type="submit">Join</button>
+            <input id="input" className='pixel-corners' autoComplete="off" onChange={handleChange}/>
+            <button type="submit" className='pixel-corners'>Join</button>
         </form>
+      </div>
       </div>
     )}
   </Popup>

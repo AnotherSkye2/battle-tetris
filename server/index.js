@@ -44,27 +44,41 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
 
-  socket.on('join', (roomId, username, callback) => {
+  socket.on('users', (roomId, callback) => {
+    const clients = io.sockets.adapter.rooms.get(roomId)
+    console.log("clients: ", clients, socket.id)
+    if (clients) {
+      const users = [...clients].map((clientId) => {
+        const clientSocket = io.sockets.sockets.get(clientId);
+        return {
+          name: clientSocket.userName,
+          socketId: clientSocket.id
+        }
+      })
+      console.log(users)
+      callback(users)
+    } else {callback([])}
+  })
+
+  socket.on('join', (roomId, userName, callback) => {
     console.log("roomId:", roomId)
     if(!socket.rooms.has(roomId)){
-      socket.username = username
+      socket.userName = userName
+      // socket.userId = userId
       socket.join(roomId)
-      socket.to(roomId).emit('chat message', `${socket.username} has joined!`);
+      socket.to(roomId).emit('chat message', `${socket.userName} has joined!`);
       socket.on('chat message', (msg) => {
         io.to(roomId).emit('chat message', msg);
       });
       socket.to(roomId).emit('join', {         
-        name: socket.username,
-        socketId: socket.id
+        name: socket.userName,
       });
-      
       const clients = io.sockets.adapter.rooms.get(roomId)
       console.log("clients: ", clients, socket.id)
       const users = [...clients].map((clientId) => {
         const socket = io.sockets.sockets.get(clientId);
         return {
-          name: socket.username,
-          socketId: socket.id
+          name: socket.userName,
         }
       })
       callback(users)
@@ -72,10 +86,9 @@ io.on('connection', (socket) => {
   })
 
   socket.on('leave', (roomId) => {
-    socket.to(roomId).emit('chat message', `${socket.username} has left!`);
+    socket.to(roomId).emit('chat message', `${socket.userName} has left!`);
     socket.to(roomId).emit('leave', {          
-      name: socket.username,
-      socketId: socket.id
+      name: socket.userName,
     });
     socket.removeAllListeners('chat message')
     socket.leave(roomId)
@@ -83,16 +96,23 @@ io.on('connection', (socket) => {
 
   socket.on('start', (roomId) => {
     console.log('start event called')
-    io.to(roomId).emit('start', `${socket.username} has started the game!`)
+    io.to(roomId).emit('start', `${socket.userName} has started the game!`)
   })
 
   socket.on('board state', (roomId, gameGridArray) => {
-    socket.to(roomId).emit('board state', gameGridArray, socket.username)        
+    socket.to(roomId).emit('board state', gameGridArray, socket.userName)        
   })
 
   socket.on('score', (roomId, score) => {
     console.log(roomId, score)
-    socket.to(roomId).emit('score', score, socket.username)        
+    socket.to(roomId).emit('score', score, socket.userName)        
+  })
+
+  socket.on('garbage', (socketId, lines) => {
+    console.log("garbage", socketId, lines)
+    const client = io.sockets.adapter.rooms.get(socketId)
+    console.log("client: ", client, socketId)
+    socket.to(socketId).emit('garbage', lines, socket.userName)        
   })
 });
 

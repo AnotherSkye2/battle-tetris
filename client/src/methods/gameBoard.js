@@ -1,7 +1,7 @@
-export function InitializeGameBoard(users, userName) {
+export function InitializeGameBoard(userNames, userName) {
     const COLS = 10;
     const ROWS = 20;
-    const gameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+    const gameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(""));
 
     const gameElement = document.createElement("div");
     gameElement.classList.add("game");
@@ -27,18 +27,19 @@ export function InitializeGameBoard(users, userName) {
     gameElement.appendChild(gameBoardElement)
 
     let opponentGridDataArray = [];
-
-    for (let i = 0; i < users.length; i++) {
-        if (users[i].name == userName) {continue}
-        console.log(users[i].name)
-        let opponentGameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(0));
+    const opponentGameBoardContainer = document.createElement("div");
+    opponentGameBoardContainer.classList.add("game-board-container");
+    for (let i = 0; i < userNames.length; i++) {
+        if (userNames[i].name == userName) {continue}
+        console.log(userNames[i].name)
+        let opponentGameGridArray = Array.from({ length: ROWS }, () => Array(COLS).fill(""));
 
         const opponentGameBoardElement = document.createElement("div");
         opponentGameBoardElement.classList.add("opponent", "game-board");
 
         const opponentGameBoardName = document.createElement("h2");
         opponentGameBoardName.classList.add("name", "micro-5-regular");
-        opponentGameBoardName.innerHTML = users[i].name
+        opponentGameBoardName.innerHTML = userNames[i].name
         opponentGameBoardElement.appendChild(opponentGameBoardName)
 
         const opponentGameBoardGrid = document.createElement("div");
@@ -53,12 +54,13 @@ export function InitializeGameBoard(users, userName) {
         }
         opponentGameBoardElement.appendChild(opponentGameBoardGrid)
         opponentGridDataArray.push({
-            name: users[i].name,
+            name: userNames[i].name,
             gameBoardGrid: opponentGameBoardGrid,
             gameGridArray: opponentGameGridArray
         })
-        gameElement.appendChild(opponentGameBoardElement);
+        opponentGameBoardContainer.appendChild(opponentGameBoardElement);
     }
+    gameElement.appendChild(opponentGameBoardContainer);
 
     document.body.appendChild(gameElement)
     console.log(gameElement, gameBoardGrid)
@@ -72,10 +74,9 @@ export function renderGameBoard(gameBoardGrid,gameGridArray){
     for (let row = 0; row < gameGridArray.length; row++) {
         for (let col = 0; col < gameGridArray[row].length; col++) {
             const cell = cells[index];
-            if (gameGridArray[row][col] === 1) {
-                cell.classList.add('filled');
-            } else {
-                cell.classList.remove('filled');
+            cell.classList.remove('filled', 'l', 'j', 't', 'o', 'i', 's', 'z', 'g');
+            if (gameGridArray[row][col] !== "") {
+                cell.classList.add('filled', gameGridArray[row][col]);
             }
             index++;
         }

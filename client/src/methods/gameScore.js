@@ -23,7 +23,6 @@ export function addScore(clearedLines,gameloopObject){
             break;
     }
     gameloopObject.gameState.gameScore = score
-    console.log(clearedLines, gameloopObject.gameState, score)
     gameloopObject.socket.emit("score", roomId, score)
 
     return score
@@ -31,9 +30,8 @@ export function addScore(clearedLines,gameloopObject){
 
 export function updateLeaderboard(score, name, gameloopObject) {
     const test = gameloopObject.userScoreElementArray
-    console.log(test)
     if (score > 0) {
-        console.log("score: ", score)
+        //console.log("score: ", score)
         const scoreElementArray = gameloopObject.userScoreElementArray
         const leaderboard = scoreElementArray[0].userScoreElement.parentNode.parentNode.parentNode
         console.log(leaderboard)
@@ -56,6 +54,6 @@ export function updateLeaderboard(score, name, gameloopObject) {
             leaderboard.appendChild(scoreContainerArray[i])
         }
     } else {
-        console.log("score is:", score)
+        //console.log("score is:", score)
     }
 }

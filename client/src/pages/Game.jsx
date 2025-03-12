@@ -5,7 +5,7 @@ import { checkCollisions } from '../methods/collisionCheck.js';
 import { gameLoop } from '../methods/gameLoop.js';
 import { TETROMINOES } from '../methods/tetrominoes.js';
 import { arrowDown$,arrowLeft$,arrowRight$,arrowUp$,spaceBar$,escKey$ } from '../methods/observables.js';
-import { position,gameState,roomId, users, userName } from '../methods/gameDefaultValues.js';
+import { position,gameState,roomId, userNames, userName } from '../methods/gameDefaultValues.js';
 import { pauseGame,resumeGame } from '../methods/pauseGame.js';
 import { socket } from '../socket.js';
 import { startTimer } from '../methods/createTimer.js';
@@ -15,7 +15,8 @@ import { updateLeaderboard } from '../methods/gameScore.js';
 export default function Game() {
 
 
-    const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(users, userName);
+    const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(userNames, userName);
+
 
     const userScoreElementArray = createLeaderBoard(gameElement)
 
@@ -28,10 +29,11 @@ export default function Game() {
         gameState: gameState,
         opponentGridDataArray: opponentGridDataArray,
         userScoreElementArray: userScoreElementArray,
+        users: [],
         socket: socket
     } 
 
-    console.log(gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray)
+    console.log(gameloopObject)
 
     if (socket) {
         console.log(socket)
@@ -39,6 +41,17 @@ export default function Game() {
         socket.emit('join', roomId, userName, (roomUsers) => {
             console.log("roomUsers, socket.id", roomUsers, socket.id)
         });
+        socket.emit('users', roomId, (users) => {
+            console.log("users: ", users, socket.id)
+            gameloopObject.users = users
+        })
+        socket.on('join', (user) => {
+            console.log(user)
+            socket.emit('users', roomId, (users) => {
+                console.log("users: ", users, socket.id)
+                gameloopObject.users = users
+            })
+        })
         socket.on('board state', (opponentGameGridArray, name) => {
             for (let i = 0; i < opponentGridDataArray.length; i++) {
                 if (opponentGridDataArray[i].name == name) {
@@ -49,12 +62,16 @@ export default function Game() {
         socket.on('score', (score, name) => {
             updateLeaderboard(score, name, gameloopObject)
         })
+        socket.on('garbage', (lines, name) => {
+            console.log("garbage", lines, name)
+            gameloopObject.gameState.garbageLines += lines
+        })
         const listener = () => {
             socket.emit('leave', roomId)
             socket.disconnect();
           }
         window.addEventListener("pagehide", listener);
-    }
+    }   
 
     console.log(gameBoardElement, gameBoardGrid, gameGridArray)
 
@@ -70,7 +87,7 @@ startTimer()
         if (gameState.isGamePaused || gameState.isGameOver) return;
         if (!gameState.activeTetromino) return; 
 
-        clearTetromino(gameGridArray, gameState.activeTetromino, position); 
+        clearTetromino(gameloopObject) 
 
         const rotatedTetro = rotateTetromino(gameState.activeTetromino)
         
@@ -83,55 +100,67 @@ startTimer()
             console.log("collision detected")
         }
         
-        placeTetromino(gameGridArray, gameState.activeTetromino, position); 
+        placeTetromino(gameloopObject); 
         renderGameBoard(gameBoardGrid, gameGridArray); 
     });
 
     arrowDown$.subscribe(() =>{
         if (gameState.isGamePaused || gameState.isGameOver) return;
-        clearTetromino(gameGridArray, gameState.activeTetromino, position);
+        if(!gameState.activeTetromino){
+            return
+        }
+        
+        clearTetromino(gameloopObject)
 
         const collision = checkCollisions(gameState.activeTetromino,position,"down",gameGridArray)
         if(!collision){
-            moveTetrominoDown(gameGridArray,gameState.activeTetromino,position)
+            moveTetrominoDown(gameloopObject)
         }
-        placeTetromino(gameGridArray, gameState.activeTetromino, position);
+        placeTetromino(gameloopObject);
     })
 
     arrowLeft$.subscribe(() => {
         console.log("arrowLeft")
-        if (gameState.isGamePaused || gameState.isGameOver) return;;
-        clearTetromino(gameGridArray, gameState.activeTetromino, position);
+        if (gameState.isGamePaused || gameState.isGameOver) return;
+        if(!gameState.activeTetromino){
+            return
+        }
+        
+        clearTetromino(gameloopObject)
 
         const collision = checkCollisions(gameState.activeTetromino,position,"left",gameGridArray)
         if(!collision){
-            moveTetrominoLeft(gameGridArray,gameState.activeTetromino,position);
+            moveTetrominoLeft(gameloopObject);
         }
 
-        placeTetromino(gameGridArray, gameState.activeTetromino, position);
+        placeTetromino(gameloopObject);
     
     });
 
     arrowRight$.subscribe(() =>{
         console.log("arrowRight")
         if (gameState.isGamePaused || gameState.isGameOver) return;
+        if(!gameState.activeTetromino){
+            return
+        }
+        
 
-        clearTetromino(gameGridArray, gameState.activeTetromino, position);
+        clearTetromino(gameloopObject)
         
         const collision = checkCollisions(gameState.activeTetromino,position,"right",gameGridArray)
         if(!collision){
-            moveTetrominoRight(gameGridArray,gameState.activeTetromino,position);
+            moveTetrominoRight(gameloopObject);
         }
-        placeTetromino(gameGridArray, gameState.activeTetromino, position);
+        placeTetromino(gameloopObject);
     })
 
     spaceBar$.subscribe(() =>{
         if (gameState.isGamePaused || gameState.isGameOver) return;
         if (!gameState.activeTetromino) return;
 
-        clearTetromino(gameGridArray, gameState.activeTetromino, position);
+        clearTetromino(gameloopObject)
 
-        moveTetrominoLowestPoint(gameGridArray, gameState.activeTetromino, position,gameState, gameloopObject);
+        moveTetrominoLowestPoint(gameloopObject);
 
         renderGameBoard(gameBoardGrid, gameGridArray);
         
@@ -140,7 +169,7 @@ startTimer()
     escKey$.subscribe(() =>{
         if(gameState.isGamePaused){
             resumeGame(gameloopObject)
-        startTimer()
+            startTimer()
         }else{
             pauseGame(gameState)
         }
@@ -150,4 +179,4 @@ startTimer()
 
 
 
-// bag randomizer ( block selection), better game end logic 
+// ngrok url, origin index js serveri

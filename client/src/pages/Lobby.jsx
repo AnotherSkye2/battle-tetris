@@ -7,10 +7,12 @@ import { useParams } from "react-router";
 export default function Lobby() {
   const [link, setLink] = useState("")
   const [userName, setUserName] = useState("")
+  const [userNameInput, setUserNameInput] = useState("")
   const [chatMessages, setChatMessages] = useState([])
   const [users, setUsers] = useState([])
   const [userHasName, setUserHasName] = useState(false)
   const [isHost, setIsHost] = useState(false)
+  const [open, setOpen] = useState(true)
   const {roomId} = useParams();
 
 
@@ -28,16 +30,28 @@ export default function Lobby() {
   }
 
   const handleSubmit = (e) => {
+    if (socket.connected === false) { socket.connect() }
     e.preventDefault();
-    console.log(userName)
-    if (!userName) {
-      setUserName(`Guest ${new Date().getMilliseconds()}`)
-    }
-    setUserHasName(true)
+    setOpen(false)
+    console.log(socket, userName)
+    socket.emit('users', roomId, (users) => {
+      let userNameToCheck = userNameInput
+      if (!userNameToCheck) {
+        userNameToCheck = `Guest ${new Date().getMilliseconds()}`
+      }
+      let isUnique;
+      const userNames = users.map((user) => user.name)
+      userNames.includes(userNameToCheck) ? isUnique = false : isUnique = true
+      console.log("userNameToCheck, users: ", userNameToCheck, userNames, isUnique)
+      setOpen(!isUnique)
+      if (isUnique) {setUserName(userNameToCheck)}
+      setUserHasName(isUnique)
+      setUserNameInput("")
+    })
   }
 
   const handleChange = (e) => {
-      setUserName(e.target.value)
+      setUserNameInput(e.target.value)
   }
 
   const handleStart = () => {
@@ -66,14 +80,14 @@ export default function Lobby() {
   useEffect(() => {
     if (socket) {
       console.log("users: ", users)
-      if (users[0]?.socketId === socket.id) {setIsHost(true)}
+      if (users[0]?.name === userName) {setIsHost(true)}
       socket.on("join", (user) => {setUsers([...users, user])})
       socket.on("leave", (userToRemove) => {
-        setUsers([...users.filter((user) => user.socketId != userToRemove.socketId)])
+        setUsers([...users.filter((user) => user.name != userToRemove.name)])
       })
       socket.on('start', (msg) => {
         console.log(msg, users)
-        sessionStorage.setItem('users', JSON.stringify(users))
+        sessionStorage.setItem('userNames', JSON.stringify(users))
         sessionStorage.setItem('userName', userName)
         window.location = `../game/${roomId}`
       })
@@ -87,8 +101,7 @@ export default function Lobby() {
 
   useEffect(() => {
     if (userHasName && socket) {
-      setLink(`http://localhost:5173/lobby/${roomId}`)
-      socket.connect();
+      setLink(window.location.href)
       socket.username = userName;
       console.log("socket.username:", socket.username)
       socket.emit('join', roomId, userName, (roomUsers) => {
@@ -110,25 +123,25 @@ export default function Lobby() {
 
   return(
     <div className="create-game page-wrap">
-      <header className="center">Tetris Game</header>
+      <header className="flex-center">Tetris Game</header>
       <div className="content-wrap">
         <div className="chat-container" >
           <Chat chatMessages={chatMessages}/>
         </div>
-        <main className="center" >
+        <main className="flex-center" >
           <div className="lobby-container" >
             <input type="text" id="display" value={link} readOnly></input>
-            <button id="create" onClick={copyToClipboard}>Copy!</button>
+            <button id="create" className='pixel-corners' onClick={copyToClipboard}>Copy!</button>
           </div>
         </main>
         <div>
           <h4>Users:</h4>
           <ul id='users'>{users.map((user, i) => <li key={i}>{userName == user.name ? user.name + " (you!)": user.name}</li>)}</ul>
-          {isHost ? <button onClick={handleStart}>Start!</button> : null}
+          {isHost ? <button className='pixel-corners' onClick={handleStart}>Start!</button> : null}
         </div>
       </div>
-      <footer className="center">Wee-woo!</footer>
-      <NamePopup handleSubmit={handleSubmit} handleChange={handleChange}/>
+      <footer className="flex-center">by Robert and Skye!</footer>
+      <NamePopup open={open} handleSubmit={handleSubmit} handleChange={handleChange}/>
     </div>
   )
 }
