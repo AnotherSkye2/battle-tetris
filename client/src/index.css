@@ -93,6 +93,7 @@ React Popup
 .modal {
   background-color: #242424;
   padding: 10px;
+  text-align: center;
 }
 
 .modal > .header {
@@ -129,6 +130,10 @@ React Popup
   background: #ffffff;
   border-radius: 18px;
   border: 1px solid #cfcece;
+}
+
+.modal > #error-message {
+  color: rgb(214, 27, 27);
 }
 
 .w-100 {

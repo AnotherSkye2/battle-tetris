@@ -1,8 +1,6 @@
 import Popup from 'reactjs-popup';
-import { socket } from '../socket';
 
-
-export default function NamePopup({open, handleSubmit, handleChange})  {
+export default function NamePopup({open, handleSubmit, handleChange, errorMessage})  {
     return (
     <Popup
       open={open}
@@ -19,6 +17,7 @@ export default function NamePopup({open, handleSubmit, handleChange})  {
             <input id="input" className='pixel-corners' autoComplete="off" onChange={handleChange}/>
             <button type="submit" className='pixel-corners'>Join</button>
         </form>
+        <p id='error-message'>{errorMessage}</p>
       </div>
       </div>
     )}

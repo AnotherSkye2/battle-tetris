@@ -8,6 +8,7 @@ export default function Lobby() {
   const [link, setLink] = useState("")
   const [userName, setUserName] = useState("")
   const [userNameInput, setUserNameInput] = useState("")
+  const [userNameInputError, setUserNameInputError] = useState("")
   const [chatMessages, setChatMessages] = useState([])
   const [users, setUsers] = useState([])
   const [userHasName, setUserHasName] = useState(false)
@@ -44,7 +45,11 @@ export default function Lobby() {
       userNames.includes(userNameToCheck) ? isUnique = false : isUnique = true
       console.log("userNameToCheck, users: ", userNameToCheck, userNames, isUnique)
       setOpen(!isUnique)
-      if (isUnique) {setUserName(userNameToCheck)}
+      if (isUnique) {
+        setUserName(userNameToCheck)
+      } else {
+        setUserNameInputError("The name you chose is already taken!")
+      }
       setUserHasName(isUnique)
       setUserNameInput("")
     })
@@ -132,6 +137,14 @@ export default function Lobby() {
           <div className="lobby-container" >
             <input type="text" id="display" value={link} readOnly></input>
             <button id="create" className='pixel-corners' onClick={copyToClipboard}>Copy!</button>
+            <h3>How to play:</h3>
+          <ul>
+            <li>Left/Right Arrow: Move tetromino left/right</li>
+            <li>Up Arrow: Rotate tetromino</li>
+            <li>Down Arrow: Move tetromino down faster</li>
+            <li>Space: Instantly drop tetromino</li>
+            <li>Esc: Pause game</li>
+          </ul>
           </div>
         </main>
         <div>
@@ -141,7 +154,7 @@ export default function Lobby() {
         </div>
       </div>
       <footer className="flex-center">by Robert and Skye!</footer>
-      <NamePopup open={open} handleSubmit={handleSubmit} handleChange={handleChange}/>
+      <NamePopup open={open} handleSubmit={handleSubmit} handleChange={handleChange} errorMessage={userNameInputError}/>
     </div>
   )
 }
