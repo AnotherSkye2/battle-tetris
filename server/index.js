@@ -90,23 +90,25 @@ io.on('connection', (socket) => {
   })
 
   socket.on('score', (roomId, score) => {
-    console.log(roomId, score)
     socket.to(roomId).emit('score', score, socket.username)        
   })
 
-  socket.on("pause",(roomData) =>{
-  
-    io.emit("pauseGame",roomData.userName)
-  })
+  socket.on("pause", (roomData) => {
+    const { roomId, userName } = roomData
+    io.to(roomId).emit("pauseGame", userName);
+  });
 
-  socket.on("resume", () =>{
+  socket.on("resume", (roomData) => {
+    const { roomId, userName } = roomData
 
-    io.emit("resumeGame")
-  })
+   io.to(roomId).emit("resumeGame");
+  });
 
-  socket.on("disconnectUser", (user) =>{
-    io.emit("dcUser",user )
-  })
+  socket.on("disconnectUser", (roomData) => {
+    console.log("heiehei",roomData)
+     const { roomId, userName } = roomData
+    io.to(roomId).emit("dcUser", userName);
+  });
 });
 
 server.listen(PORT, () => {

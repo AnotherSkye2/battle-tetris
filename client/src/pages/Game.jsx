@@ -33,7 +33,7 @@ export default function Game() {
        window.location.href = `${baseUrl}/lobby/${gameId}`
         
         if(socket){
-            socket.emit("disconnectUser",userName)
+            socket.emit("disconnectUser",{roomId,userName})
         }
         
     })
@@ -201,7 +201,7 @@ startTimer()
 
         if(gameState.isGamePaused){
             if (socket) {
-                socket.emit("resume")
+                socket.emit("resume", {roomId,userName})
             }
         }else{
             if (socket) {
