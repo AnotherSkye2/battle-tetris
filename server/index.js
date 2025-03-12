@@ -94,8 +94,9 @@ io.on('connection', (socket) => {
     socket.to(roomId).emit('score', score, socket.username)        
   })
 
-  socket.on("pause",(roomId) =>{
-    io.emit("pauseGame",roomId.userName)
+  socket.on("pause",(roomData) =>{
+  
+    io.emit("pauseGame",roomData.userName)
   })
 
   socket.on("resume", () =>{

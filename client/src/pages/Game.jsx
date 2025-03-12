@@ -186,7 +186,7 @@ startTimer()
             }
         }else{
             if (socket) {
-                socket.emit('pause', { roomId });
+                socket.emit('pause', { roomId,userName });
             }
         }
         
