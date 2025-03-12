@@ -28,7 +28,7 @@ export function gameOver() {
 function createGameOverScreen() {
     const gameOverScreen = document.createElement("div");
     gameOverScreen.id = "gameOverScreen";
-    gameOverScreen.classList.add("game-menu", "game-over-screen");
+    gameOverScreen.classList.add("game-menu", "game-over-screen", "pixel-corners");
     
     const menuText = document.createElement("h2");
     menuText.innerText = gameState.isGameWon ? "You won!" : "You lost...";
@@ -39,12 +39,13 @@ function createGameOverScreen() {
 
     const restartButton = document.createElement("button");
     restartButton.innerText = "Restart";
+    restartButton.classList.add("pixel-corners")
     //needs restart functionality
     gameOverScreen.appendChild(restartButton);
 
     const quitButton = document.createElement("button")
     quitButton.innerText = "Quit";
-    gameOverScreen.appendChild(quitButton);
+    quitButton.classList.add("pixel-corners")
     quitButton.addEventListener("click", () =>{  // liigutan selle createGameMenusse
         const path = window.location.pathname; 
         const gameId = path.split("/").pop(); 
@@ -54,5 +55,6 @@ function createGameOverScreen() {
             socket.emit("disconnectUser",userName)
         }
     })
+    gameOverScreen.appendChild(quitButton);
     return gameOverScreen
 }
