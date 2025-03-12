@@ -93,6 +93,7 @@ React Popup
 .modal {
   background-color: #242424;
   padding: 10px;
+  text-align: center;
 }
 
 .modal > .header {
@@ -131,6 +132,10 @@ React Popup
   border: 1px solid #cfcece;
 }
 
+.modal > #error-message {
+  color: rgb(214, 27, 27);
+}
+
 .w-100 {
   width: 100%;
 }
@@ -151,7 +156,6 @@ Game
   height: 100vh; 
   display: flex;
   justify-content: center; 
-  align-items: center; 
   background-color: #979595; 
 }
 
@@ -184,6 +188,22 @@ Game
 .game-board-container {
   display:flex;
   flex-direction: column;
+}
+
+.opponent .game-grid {
+  grid-template-rows: repeat(20, 10px); 
+  grid-template-columns: repeat(10, 10px); 
+  gap: 1px; 
+}
+
+.opponent .cell {
+  width: 10px; 
+  height: 10px; 
+}
+
+.game-board-container {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
 }
 
 .cell {
@@ -229,10 +249,10 @@ Leaderboard
 
 .leaderboard-container {
   width: 30%;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 10px;
   margin-top: 100px;
 }
 
@@ -391,4 +411,38 @@ Leaderboard
 }
 .pixel-corners::after {
   margin: -4px;
+}
+
+/*
+Menu
+*/
+
+.game-menu {
+  position: fixed;  
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  
+  
+  width: 300px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8); 
+  color: white;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.game-over-screen {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
 }

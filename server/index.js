@@ -14,7 +14,6 @@ const { SocketAddress } = require('net');
 require('dotenv').config()
 const ngrok = require("@ngrok/ngrok");
 
-
 const PORT = process.env.PORT || 5000;
 
 app.use(express.static(path.join(__dirname, '../client/dist')));
@@ -114,6 +113,26 @@ io.on('connection', (socket) => {
     console.log("client: ", client, socketId)
     socket.to(socketId).emit('garbage', lines, socket.userName)        
   })
+
+  socket.on("pause", (roomData) => {
+    const { roomId, userName } = roomData
+    io.to(roomId).emit("pauseGame", userName);
+  });
+
+  socket.on("resume", (roomData) => {
+    const { roomId, userName } = roomData
+
+   io.to(roomId).emit("resumeGame");
+  });
+
+  socket.on('game over', (roomId, userName) => {
+    socket.to(roomId).emit('game over', userName)        
+  })
+
+  socket.on("disconnectUser", (roomData) => {
+    const { roomId, userName } = roomData
+    socket.to(roomId).emit("disconnectUser", userName);
+  });
 });
 
 server.listen(PORT, () => {

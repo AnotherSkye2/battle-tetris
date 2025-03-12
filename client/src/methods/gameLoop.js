@@ -4,8 +4,8 @@ import { selectRandomTetromino } from './selectTetromino.js';
 import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
-import { checkGameOver,gameOver } from './gameOver.js';
-import { roomId, userName } from '../methods/gameDefaultValues.js';
+import { checkGameOver,checkGameWin,gameOver } from './gameOver.js';
+import { gameState, levelMoveIntervals, roomId, timeToLevelUp, userName } from '../methods/gameDefaultValues.js';
 import { addScore, updateLeaderboard } from './gameScore.js';
 import { socket } from '../socket.js';
 import { addLines } from './addLine.js';
@@ -13,24 +13,29 @@ import { addLines } from './addLine.js';
 
 let lastTime = 0;
 let timeSinceLastMove = 0;
-const moveInterval = 400; 
 
 export function gameLoop(gameloopObject) {
     if(gameloopObject.gameState.isGameOver || gameloopObject.gameState.isGamePaused ){
         return;
     }
-
+    if (checkGameWin()) {
+        console.log("checkGameWin")
+        gameOver(); 
+        return;
+    }
     if (gameloopObject.gameState.gameOverPending) {
         gameOver(); 
         gameloopObject.gameState.gameOverPending = false; 
         return;
     }
+
     const deltaTime = gameloopObject.timestamp - lastTime;
     lastTime = gameloopObject.timestamp;
 
     timeSinceLastMove += deltaTime;
-    
-    if (!gameloopObject.gameState.activeTetromino) {
+    gameloopObject.gameState.timeSinceLastLevel += deltaTime;
+
+    if (!gameState.activeTetromino) {
         [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.gameState,gameloopObject.tetrominoes);
     }
     updateGame(deltaTime, gameloopObject);  
@@ -51,6 +56,7 @@ export function gameLoop(gameloopObject) {
 
 
 function updateGame(dTime,gameloopObject){
+    const moveInterval = levelMoveIntervals[gameloopObject.gameState.level]
     if(timeSinceLastMove >= moveInterval) {
         clearTetromino(gameloopObject);
         const moved = moveTetrominoDown(gameloopObject)
@@ -60,6 +66,7 @@ function updateGame(dTime,gameloopObject){
             let { newBoard, clearedLines } = clearFullLine(gameloopObject.gameGridArray);
             const score = addScore(clearedLines, gameloopObject)
             updateLeaderboard(score, userName, gameloopObject)
+
             if (clearedLines > 1) {
                 const users = gameloopObject.users
                 let target = gameloopObject.gameState.target
@@ -82,9 +89,14 @@ function updateGame(dTime,gameloopObject){
 
             gameloopObject.gameGridArray.length = 0;
             gameloopObject.gameGridArray.push(...newBoard); 
-            
+            console.log(gameState.timeSinceLastLevel)
+            if (gameState.timeSinceLastLevel >= timeToLevelUp) {
+                gameloopObject.gameState.level++
+                console.log("level up", gameloopObject.gameState.level)
+                gameState.timeSinceLastLevel = 0
+            }
 
-            if (checkGameOver(gameloopObject.gameGridArray)) {
+            if (checkGameOver(gameloopObject.gameGridArray) || checkGameWin()) {
                 console.log("checkGameOver")
                 gameloopObject.gameState.gameOverPending = true; 
                 return;

@@ -11,15 +11,27 @@ import { socket } from '../socket.js';
 import { startTimer } from '../methods/createTimer.js';
 import { createLeaderBoard } from '../methods/leaderboard.js';
 import { updateLeaderboard } from '../methods/gameScore.js';
+import { createGameMenu } from '../methods/createGameMenu.js';
+import { deleteBoard } from '../methods/deleteBoard.js';
+import { checkGameWin } from '../methods/gameOver.js';
 
 export default function Game() {
 
 
     const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(userNames, userName);
 
-
     const userScoreElementArray = createLeaderBoard(gameElement)
+    const {gameMenu,menuText,quitButton} = createGameMenu()
 
+    quitButton.addEventListener("click", () =>{  // liigutan selle createGameMenusse
+        const path = window.location.pathname; 
+        const gameId = path.split("/").pop(); 
+        const baseUrl = window.location.origin; 
+        window.location.href = `${baseUrl}/lobby/${gameId}`
+        if(socket){
+            socket.emit("disconnectUser",{roomId,userName})
+        }
+    })
     const gameloopObject = {
         timestamp: 0,
         gameGridArray: gameGridArray,
@@ -62,12 +74,49 @@ export default function Game() {
         socket.on('score', (score, name) => {
             updateLeaderboard(score, name, gameloopObject)
         })
-        socket.on('garbage', (lines, name) => {
-            console.log("garbage", lines, name)
-            gameloopObject.gameState.garbageLines += lines
+
+        socket.on("pauseGame", (name) => {
+
+            pauseGame(gameState)
+            if (gameMenu){
+                
+                gameMenu.style.visibility = "visible"; 
+                gameMenu.style.opacity = "1";
+                gameMenu.style.pointerEvents = "auto"; 
+                if (menuText) {
+                    menuText.innerText = `Game Paused by: ${name}`; 
+                }
+            }
+           
         })
+
+        socket.on("resumeGame", () =>{
+
+            resumeGame(gameloopObject)
+            startTimer()
+            if (gameMenu){
+                gameMenu.style.visibility = "hidden"; 
+                gameMenu.style.opacity = "0";
+                gameMenu.style.pointerEvents = "none"; 
+            }
+        })
+
+        socket.on("disconnectUser", (userName) =>{
+            deleteBoard(userName)
+        })
+        socket.on('garbage', (lines, userName) => {
+            console.log("garbage", lines, userName)
+            gameState.garbageLines += lines
+        })
+        socket.on('game over', (userName) => {
+            console.log(userName)
+            gameState.playersLost += 1
+            checkGameWin()
+        })
+        
         const listener = () => {
             socket.emit('leave', roomId)
+            socket.emit("disconnectUser",userName)
             socket.disconnect();
           }
         window.addEventListener("pagehide", listener);
@@ -167,16 +216,17 @@ startTimer()
     })
 
     escKey$.subscribe(() =>{
-        if(gameState.isGamePaused){
-            resumeGame(gameloopObject)
-            startTimer()
+        console.log(gameState, socket)
+        if (gameState.isGamePaused && !gameState.isGameOver && socket) {
+            console.log("resume")
+            socket.emit("resume", {roomId,userName})
         }else{
-            pauseGame(gameState)
+            console.log("pause")
+            socket.emit('pause', { roomId,userName });
         }
     })
-
 }
 
 
 
-// ngrok url, origin index js serveri
+// leaderboard ilmub game over, garbage lines, levelid

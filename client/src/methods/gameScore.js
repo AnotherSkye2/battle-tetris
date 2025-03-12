@@ -29,7 +29,6 @@ export function addScore(clearedLines,gameloopObject){
 }
 
 export function updateLeaderboard(score, name, gameloopObject) {
-    const test = gameloopObject.userScoreElementArray
     if (score > 0) {
         //console.log("score: ", score)
         const scoreElementArray = gameloopObject.userScoreElementArray
