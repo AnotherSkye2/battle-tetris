@@ -1,0 +1,102 @@
+body { margin: 0;}
+
+.l-shape {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.row {
+  display: flex;
+}
+
+.block {
+  width: 40px;
+  height: 40px;
+  background-color: orange;
+  border: 2px solid black;
+}
+
+#activeBlock {
+  top: 0;
+  transform-style: preserve-3d;
+  transform-origin: 20% bottom;
+
+}
+
+#container{
+  perspective: 1000px; 
+  width: 200px;
+  height: 200px;
+  margin: 100px auto;
+  position: relative; 
+}
+
+/*
+Create Game Page
+*/
+
+.create-game {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-wrap {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  min-height: 50px;
+}
+
+footer {
+  min-height: 50px;
+}
+
+main {
+  flex: 1;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid-center {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.hidden {
+  display: none;
+}
+
+/*
+Lobby page
+*/
+
+.chat-container {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  flex-direction: column;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+}
+
+.content-wrap {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  flex: 1;
+}
+
