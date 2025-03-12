@@ -1,5 +1,5 @@
 export function createLeaderBoard(gameElement) {
-    const users = JSON.parse(sessionStorage.getItem("users"))
+    const userNames = JSON.parse(sessionStorage.getItem("userNames"))
 
     let userScoreElementArray = []
 
@@ -9,7 +9,7 @@ export function createLeaderBoard(gameElement) {
     const leaderboard = document.createElement("div");
     leaderboard.classList.add("leaderboard", "pixel-corners");
 
-    for (let i = 0; i < users.length; i++) {
+    for (let i = 0; i < userNames.length; i++) {
         const scoreContainer = document.createElement("div");
         scoreContainer.classList.add("score-container", "pixel-corners");
 
@@ -22,14 +22,14 @@ export function createLeaderBoard(gameElement) {
         const userNameContainer = document.createElement("div");
         userNameContainer.classList.add("user-name", "micro-5-regular");
         const userNameElement = document.createElement("p");
-        userNameElement.innerHTML = users[i].name
+        userNameElement.innerHTML = userNames[i].name
         userNameContainer.appendChild(userNameElement)
 
         scoreContainer.append(userScoreContainer, userNameContainer)
         leaderboard.append(scoreContainer)
 
         userScoreElementArray.push({
-            name: users[i].name,
+            name: userNames[i].name,
             userScoreElement: userScoreElement
         })
     }

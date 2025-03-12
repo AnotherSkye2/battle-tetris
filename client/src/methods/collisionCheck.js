@@ -25,7 +25,6 @@ export function tetrominoCollisionCheck(tetromino, position, board) {
 
     for (let r = 0; r < tetromino.length; r++) {
         for (let c = 0; c < tetromino[r].length; c++) {
-            console.log("tetrominoCollisionCheck: ", tetromino[r][c])
             if (tetromino[r][c] !== "") {
                 
                 const boardX = col + c;
@@ -33,8 +32,6 @@ export function tetrominoCollisionCheck(tetromino, position, board) {
 
                
                 if (boardY >= 0 && boardY < board.length && boardX >= 0 && boardX < board[0].length) {
-                    console.log("tetrominoCollisionCheck: ", boardX, boardY, board.length, board[0].length)
-                    console.log("tetrominoCollisionCheck: board[boardY][boardX]:", board[boardY][boardX])
                     if (board[boardY][boardX] !== "") {
                         return true;
                     }

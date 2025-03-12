@@ -7,10 +7,12 @@ import { useParams } from "react-router";
 export default function Lobby() {
   const [link, setLink] = useState("")
   const [userName, setUserName] = useState("")
+  const [userNameInput, setUserNameInput] = useState("")
   const [chatMessages, setChatMessages] = useState([])
   const [users, setUsers] = useState([])
   const [userHasName, setUserHasName] = useState(false)
   const [isHost, setIsHost] = useState(false)
+  const [open, setOpen] = useState(true)
   const {roomId} = useParams();
 
 
@@ -28,16 +30,28 @@ export default function Lobby() {
   }
 
   const handleSubmit = (e) => {
+    if (socket.connected === false) { socket.connect() }
     e.preventDefault();
-    console.log(userName)
-    if (!userName) {
-      setUserName(`Guest ${new Date().getMilliseconds()}`)
-    }
-    setUserHasName(true)
+    setOpen(false)
+    console.log(socket, userName)
+    socket.emit('users', roomId, (users) => {
+      let userNameToCheck = userNameInput
+      if (!userNameToCheck) {
+        userNameToCheck = `Guest ${new Date().getMilliseconds()}`
+      }
+      let isUnique;
+      const userNames = users.map((user) => user.name)
+      userNames.includes(userNameToCheck) ? isUnique = false : isUnique = true
+      console.log("userNameToCheck, users: ", userNameToCheck, userNames, isUnique)
+      setOpen(!isUnique)
+      if (isUnique) {setUserName(userNameToCheck)}
+      setUserHasName(isUnique)
+      setUserNameInput("")
+    })
   }
 
   const handleChange = (e) => {
-      setUserName(e.target.value)
+      setUserNameInput(e.target.value)
   }
 
   const handleStart = () => {
@@ -66,14 +80,14 @@ export default function Lobby() {
   useEffect(() => {
     if (socket) {
       console.log("users: ", users)
-      if (users[0]?.socketId === socket.id) {setIsHost(true)}
+      if (users[0]?.name === userName) {setIsHost(true)}
       socket.on("join", (user) => {setUsers([...users, user])})
       socket.on("leave", (userToRemove) => {
-        setUsers([...users.filter((user) => user.socketId != userToRemove.socketId)])
+        setUsers([...users.filter((user) => user.name != userToRemove.name)])
       })
       socket.on('start', (msg) => {
         console.log(msg, users)
-        sessionStorage.setItem('users', JSON.stringify(users))
+        sessionStorage.setItem('userNames', JSON.stringify(users))
         sessionStorage.setItem('userName', userName)
         window.location = `../game/${roomId}`
       })
@@ -88,7 +102,6 @@ export default function Lobby() {
   useEffect(() => {
     if (userHasName && socket) {
       setLink(window.location.href)
-      socket.connect();
       socket.username = userName;
       console.log("socket.username:", socket.username)
       socket.emit('join', roomId, userName, (roomUsers) => {
@@ -128,7 +141,7 @@ export default function Lobby() {
         </div>
       </div>
       <footer className="flex-center">by Robert and Skye!</footer>
-      <NamePopup handleSubmit={handleSubmit} handleChange={handleChange}/>
+      <NamePopup open={open} handleSubmit={handleSubmit} handleChange={handleChange}/>
     </div>
   )
 }

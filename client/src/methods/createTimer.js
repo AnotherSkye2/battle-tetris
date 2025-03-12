@@ -5,13 +5,13 @@ let pausedTime = 0;
 
 export function startTimer() {
 
-    const gameBoard = document.querySelector(".game-board");
+    const gameBoard = document.querySelector(".leaderboard");
 
     let timerDiv = document.getElementById("timerDisplay");  // styling in index.css
     if (!timerDiv) {
         timerDiv = document.createElement("div");
         timerDiv.id = "timerDisplay";
-        gameBoard.appendChild(timerDiv);
+        gameBoard.prepend(timerDiv);
     }
 
 

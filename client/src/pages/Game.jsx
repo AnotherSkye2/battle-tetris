@@ -5,7 +5,7 @@ import { checkCollisions } from '../methods/collisionCheck.js';
 import { gameLoop } from '../methods/gameLoop.js';
 import { TETROMINOES } from '../methods/tetrominoes.js';
 import { arrowDown$,arrowLeft$,arrowRight$,arrowUp$,spaceBar$,escKey$ } from '../methods/observables.js';
-import { position,gameState,roomId, users, userName } from '../methods/gameDefaultValues.js';
+import { position,gameState,roomId, userNames, userName } from '../methods/gameDefaultValues.js';
 import { pauseGame,resumeGame } from '../methods/pauseGame.js';
 import { socket } from '../socket.js';
 import { startTimer } from '../methods/createTimer.js';
@@ -17,7 +17,8 @@ import { deleteBoard } from '../methods/deleteBoard.js';
 export default function Game() {
 
 
-    const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(users, userName);
+    const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(userNames, userName);
+
 
     console.log("users and userName", users,userName)
 
@@ -46,6 +47,7 @@ export default function Game() {
         gameState: gameState,
         opponentGridDataArray: opponentGridDataArray,
         userScoreElementArray: userScoreElementArray,
+        users: [],
         socket: socket
     } 
 
@@ -57,6 +59,17 @@ export default function Game() {
         socket.emit('join', roomId, userName, (roomUsers) => {
             console.log("roomUsers, socket.id", roomUsers, socket.id)
         });
+        socket.emit('users', roomId, (users) => {
+            console.log("users: ", users, socket.id)
+            gameloopObject.users = users
+        })
+        socket.on('join', (user) => {
+            console.log(user)
+            socket.emit('users', roomId, (users) => {
+                console.log("users: ", users, socket.id)
+                gameloopObject.users = users
+            })
+        })
         socket.on('board state', (opponentGameGridArray, name) => {
             for (let i = 0; i < opponentGridDataArray.length; i++) {
                 if (opponentGridDataArray[i].name == name) {
@@ -67,6 +80,7 @@ export default function Game() {
         socket.on('score', (score, name) => {
             updateLeaderboard(score, name, gameloopObject)
         })
+<<<<<<< HEAD
 
         socket.on("pauseGame", (name) => {
 
@@ -96,13 +110,18 @@ export default function Game() {
 
         socket.on("dcUser", (user) =>{
             deleteBoard(user)
+=======
+        socket.on('garbage', (lines, name) => {
+            console.log("garbage", lines, name)
+            gameloopObject.gameState.garbageLines += lines
+>>>>>>> master
         })
         const listener = () => {
             socket.emit('leave', roomId)
             socket.disconnect();
           }
         window.addEventListener("pagehide", listener);
-    }
+    }   
 
     console.log(gameBoardElement, gameBoardGrid, gameGridArray)
 

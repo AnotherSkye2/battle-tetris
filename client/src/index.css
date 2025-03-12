@@ -135,8 +135,11 @@ React Popup
   width: 100%;
 }
 
-.chat input {
+input {
   font-size: 1em;
+  font-family: "Micro 5", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /*
@@ -166,16 +169,20 @@ Game
   
 }
 
-#timerDisplay {
-  width: 31.7%; 
-  position: absolute; 
-  top: 75%; 
-  left: 0%; 
-  font-size: 24px;
-  color: white;
-  background: rgba(0, 0, 0, 0.5); 
-  padding: 5px 10px;
-  text-align: center; 
+.opponent .game-grid {
+  grid-template-rows: repeat(20, 10px); 
+  grid-template-columns: repeat(10, 10px); 
+  gap: 1px; 
+}
+
+.opponent .cell {
+  width: 10px; 
+  height: 10px; 
+}
+
+.game-board-container {
+  display:flex;
+  flex-direction: column;
 }
 
 .opponent .game-grid {
@@ -221,6 +228,9 @@ Game
 .z {
   background-color: #ff0000;
 }
+.g {
+  background-color: #989898;
+}
 
 .name {
   text-align: center;
@@ -235,17 +245,27 @@ Leaderboard
 .leaderboard-container {
   width: 30%;
   display: flex;
-  align-items: start;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+}
+
+#timerDisplay {
+  width: -webkit-fill-available;
+  color: white;
+  background: rgba(0, 0, 0, 0.5); 
+  padding: 5px 10px;
+  text-align: center; 
 }
 
 .leaderboard {
+  width: -webkit-fill-available;
   border-radius: 8px;
   display: grid;
-  width: 100%;
   background-color: #242424;
   padding: 10px 20px;
   gap: 10px;
-  margin-top: 100px;
+  margin-top: 10px;
 }
 
 .leaderboard p {
