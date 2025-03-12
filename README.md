@@ -16,7 +16,7 @@ Then clone the repository using:
 1.  Next Open a terminal
 2.  Navigate to the client directory
 3.  Run the following command:
-
+    npm i
     npm run build
 
 4.  Now open another terminal and navigate to the server directory
