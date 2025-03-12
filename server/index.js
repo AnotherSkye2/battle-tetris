@@ -125,14 +125,23 @@ io.on('connection', (socket) => {
    io.to(roomId).emit("resumeGame");
   });
 
+  socket.on("restart",(roomData) =>{
+    const { roomId, userName } = roomData
+
+    io.to(roomId).emit("restartGame",userName)
+  })
+
   socket.on('game over', (roomId, userName) => {
     socket.to(roomId).emit('game over', userName)        
   })
 
   socket.on("disconnectUser", (roomData) => {
-    const { roomId, userName } = roomData
-    socket.to(roomId).emit("disconnectUser", userName);
+    
+     const { roomId, userName } = roomData
+     socket.to(roomId).emit("dcUser", userName);
   });
+
+
 });
 
 server.listen(PORT, () => {

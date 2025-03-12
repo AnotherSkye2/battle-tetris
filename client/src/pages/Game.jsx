@@ -21,17 +21,25 @@ export default function Game() {
     const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(userNames, userName);
 
     const userScoreElementArray = createLeaderBoard(gameElement)
-    const {gameMenu,menuText,quitButton} = createGameMenu()
+    const {gameMenu,menuText,quitButton,restartButton} = createGameMenu()
 
-    quitButton.addEventListener("click", () =>{  // liigutan selle createGameMenusse
+    quitButton.addEventListener("click", () =>{ 
         const path = window.location.pathname; 
         const gameId = path.split("/").pop(); 
         const baseUrl = window.location.origin; 
-        window.location.href = `${baseUrl}/lobby/${gameId}`
+         window.location.href = `${baseUrl}/lobby/${gameId}`
         if(socket){
             socket.emit("disconnectUser",{roomId,userName})
         }
     })
+
+    restartButton.addEventListener("click", () =>{
+        if(socket){
+            socket.emit("restart",{roomId,userName})
+        }
+    })
+
+    
     const gameloopObject = {
         timestamp: 0,
         gameGridArray: gameGridArray,
@@ -101,8 +109,15 @@ export default function Game() {
             }
         })
 
-        socket.on("disconnectUser", (userName) =>{
-            deleteBoard(userName)
+       
+        socket.on('restartGame', (user) => {
+            
+            alert(`${user} has restarted the game. The page will now refresh.`);
+            window.location.reload();
+          });
+
+        socket.on("dcUser", (user) =>{
+            deleteBoard(user)
         })
         socket.on('garbage', (lines, userName) => {
             console.log("garbage", lines, userName)
@@ -229,4 +244,4 @@ startTimer()
 
 
 
-// leaderboard ilmub game over, garbage lines, levelid
+// levelid

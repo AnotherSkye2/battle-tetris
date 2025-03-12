@@ -21,7 +21,11 @@ export function createGameMenu() {
     quitButton.innerText = "click here to quit game";
     gameMenu.appendChild(quitButton);
 
+    const restartButton = document.createElement("button")
+    restartButton.innerText = "click here to restart the game"
+    gameMenu.appendChild(restartButton);
+
     document.body.appendChild(gameMenu);
 
-    return {gameMenu,menuText,quitButton}
+    return {gameMenu,menuText,quitButton, restartButton}
 }
