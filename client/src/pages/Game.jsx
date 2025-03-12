@@ -11,13 +11,17 @@ import { socket } from '../socket.js';
 import { startTimer } from '../methods/createTimer.js';
 import { createLeaderBoard } from '../methods/leaderboard.js';
 import { updateLeaderboard } from '../methods/gameScore.js';
+import { createGameMenu } from '../methods/createGameMenu.js';
 
 export default function Game() {
 
 
     const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(users, userName);
 
+    console.log("users and userName", users,userName)
+
     const userScoreElementArray = createLeaderBoard(gameElement)
+    const {gameMenu,menuText} = createGameMenu()
 
     const gameloopObject = {
         timestamp: 0,
@@ -48,6 +52,31 @@ export default function Game() {
         })
         socket.on('score', (score, name) => {
             updateLeaderboard(score, name, gameloopObject)
+        })
+
+        socket.on("pauseGame", (name) => {
+
+            pauseGame(gameState)
+            if (gameMenu){
+                
+                gameMenu.style.visibility = "visible"; 
+                gameMenu.style.opacity = "1";
+                if (menuText) {
+                    menuText.innerText = `Game Paused by: ${name}`; 
+                }
+            }
+           
+        })
+
+        socket.on("resumeGame", () =>{
+
+            resumeGame(gameloopObject)
+            startTimer()
+            if (gameMenu){
+                gameMenu.style.visibility = "hidden"; 
+                gameMenu.style.opacity = "0";
+                gameMenu.style.pointerEvents = "none"; 
+            }
         })
         const listener = () => {
             socket.emit('leave', roomId)
@@ -150,16 +179,23 @@ startTimer()
     })
 
     escKey$.subscribe(() =>{
+
         if(gameState.isGamePaused){
-            resumeGame(gameloopObject)
-            startTimer()
+            if (socket) {
+                socket.emit("resume")
+            }
         }else{
-            pauseGame(gameState)
+            if (socket) {
+                socket.emit('pause', { roomId });
+            }
         }
+        
     })
 
+    
+ 
 }
 
 
 
-// ngrok url, origin index js serveri
+// leaderboard ilmub game over, garbage lines, levelid
