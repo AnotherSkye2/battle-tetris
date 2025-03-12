@@ -2,7 +2,7 @@ import { placeTetromino } from "./tetrominoManipulation.js";
 import { checkCollisions } from "./collisionCheck.js";
 import { clearFullLine } from "./clearLine.js";
 import { addScore, updateLeaderboard } from "./gameScore.js";
-import { userName } from "./gameDefaultValues.js";
+import { timeToLevelUp, userName } from "./gameDefaultValues.js";
 import { socket } from "../socket.js";
 import { addLines } from "./addLine.js";
 
@@ -109,6 +109,13 @@ export function moveTetrominoLowestPoint(gameloopObject) {
         newBoard = addLines(newBoard, gameloopObject.gameState.garbageLines)
         console.log(newBoard, gameloopObject.gameGridArray)
         gameloopObject.gameState.garbageLines = 0
+    }
+
+    console.log(gameloopObject.gameState.timeSinceLastLevel)
+    if (gameloopObject.gameState.timeSinceLastLevel >= timeToLevelUp) {
+        gameloopObject.gameState.level++
+        console.log("level up", gameloopObject.gameState.level)
+        gameloopObject.gameState.timeSinceLastLevel = 0
     }
     
     gameGridArray.length = 0;

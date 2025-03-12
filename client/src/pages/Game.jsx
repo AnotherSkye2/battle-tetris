@@ -24,17 +24,13 @@ export default function Game() {
     const {gameMenu,menuText,quitButton} = createGameMenu()
 
     quitButton.addEventListener("click", () =>{  // liigutan selle createGameMenusse
-        
-    
         const path = window.location.pathname; 
         const gameId = path.split("/").pop(); 
         const baseUrl = window.location.origin; 
-       window.location.href = `${baseUrl}/lobby/${gameId}`
-        
+        window.location.href = `${baseUrl}/lobby/${gameId}`
         if(socket){
             socket.emit("disconnectUser",{roomId,userName})
         }
-        
     })
     const gameloopObject = {
         timestamp: 0,
@@ -220,9 +216,12 @@ startTimer()
     })
 
     escKey$.subscribe(() =>{
-        if (!gameState.isGameOver && socket) {
+        console.log(gameState, socket)
+        if (gameState.isGamePaused && !gameState.isGameOver && socket) {
+            console.log("resume")
             socket.emit("resume", {roomId,userName})
         }else{
+            console.log("pause")
             socket.emit('pause', { roomId,userName });
         }
     })
