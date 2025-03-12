@@ -73,19 +73,6 @@ export default function Game() {
         window.addEventListener("pagehide", listener);
     }   
 
-// DEBUG
-    const debugButtonForTesting = document.createElement("button")
-    debugButtonForTesting.addEventListener("click", () => {
-        for (let i = 0; i < gameloopObject.users.length; i++) {
-            if (gameloopObject.users[i].name != userName) {
-                socket.emit('garbage', gameloopObject.users[i].socketId, 2)
-            }
-        }
-
-    })
-    gameElement.append(debugButtonForTesting)
-//DEBUG
-
     console.log(gameBoardElement, gameBoardGrid, gameGridArray)
 
     renderGameBoard(gameBoardGrid, gameGridArray);

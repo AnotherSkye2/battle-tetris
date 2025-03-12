@@ -10,7 +10,23 @@ export function addLines(gameGridArray, lines){
 
 function generateGarbageLines(gameGridArray, lines) {
     let garbageLines = [];
-    for (let i = 0; i < lines; i++) {
+    let linesToGenerate;
+    switch (lines) {
+        case 2:
+            linesToGenerate = 1;
+            break;
+        case 3:
+            linesToGenerate = 2;
+            break;
+        case 4:
+            linesToGenerate = 4;
+            break;
+        default:
+            console.log("generateGarbageLines: Not enough lines!", lines)
+            linesToGenerate = 0;
+            break;
+    }
+    for (let i = 0; i < linesToGenerate; i++) {
         const garbageLine = new Array(gameGridArray[0].length).fill("g")
         garbageLine[Math.floor(Math.random() * (gameGridArray[0].length))] = ""
         garbageLines.push(garbageLine)

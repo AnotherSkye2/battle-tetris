@@ -27,7 +27,8 @@ export function InitializeGameBoard(userNames, userName) {
     gameElement.appendChild(gameBoardElement)
 
     let opponentGridDataArray = [];
-
+    const opponentGameBoardContainer = document.createElement("div");
+    opponentGameBoardContainer.classList.add("game-board-container");
     for (let i = 0; i < userNames.length; i++) {
         if (userNames[i].name == userName) {continue}
         console.log(userNames[i].name)
@@ -57,8 +58,9 @@ export function InitializeGameBoard(userNames, userName) {
             gameBoardGrid: opponentGameBoardGrid,
             gameGridArray: opponentGameGridArray
         })
-        gameElement.appendChild(opponentGameBoardElement);
+        opponentGameBoardContainer.appendChild(opponentGameBoardElement);
     }
+    gameElement.appendChild(opponentGameBoardContainer);
 
     document.body.appendChild(gameElement)
     console.log(gameElement, gameBoardGrid)
