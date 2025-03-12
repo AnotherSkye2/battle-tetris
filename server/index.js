@@ -114,16 +114,18 @@ io.on('connection', (socket) => {
     socket.to(socketId).emit('garbage', lines, socket.userName)        
   })
 
-  socket.on("pause",(roomData) =>{
-  
-    io.emit("pauseGame",roomData.userName)
-  })
+  socket.on("pause", (roomData) => {
+    const { roomId, userName } = roomData
+    io.to(roomId).emit("pauseGame", userName);
+  });
 
-  socket.on("resume", () =>{
+  socket.on("resume", (roomData) => {
+    const { roomId, userName } = roomData
 
-    io.emit("resumeGame")
-  })
+   io.to(roomId).emit("resumeGame");
+  });
 
+<<<<<<< HEAD
   socket.on("disconnectUser", (user) =>{
     io.emit("disconnectUser",user )
   })
@@ -132,6 +134,13 @@ io.on('connection', (socket) => {
     socket.to(roomId).emit('game over', userName)        
   })
 
+=======
+  socket.on("disconnectUser", (roomData) => {
+    console.log("heiehei",roomData)
+     const { roomId, userName } = roomData
+    io.to(roomId).emit("dcUser", userName);
+  });
+>>>>>>> robert/menu
 });
 
 server.listen(PORT, () => {

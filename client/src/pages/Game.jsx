@@ -32,7 +32,7 @@ export default function Game() {
        window.location.href = `${baseUrl}/lobby/${gameId}`
         
         if(socket){
-            socket.emit("disconnectUser",userName)
+            socket.emit("disconnectUser",{roomId,userName})
         }
         
     })
@@ -221,11 +221,9 @@ startTimer()
 
     escKey$.subscribe(() =>{
         if (!gameState.isGameOver && socket) {
-            if(gameState.isGamePaused){
-                socket.emit("resume")
-            }else{
-                socket.emit('pause', { roomId,userName });
-            }
+            socket.emit("resume", {roomId,userName})
+        }else{
+            socket.emit('pause', { roomId,userName });
         }
     })
 }
