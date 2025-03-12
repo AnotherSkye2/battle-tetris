@@ -15,7 +15,11 @@ export function createGameMenu() {
     resumeButton.innerText = "press ESC to resume";
     gameMenu.appendChild(resumeButton);
 
+    const quitButton = document.createElement("button")
+    quitButton.innerText = "click here to quit game";
+    gameMenu.appendChild(quitButton);
+
     document.body.appendChild(gameMenu);
 
-    return {gameMenu,menuText}
+    return {gameMenu,menuText,quitButton}
 }

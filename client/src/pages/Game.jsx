@@ -12,6 +12,7 @@ import { startTimer } from '../methods/createTimer.js';
 import { createLeaderBoard } from '../methods/leaderboard.js';
 import { updateLeaderboard } from '../methods/gameScore.js';
 import { createGameMenu } from '../methods/createGameMenu.js';
+import { deleteBoard } from '../methods/deleteBoard.js';
 
 export default function Game() {
 
@@ -21,8 +22,21 @@ export default function Game() {
     console.log("users and userName", users,userName)
 
     const userScoreElementArray = createLeaderBoard(gameElement)
-    const {gameMenu,menuText} = createGameMenu()
+    const {gameMenu,menuText,quitButton} = createGameMenu()
 
+    quitButton.addEventListener("click", () =>{  // liigutan selle createGameMenusse
+        
+    
+        const path = window.location.pathname; 
+        const gameId = path.split("/").pop(); 
+        const baseUrl = window.location.origin; 
+       window.location.href = `${baseUrl}/lobby/${gameId}`
+        
+        if(socket){
+            socket.emit("disconnectUser",userName)
+        }
+        
+    })
     const gameloopObject = {
         timestamp: 0,
         gameGridArray: gameGridArray,
@@ -61,6 +75,7 @@ export default function Game() {
                 
                 gameMenu.style.visibility = "visible"; 
                 gameMenu.style.opacity = "1";
+                gameMenu.style.pointerEvents = "auto"; 
                 if (menuText) {
                     menuText.innerText = `Game Paused by: ${name}`; 
                 }
@@ -77,6 +92,10 @@ export default function Game() {
                 gameMenu.style.opacity = "0";
                 gameMenu.style.pointerEvents = "none"; 
             }
+        })
+
+        socket.on("dcUser", (user) =>{
+            deleteBoard(user)
         })
         const listener = () => {
             socket.emit('leave', roomId)

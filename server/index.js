@@ -103,6 +103,10 @@ io.on('connection', (socket) => {
 
     io.emit("resumeGame")
   })
+
+  socket.on("disconnectUser", (user) =>{
+    io.emit("dcUser",user )
+  })
 });
 
 server.listen(PORT, () => {
