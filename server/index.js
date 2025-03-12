@@ -125,8 +125,13 @@ io.on('connection', (socket) => {
   })
 
   socket.on("disconnectUser", (user) =>{
-    io.emit("dcUser",user )
+    io.emit("disconnectUser",user )
   })
+
+  socket.on('game over', (roomId, userName) => {
+    socket.to(roomId).emit('game over', userName)        
+  })
+
 });
 
 server.listen(PORT, () => {

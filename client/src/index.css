@@ -247,6 +247,7 @@ Leaderboard
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 10px;
   margin-top: 100px;
 }
 
@@ -433,4 +434,10 @@ Menu
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease-in-out;
+}
+
+.game-over-screen {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
 }

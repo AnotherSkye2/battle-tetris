@@ -4,7 +4,7 @@ import { selectRandomTetromino } from './selectTetromino.js';
 import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
-import { checkGameOver,gameOver } from './gameOver.js';
+import { checkGameOver,checkGameWin,gameOver } from './gameOver.js';
 import { roomId, userName } from '../methods/gameDefaultValues.js';
 import { addScore, updateLeaderboard } from './gameScore.js';
 import { socket } from '../socket.js';
@@ -19,7 +19,11 @@ export function gameLoop(gameloopObject) {
     if(gameloopObject.gameState.isGameOver || gameloopObject.gameState.isGamePaused ){
         return;
     }
-
+    if (checkGameWin()) {
+        console.log("checkGameWin")
+        gameOver(); 
+        return;
+    }
     if (gameloopObject.gameState.gameOverPending) {
         gameOver(); 
         gameloopObject.gameState.gameOverPending = false; 
@@ -84,7 +88,7 @@ function updateGame(dTime,gameloopObject){
             gameloopObject.gameGridArray.push(...newBoard); 
             
 
-            if (checkGameOver(gameloopObject.gameGridArray)) {
+            if (checkGameOver(gameloopObject.gameGridArray) || checkGameWin()) {
                 console.log("checkGameOver")
                 gameloopObject.gameState.gameOverPending = true; 
                 return;

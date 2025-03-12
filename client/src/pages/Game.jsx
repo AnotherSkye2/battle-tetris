@@ -13,14 +13,12 @@ import { createLeaderBoard } from '../methods/leaderboard.js';
 import { updateLeaderboard } from '../methods/gameScore.js';
 import { createGameMenu } from '../methods/createGameMenu.js';
 import { deleteBoard } from '../methods/deleteBoard.js';
+import { checkGameWin } from '../methods/gameOver.js';
 
 export default function Game() {
 
 
     const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(userNames, userName);
-
-
-    console.log("users and userName", users,userName)
 
     const userScoreElementArray = createLeaderBoard(gameElement)
     const {gameMenu,menuText,quitButton} = createGameMenu()
@@ -80,7 +78,6 @@ export default function Game() {
         socket.on('score', (score, name) => {
             updateLeaderboard(score, name, gameloopObject)
         })
-<<<<<<< HEAD
 
         socket.on("pauseGame", (name) => {
 
@@ -108,16 +105,22 @@ export default function Game() {
             }
         })
 
-        socket.on("dcUser", (user) =>{
-            deleteBoard(user)
-=======
-        socket.on('garbage', (lines, name) => {
-            console.log("garbage", lines, name)
-            gameloopObject.gameState.garbageLines += lines
->>>>>>> master
+        socket.on("disconnectUser", (userName) =>{
+            deleteBoard(userName)
         })
+        socket.on('garbage', (lines, userName) => {
+            console.log("garbage", lines, userName)
+            gameState.garbageLines += lines
+        })
+        socket.on('game over', (userName) => {
+            console.log(userName)
+            gameState.playersLost += 1
+            checkGameWin()
+        })
+        
         const listener = () => {
             socket.emit('leave', roomId)
+            socket.emit("disconnectUser",userName)
             socket.disconnect();
           }
         window.addEventListener("pagehide", listener);
@@ -217,21 +220,14 @@ startTimer()
     })
 
     escKey$.subscribe(() =>{
-
-        if(gameState.isGamePaused){
-            if (socket) {
+        if (!gameState.isGameOver && socket) {
+            if(gameState.isGamePaused){
                 socket.emit("resume")
-            }
-        }else{
-            if (socket) {
+            }else{
                 socket.emit('pause', { roomId,userName });
             }
         }
-        
     })
-
-    
- 
 }
 
 

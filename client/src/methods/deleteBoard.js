@@ -1,9 +1,9 @@
-export function deleteBoard(user){
-    console.log(user)
+export function deleteBoard(userName){
+    console.log(userName)
     const userNames = document.querySelectorAll(".name.micro-5-regular")
     
     userNames.forEach((nameElement) =>{
-        if(nameElement.innerHTML === user){
+        if(nameElement.innerHTML === userName){
             nameElement.closest(".game-board").remove();
         }
     })

@@ -5,9 +5,11 @@ export function createLeaderBoard(gameElement) {
 
     const leaderboardContainer = document.createElement("div");
     leaderboardContainer.classList.add("leaderboard-container");
+    leaderboardContainer.id = "leaderboard-container"
 
     const leaderboard = document.createElement("div");
     leaderboard.classList.add("leaderboard", "pixel-corners");
+    leaderboard.id = "leaderboard"
 
     for (let i = 0; i < userNames.length; i++) {
         const scoreContainer = document.createElement("div");
