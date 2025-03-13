@@ -11,6 +11,10 @@ export default function Home() {
       window.location = `./lobby/${Math.floor(Math.random() * 100000)}`
     }
 
+    const toSinglePlayerLobby = () =>{
+      window.location = `./single/lobby/${Math.floor(Math.random() * 100000)}`
+    }
+
 
 
     return ( <>
@@ -25,7 +29,14 @@ export default function Home() {
                 <ul>
                   <li>join a friend's lobby by inserting the URL they shared into your browser's search bar</li>
                   <h4>OR...</h4>
-                  <li>create a lobby yourself!</li>
+                  <li>create a lobby and invite friends yourself!</li>
+                </ul>
+              </p>
+              <p>
+                To play solo:
+                <ul>
+                  <li>click on vs Computer and add up to 3 bots to play against!</li>
+                  <li>All bots have difficulties you can adjust</li>
                 </ul>
               </p>
               <button id="display" className='pixel-corners' onClick={toggleInfo}>Go back</button>
@@ -34,6 +45,7 @@ export default function Home() {
           <div className="button-container" >
             <button id="display" className='pixel-corners' onClick={toggleInfo}>How to join a game?</button>
             <button id="create" className='pixel-corners' onClick={toLobby}>Create Lobby</button>
+            <button id="single-player" className='pixel-corners' onClick={toSinglePlayerLobby}>vs Computer</button>
           </div>
         }
       </main>

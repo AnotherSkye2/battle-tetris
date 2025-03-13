@@ -39,7 +39,6 @@ export default function Game() {
         }
     })
 
-    
     const gameloopObject = {
         timestamp: 0,
         gameGridArray: gameGridArray,
@@ -244,4 +243,3 @@ startTimer()
 
 
 
-// levelid
