@@ -57,5 +57,5 @@ export function botMostOptimalPlacement(botLoopObject) {
         bestPosition.col += 1
     }
 
-    return bestPosition
+    return [bestPosition, bestRotation]
 }
