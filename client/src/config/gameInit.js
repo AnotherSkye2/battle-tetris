@@ -67,6 +67,7 @@ export default function gameInit() {
                 isBotGame: true, 
                 timeSinceLastMove: 0, 
                 timeSinceLastBotMove: 0, 
+                botMoveTimeInterval: 1000, 
                 botName: username.name, 
                 difficulty: difficulty,
             };

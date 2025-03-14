@@ -45,7 +45,7 @@ export function gameLoop(mainGameloopObject, gameLoopObjectArray) {
                 if (!botGameState.activeTetromino) {
                     [botGameState.activeTetromino, botGameState.tetrominoType] = selectRandomTetromino(botGameState, TETROMINOES);
                 }
-                makeBotMove(mainGameloopObject.botGameLoopObjects[i], gameLoopObjectArray)
+                makeBotMove(deltaTime, mainGameloopObject.botGameLoopObjects[i], gameLoopObjectArray)
                 updateGame(deltaTime,mainGameloopObject.botGameLoopObjects[i], gameLoopObjectArray)
             } else {
                 botGameState.isGameOver = true
