@@ -3,6 +3,7 @@ const app = express();
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
+const clientIo = require('socket.io-client');
 const io = new Server(server, {
   cors:{
       origin: "http://localhost:5173",
@@ -44,23 +45,29 @@ io.on('connection', (socket) => {
   });
 
   socket.on('users', (roomId, callback) => {
-    const clients = io.sockets.adapter.rooms.get(roomId)
-    console.log("clients: ", clients, socket.id)
+    const clients = io.sockets.adapter.rooms.get(roomId);
+    console.log("clients: ", clients, socket.id);
+  
     if (clients) {
       const users = [...clients].map((clientId) => {
         const clientSocket = io.sockets.sockets.get(clientId);
+      
+        const isBot = clientSocket.userName && clientSocket.userName.includes("Bot");
+  
         return {
           name: clientSocket.userName,
-          socketId: clientSocket.id
-        }
-      })
-      console.log(users)
-      callback(users)
-    } else {callback([])}
-  })
+          socketId: clientSocket.id,
+          isBot: isBot || false,  
+        };
+      });
+  
+      callback(users);
+    } else {
+      callback([]);
+    }
+  });
 
   socket.on('join', (roomId, userName, callback) => {
-    console.log("roomId:", roomId)
     if(!socket.rooms.has(roomId)){
       socket.userName = userName
       // socket.userId = userId
@@ -142,6 +149,29 @@ io.on('connection', (socket) => {
   });
 
 
+  socket.on('joinBot', (roomId, botName, callback) => {
+    console.log("roomId:", roomId);
+    console.log("botName:", botName);
+  
+    const botSocketClient = clientIo.connect('http://localhost:4000');  
+  
+    botSocketClient.on('connect', () => {
+      console.log(`${botName} bot connected`);
+
+      botSocketClient.isBot = true
+  
+      botSocketClient.emit('join', roomId, botName, (users) => {
+        console.log(`${botName} joined the room`);
+  
+        io.to(roomId).emit('updateUsers', users);
+  
+        callback(users);
+      });
+    });
+  
+  });
+
+  
 });
 
 server.listen(PORT, () => {

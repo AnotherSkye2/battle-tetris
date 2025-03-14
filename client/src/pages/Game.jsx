@@ -14,9 +14,9 @@ import { updateLeaderboard } from '../methods/gameScore.js';
 import { createGameMenu } from '../methods/createGameMenu.js';
 import { deleteBoard } from '../methods/deleteBoard.js';
 import { checkGameWin } from '../methods/gameOver.js';
+import { extractDifficultyFromName } from '../botMethods/extractDifficultyFromName.js';
 
 export default function Game() {
-
 
     const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(userNames, userName);
 
@@ -39,6 +39,38 @@ export default function Game() {
         }
     })
 
+    const botGameLoopObjects = [];
+
+    userNames.forEach((username) => {
+        if (username.isBot) {
+            const difficulty = extractDifficultyFromName(username.name);
+
+            // create botgameLoopObject for each bot 
+            const botGameLoopObject = {
+                timestamp: 0,
+                gameGridArray: gameGridArray, 
+                tetrominoes: TETROMINOES,
+                position: { row: 0, col: 3 }, 
+                gameBoardGrid: gameBoardGrid,
+                gameState: {
+                    activeTetromino: null, 
+                    tetrominoType: '', 
+                },
+                opponentGridDataArray: opponentGridDataArray,
+                userScoreElementArray: userScoreElementArray,
+                users: [],
+                socket: socket,
+                isBotGame: true, 
+                lastMoveTime: 0, 
+                botName: username.name, 
+                difficulty: difficulty
+            };
+
+            botGameLoopObjects.push(botGameLoopObject); 
+        }
+    });
+
+    
     const gameloopObject = {
         timestamp: 0,
         gameGridArray: gameGridArray,
@@ -49,24 +81,28 @@ export default function Game() {
         opponentGridDataArray: opponentGridDataArray,
         userScoreElementArray: userScoreElementArray,
         users: [],
-        socket: socket
+        socket: socket,
+        isBotGame: false,
+        botGameLoopObjects: botGameLoopObjects
     } 
 
-    console.log(gameloopObject)
+    gameloopObject.botGameLoopObjects = botGameLoopObjects;
+    console.log("BOT GAME LOOPS", botGameLoopObjects)
+    console.log("gamingLOOP", gameloopObject)
 
     if (socket) {
-        console.log(socket)
+        console.log("socket",socket)
         socket.connect();
         socket.emit('join', roomId, userName, (roomUsers) => {
             console.log("roomUsers, socket.id", roomUsers, socket.id)
         });
         socket.emit('users', roomId, (users) => {
-            console.log("users: ", users, socket.id)
+            console.log("users emitting: ", users, socket.id)
             gameloopObject.users = users
         })
         socket.on('join', (user) => {
             console.log(user)
-            socket.emit('users', roomId, (users) => {
+            socket.emit('users joining', roomId, (users) => {
                 console.log("users: ", users, socket.id)
                 gameloopObject.users = users
             })
@@ -136,14 +172,14 @@ export default function Game() {
         window.addEventListener("pagehide", listener);
     }   
 
-    console.log(gameBoardElement, gameBoardGrid, gameGridArray)
+    console.log("testerr",gameBoardElement, gameBoardGrid, gameGridArray)
 
     renderGameBoard(gameBoardGrid, gameGridArray);
 
     gameLoop(gameloopObject)
 
-
-startTimer()
+    
+    startTimer()
 
 
     arrowUp$.subscribe(() => {

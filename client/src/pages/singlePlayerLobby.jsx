@@ -13,30 +13,19 @@ export default function SinglePlayerLobby(){
       console.log("Reconnecting socket...");
       socket.connect();
     }
-  
+
     socket.on("connect", () => {
       console.log("Socket connected!", socket.id);
     });
-  
+
+    const userName = `Player`;
+    socket.emit('join', roomId, userName, (users) => {
+      console.log("Player joined:", userName);
+      setUsers(users);  // Set initial users list
+    });
+
     return () => {
       socket.off("connect");
-    };
-  }, []);
-
-  useEffect(() => {
-    const userName = `Player`; 
-
-    socket.emit('join', roomId, userName, (users) => {
-      console.log("emitted join")
-      setUsers(users); 
-    });
-
-    socket.on('join', (user) => {
-      setUsers((prevUsers) => [...prevUsers, user]);
-    });
-
-    return () => {
-      socket.off('join'); 
     };
   }, [roomId]);
 
@@ -48,19 +37,20 @@ export default function SinglePlayerLobby(){
   };
 
 
-  const handleAddBot = () => {
+  const handleAddBot = (difficulty) => {
     if (users.length >= 4) {
-      return; 
+      return;
     }
-    const botName = `Bot ${users.length + 1} <bot difficulty placeholder>`;
-    const newUser = { name: botName, socketId: `bot-${users.length + 1}` }; 
+    const botName = `Bot ${users.length + 1} (${difficulty})`;
+    const newUser = { 
+      name: botName, 
+    };
   
     setUsers([...users, newUser]);
     sessionStorage.setItem("userNames", JSON.stringify([...users, newUser]));
   
-
-    socket.emit("join", roomId, botName, (updatedUsers) => {
-      setUsers(updatedUsers); 
+    socket.emit("joinBot", roomId, botName, (updatedUsers) => {
+      setUsers(updatedUsers);
       sessionStorage.setItem("userNames", JSON.stringify(updatedUsers));
     });
   };
@@ -88,7 +78,12 @@ export default function SinglePlayerLobby(){
                <li key={i}>{user.name}</li>
               ))}
             </ul>
-            <button className="pixel-corners" onClick={handleAddBot}>Add Bot</button>
+            <div>
+            <button className="pixel-corners" onClick={() => handleAddBot("Easy")}>Add Easy Bot</button>
+            <button className="pixel-corners" onClick={() => handleAddBot("Medium")}>Add Medium Bot</button>
+            <button className="pixel-corners" onClick={() => handleAddBot("Hard")}>Add Hard Bot</button>
+          </div>
+            
               <button className='pixel-corners' onClick={handleStart}>Start!</button>
             </div>
           </div>
