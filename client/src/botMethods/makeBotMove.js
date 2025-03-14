@@ -5,7 +5,7 @@ export default function makeBotMove(deltaTime, botGameloopObject, gameLoopObject
     botGameloopObject.timeSinceLastBotMove += deltaTime
     if (botGameloopObject.timeSinceLastBotMove >= botGameloopObject.botMoveTimeInterval) {
         console.log("makeBotMove:", botGameloopObject, gameLoopObjectArray)
-        const tetrominoProfiles = getTetrominoProfiles(botGameloopObject.gameState.activeTetromino, 2)
+        const tetrominoProfiles = getTetrominoProfiles(botGameloopObject.gameState.activeTetromino, botGameloopObject.profileDepth)
         console.log(tetrominoProfiles)
         left(botGameloopObject)
         botGameloopObject.timeSinceLastBotMove = 0

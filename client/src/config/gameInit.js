@@ -68,6 +68,7 @@ export default function gameInit() {
                 timeSinceLastMove: 0, 
                 timeSinceLastBotMove: 0, 
                 botMoveTimeInterval: 1000, 
+                profileDepth: difficulty == "Easy" ? 1 : 2, 
                 botName: username.name, 
                 difficulty: difficulty,
             };
