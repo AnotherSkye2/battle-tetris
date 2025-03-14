@@ -66,6 +66,7 @@ export default function gameInit() {
                 socket: socket,
                 isBotGame: true, 
                 timeSinceLastMove: 0, 
+                timeSinceLastBotMove: 0, 
                 botName: username.name, 
                 difficulty: difficulty,
             };

@@ -10,6 +10,7 @@ import { addScore, updateLeaderboard } from './gameScore.js';
 import { socket } from '../socket.js';
 import { addLines } from './addLine.js';
 import { TETROMINOES } from "../methods/tetrominoes.js";
+import makeBotMove from '../botMethods/makeBotMove.js';
 
 let lastTime = 0;
 
@@ -39,7 +40,17 @@ export function gameLoop(mainGameloopObject, gameLoopObjectArray) {
 
     if(mainGameloopObject.botGameLoopObjects.length >= 1){
         for(let i = 0; i < mainGameloopObject.botGameLoopObjects.length; i++) {
-            updateGame(deltaTime,mainGameloopObject.botGameLoopObjects[i], gameLoopObjectArray)
+            const botGameState = mainGameloopObject.botGameLoopObjects[i].gameState
+            if (!botGameState.gameOverPending && !botGameState.isGameOver) {
+                if (!botGameState.activeTetromino) {
+                    [botGameState.activeTetromino, botGameState.tetrominoType] = selectRandomTetromino(botGameState, TETROMINOES);
+                }
+                makeBotMove(mainGameloopObject.botGameLoopObjects[i], gameLoopObjectArray)
+                updateGame(deltaTime,mainGameloopObject.botGameLoopObjects[i], gameLoopObjectArray)
+            } else {
+                botGameState.isGameOver = true
+                mainGameloopObject.gameState.gameOverPending = false; 
+            }
         }
     }
 
