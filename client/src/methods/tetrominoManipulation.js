@@ -1,5 +1,6 @@
 
 export function placeTetromino(gameloopObject){
+
     const {row,col} = gameloopObject.position
     const tetromino = gameloopObject.gameState.activeTetromino
     const type = gameloopObject.gameState.tetrominoType
@@ -36,6 +37,8 @@ export function rotateTetromino(matrix){
 
 
 export function clearTetromino(gameloopObject) {
+
+    console.log("clearTetro",gameloopObject)
     const tetromino = gameloopObject.gameState.activeTetromino
     const type = gameloopObject.gameState.tetrominoType
     const { row, col } = gameloopObject.position;

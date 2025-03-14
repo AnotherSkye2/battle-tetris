@@ -5,3 +5,8 @@ export default function extractDifficultyFromName(botName) {
     }
     return null;  
 }
+
+
+//  left right rotate lowestPoint
+
+// leida kohta kus uus tetromino peab olema (tetromino position), 
