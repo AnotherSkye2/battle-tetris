@@ -2,12 +2,9 @@ export function selectRandomTetromino(gameState, tetrominoes) {
     console.log("bag", gameState.bag, tetrominoes, Object.keys(tetrominoes))
     if (gameState.bag.length === 0) {
         gameState.bag = Object.keys(tetrominoes);  
-        console.log("bag", gameState.bag)
         shuffleBag(gameState);  
-        console.log("bag", gameState.bag)
     }
     const randomKey = gameState.bag.pop(); 
-    console.log("bag", gameState.bag)
     if(!randomKey){
         return
     } 
