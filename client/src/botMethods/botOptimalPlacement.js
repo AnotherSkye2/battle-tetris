@@ -50,5 +50,12 @@ export function botMostOptimalPlacement(botLoopObject) {
     }
     // botLoopObject.position = bestPosition;
 
+    if (leftCol > 0 && bestPosition.col == 0) {
+        bestPosition.col -= 1
+    }
+    if (rightCol > 0 && bestPosition.col == 19) {
+        bestPosition.col += 1
+    }
+
     return bestPosition
 }

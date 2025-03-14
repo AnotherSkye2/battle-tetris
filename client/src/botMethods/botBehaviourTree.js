@@ -7,6 +7,7 @@ export default function botBehaviourTree(currentPosition, nextPosition, botGamel
         right(botGameloopObject)
     } else {
         drop(botGameloopObject, gameLoopObjectArray)
+        botGameloopObject.nextPosition = null
     }
     console.log("nextPosition, currentPosition", nextPosition, currentPosition)
 
