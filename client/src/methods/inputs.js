@@ -46,7 +46,7 @@ export function down(gameloopObject) {
 export function left(gameloopObject) {
     const gameState = gameloopObject.gameState
 
-    console.log("arrowLeft")
+
     if (gameState.isGamePaused || gameState.isGameOver) return;
     if(!gameState.activeTetromino){
         return
@@ -66,7 +66,7 @@ export function left(gameloopObject) {
 export function right(gameloopObject) {
     const gameState = gameloopObject.gameState
 
-    console.log("arrowRight")
+
     if (gameState.isGamePaused || gameState.isGameOver) return;
     if(!gameState.activeTetromino){
         return

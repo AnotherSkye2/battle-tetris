@@ -54,7 +54,7 @@ export default function Game() {
     })
 
     arrowLeft$.subscribe(() => {
-        console.log("arrowLeft")
+        console.log("arrowLeft", gameloopObject.position)
         if (gameState.isGamePaused || gameState.isGameOver) return;
         if(!gameState.activeTetromino){
             return
@@ -72,7 +72,7 @@ export default function Game() {
     });
 
     arrowRight$.subscribe(() =>{
-        console.log("arrowRight")
+        console.log("arrowRight", gameloopObject.position)
         if (gameState.isGamePaused || gameState.isGameOver) return;
         if(!gameState.activeTetromino){
             return

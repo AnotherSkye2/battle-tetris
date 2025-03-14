@@ -10,7 +10,6 @@ export default function getTetrominoProfiles(tetromino, depth) {
                 if (tetromino[r][c] === "" && tetromino[r - 1][c] !== "") {profile.push(0)}
             }
         }
-        console.log("profile", profile)
         tetrominoProfiles.unshift(profile)
     }
     return tetrominoProfiles
