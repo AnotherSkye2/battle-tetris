@@ -1,11 +1,16 @@
 export default function getTetrominoProfiles(tetromino, depth) {
-    console.log("before filter", tetromino)
     tetromino = tetromino.filter(row => row.some(cell => cell !== ""))
-    console.log("after filter",tetromino)
     let tetrominoProfiles = [];
     for(let r = tetromino.length - 1; r >= tetromino.length - depth; r--){
-        console.log("tetromino row", tetromino[r])
-        tetrominoProfiles.push(tetromino[r])
+        const profile = [];
+        for(let c =0; c < tetromino[r].length; c++) {
+            if (tetromino[r][c] !== "") {profile.push(1)}
+            if (r > 0) {
+                if (tetromino[r][c] === "" && tetromino[r - 1][c] !== "") {profile.push(0)}
+            }
+        }
+        console.log("profile", profile)
+        tetrominoProfiles.unshift(profile)
     }
     return tetrominoProfiles
 }
