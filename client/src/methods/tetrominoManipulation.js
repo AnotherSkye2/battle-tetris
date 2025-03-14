@@ -1,5 +1,6 @@
 
 export function placeTetromino(gameloopObject){
+    console.log("gameloopObject:", gameloopObject)
     const {row,col} = gameloopObject.position
     const tetromino = gameloopObject.gameState.activeTetromino
     const type = gameloopObject.gameState.tetrominoType

@@ -40,7 +40,7 @@ export default function Game() {
     })
 
     const botGameLoopObjects = [];
-
+    let botIndex = 0;
     userNames.forEach((username) => {
         if (username.isBot) {
             const difficulty = extractDifficultyFromName(username.name);
@@ -48,24 +48,34 @@ export default function Game() {
             // create botgameLoopObject for each bot 
             const botGameLoopObject = {
                 timestamp: 0,
-                gameGridArray: gameGridArray, 
+                gameGridArray: opponentGridDataArray[botIndex].gameGridArray, 
                 tetrominoes: TETROMINOES,
                 position: { row: 0, col: 3 }, 
                 gameBoardGrid: gameBoardGrid,
                 gameState: {
                     activeTetromino: null, 
-                    tetrominoType: '', 
+                    tetrominoType: null, 
+                    isGameOver: false, 
+                    isGamePaused: false, 
+                    isTimerRunning: false, 
+                    gameScore: 0, 
+                    gameOverPending: false, 
+                    bag: [], 
+                    targetingMethod: "random", 
+                    target: null, 
+                    garbageLines: 0, 
+                    level: 1, 
+                    timeSinceLastLevel: 0
                 },
-                opponentGridDataArray: opponentGridDataArray,
                 userScoreElementArray: userScoreElementArray,
                 users: [],
                 socket: socket,
                 isBotGame: true, 
-                lastMoveTime: 0, 
+                timeSinceLastMove: 0, 
                 botName: username.name, 
                 difficulty: difficulty
             };
-
+            botIndex++
             botGameLoopObjects.push(botGameLoopObject); 
         }
     });
@@ -83,6 +93,7 @@ export default function Game() {
         users: [],
         socket: socket,
         isBotGame: false,
+        timeSinceLastMove: 0, 
         botGameLoopObjects: botGameLoopObjects
     } 
 
