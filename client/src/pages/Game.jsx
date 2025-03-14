@@ -1,10 +1,10 @@
-import { renderGameBoard,InitializeGameBoard } from '../methods/gameBoard.js';
+import { renderGameBoard } from '../methods/gameBoard.js';
 import { placeTetromino,rotateTetromino,clearTetromino } from '../methods/tetrominoManipulation.js';
 import { moveTetrominoDown,moveTetrominoLeft,moveTetrominoRight,moveTetrominoLowestPoint } from '../methods/tetrominoMoves.js';
 import { checkCollisions } from '../methods/collisionCheck.js';
 import { gameLoop } from '../methods/gameLoop.js';
 import { arrowDown$,arrowLeft$,arrowRight$,arrowUp$,spaceBar$,escKey$ } from '../methods/observables.js';
-import { position,gameState,roomId, userName, userNames } from '../methods/gameDefaultValues.js';
+import { position,gameState,roomId, userName} from '../methods/gameDefaultValues.js';
 import { socket } from '../socket.js';
 import { startTimer } from '../methods/createTimer.js';
 import gameInit from '../config/gameInit.js';
@@ -13,7 +13,7 @@ import gameInit from '../config/gameInit.js';
 export default function Game() {
 
     const { gameloopObject, gameLoopObjectArray } = gameInit()
-    gameLoop(gameloopObject)
+    gameLoop(gameloopObject, gameLoopObjectArray)
     
     startTimer()
     
@@ -94,7 +94,7 @@ export default function Game() {
 
         clearTetromino(gameloopObject)
 
-        moveTetrominoLowestPoint(gameloopObject);
+        moveTetrominoLowestPoint(gameloopObject, gameLoopObjectArray);
 
         renderGameBoard(gameloopObject.gameBoardGrid, gameloopObject.gameGridArray);
         

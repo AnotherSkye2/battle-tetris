@@ -75,7 +75,7 @@ export function moveTetrominoRight(gameloopObject){
    position.col += 1
 }
 
-export function moveTetrominoLowestPoint(gameloopObject) {
+export function moveTetrominoLowestPoint(gameloopObject, gameLoopObjectArray) {
     const tetromino = gameloopObject.gameState.activeTetromino
     const position = gameloopObject.position
     const gameGridArray = gameloopObject.gameGridArray
@@ -102,11 +102,17 @@ export function moveTetrominoLowestPoint(gameloopObject) {
             // TESTING ONLY
             console.log("users, target", users, target)
             if (users[i].name === target) {
-                console.log("garbage send", users, target)
-                if (!gameloopObject.isBotGame) {
-                    socket.emit('garbage', users[i].socketId, clearedLines)
+                console.log("garbage send", users, target, gameloopObject)
+                if (gameloopObject.isBotGame) {
+                    for (let i = 0; i < gameLoopObjectArray.length; i++) {
+                        console.log("gameLoopObjectArray, target: ", gameLoopObjectArray, target)
+                        if ( gameLoopObjectArray[i].name == target) {
+                            gameLoopObjectArray[i].gameState.garbageLines += clearedLines
+                        }
+                    }
                 } else {
-                    console.log(`send ${clearedLines} to:`, target)
+                    console.log("garbage emit")
+                    socket.emit('garbage', users[i].socketId, clearedLines)
                 }
             }
         }

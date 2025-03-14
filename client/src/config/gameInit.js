@@ -71,6 +71,7 @@ export default function gameInit() {
             };
             botIndex++
             botGameLoopObjects.push(botGameLoopObject); 
+            gameLoopObjectArray.push(botGameLoopObject)
         }
     });
 
@@ -90,7 +91,7 @@ export default function gameInit() {
         timeSinceLastMove: 0, 
         botGameLoopObjects: botGameLoopObjects
     } 
-
+    gameLoopObjectArray.push(gameloopObject)
     gameloopObject.botGameLoopObjects = botGameLoopObjects;
     console.log("BOT GAME LOOPS", botGameLoopObjects)
     console.log("gamingLOOP", gameloopObject)
@@ -177,7 +178,7 @@ export default function gameInit() {
         window.addEventListener("pagehide", listener);
     }   
 
-    console.log("testerr",gameBoardElement, gameBoardGrid, gameGridArray)
+    console.log("gameBoardElement, gameBoardGrid, gameGridArray, gameLoopObjectArray",gameBoardElement, gameBoardGrid, gameGridArray, gameLoopObjectArray)
 
     renderGameBoard(gameBoardGrid, gameGridArray);
 

@@ -13,7 +13,7 @@ import { TETROMINOES } from "../methods/tetrominoes.js";
 
 let lastTime = 0;
 
-export function gameLoop(mainGameloopObject) {
+export function gameLoop(mainGameloopObject, gameLoopObjectArray) {
     if(mainGameloopObject.gameState.isGameOver || mainGameloopObject.gameState.isGamePaused ){
         return;
     }
@@ -39,11 +39,11 @@ export function gameLoop(mainGameloopObject) {
 
     if(mainGameloopObject.botGameLoopObjects.length >= 1){
         for(let i = 0; i < mainGameloopObject.botGameLoopObjects.length; i++) {
-            updateGame(deltaTime,mainGameloopObject.botGameLoopObjects[i])
+            updateGame(deltaTime,mainGameloopObject.botGameLoopObjects[i], gameLoopObjectArray)
         }
     }
 
-    updateGame(deltaTime, mainGameloopObject);  
+    updateGame(deltaTime, mainGameloopObject, gameLoopObjectArray);  
     renderGameBoard(mainGameloopObject.gameBoardGrid, mainGameloopObject.gameGridArray);
 
     if (mainGameloopObject.socket) {   
@@ -61,16 +61,15 @@ export function gameLoop(mainGameloopObject) {
                 mainGameloopObject.botGameLoopObjects[i].timestamp = newTimestamp
             }
         }
-        gameLoop(mainGameloopObject)
+        gameLoop(mainGameloopObject, gameLoopObjectArray)
     }); 
 }
 
-function updateGame(deltaTime,gameloopObject){
+function updateGame(deltaTime,gameloopObject, gameLoopObjectArray){
     const moveInterval = levelMoveIntervals[gameloopObject.gameState.level]
     gameloopObject.timeSinceLastMove += deltaTime;
     gameloopObject.gameState.timeSinceLastLevel += deltaTime;
     if(gameloopObject.timeSinceLastMove >= moveInterval) {
-        console.log("gameloopObject:" , gameloopObject)
         clearTetromino(gameloopObject);
         const moved = moveTetrominoDown(gameloopObject)
         if(!moved){
@@ -91,8 +90,13 @@ function updateGame(deltaTime,gameloopObject){
                     console.log("users, target", users, target)
                     if (users[i].name === target) {
                         console.log("garbage send", users, target)
-                        if (gameState.isBotGame) {
-                            gameloopObject.botGameLoopObjects
+                        if (gameloopObject.isBotGame) {
+                            for (let i = 0; i < gameLoopObjectArray.length; i++) {
+                                console.log(gameLoopObjectArray, target)
+                                if ( gameLoopObjectArray[i].name == target) {
+                                    gameLoopObjectArray[i].gameState.garbageLines += clearedLines
+                                }
+                            }
                         } else {
                             socket.emit('garbage', users[i].socketId, clearedLines)
                         }

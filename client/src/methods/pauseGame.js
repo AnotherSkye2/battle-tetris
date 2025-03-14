@@ -9,11 +9,11 @@ export function pauseGame(gameState){
 
 
 
-export function resumeGame(gameloopObject) {
+export function resumeGame(gameloopObject, gameLoopObjectArray) {
     if (!gameloopObject.gameState.isGamePaused && !gameloopObject.gameState.isGameOver) return; 
     gameloopObject.gameState.isGamePaused = false;
     requestAnimationFrame((timestamp) => {
         gameloopObject.timestamp = timestamp
-        gameLoop(gameloopObject)
+        gameLoop(gameloopObject, gameLoopObjectArray)
     });
 }
