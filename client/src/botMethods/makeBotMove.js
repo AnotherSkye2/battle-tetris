@@ -6,7 +6,9 @@ export default function makeBotMove(deltaTime, botGameloopObject, gameLoopObject
     if (botGameloopObject.timeSinceLastBotMove >= botGameloopObject.botMoveTimeInterval) {
         console.log("makeBotMove:", botGameloopObject, gameLoopObjectArray)
 
-        // botMostOptimalPlacement(botGameloopObject,gameLoopObjectArray)
+        const bestPosition = botMostOptimalPlacement(botGameloopObject,gameLoopObjectArray)
+
+        console.log("best position", bestPosition)
 
         // left(botGameloopObject, gameLoopObjectArray)
         botGameloopObject.timeSinceLastBotMove = 0
