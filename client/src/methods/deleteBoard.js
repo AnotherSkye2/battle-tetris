@@ -1,4 +1,4 @@
-export function deleteBoard(userName){
+export default function deleteBoard(userName){
     console.log(userName)
     const userNames = document.querySelectorAll(".name.micro-5-regular")
     

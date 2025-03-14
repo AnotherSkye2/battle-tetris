@@ -1,5 +1,4 @@
-
-export function createGameMenu() {
+export default function createGameMenu() {
     const gameMenu = document.createElement("div");
     gameMenu.id = "game-menu";
     gameMenu.classList.add("game-menu", "pixel-corners--wrapper");

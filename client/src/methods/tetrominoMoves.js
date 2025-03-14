@@ -2,7 +2,7 @@ import { placeTetromino } from "./tetrominoManipulation.js";
 import { checkCollisions } from "./collisionCheck.js";
 import { clearFullLine } from "./clearLine.js";
 import { addScore, updateLeaderboard } from "./gameScore.js";
-import { timeToLevelUp, userName } from "./gameDefaultValues.js";
+import { timeToLevelUp } from "./gameDefaultValues.js";
 import { socket } from "../socket.js";
 import { addLines } from "./addLine.js";
 
@@ -91,17 +91,23 @@ export function moveTetrominoLowestPoint(gameloopObject) {
     placeTetromino(gameloopObject);
     let { newBoard, clearedLines } = clearFullLine(gameloopObject.gameGridArray);
     const score = addScore(clearedLines, gameloopObject)
-    updateLeaderboard(score, userName, gameloopObject)
-    if (clearedLines > 0) {
+    updateLeaderboard(score, gameloopObject.name, gameloopObject)
+    if (clearedLines > 1) {
         const users = gameloopObject.users
         let target = gameloopObject.gameState.target
+        console.log(users, target)
         for (let i = 0; i < users.length; i++) {
             // TESTING ONLY
-            if (!target && users[i].name != userName) {target = users[i].name}
+            if (!target && users[i].name != gameloopObject.name) {target = users[i].name}
             // TESTING ONLY
             console.log("users, target", users, target)
             if (users[i].name === target) {
-                socket.emit('garbage', users[i].socketId, clearedLines)
+                console.log("garbage send", users, target)
+                if (!gameloopObject.isBotGame) {
+                    socket.emit('garbage', users[i].socketId, clearedLines)
+                } else {
+                    console.log(`send ${clearedLines} to:`, target)
+                }
             }
         }
     }

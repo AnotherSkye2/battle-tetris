@@ -6,7 +6,6 @@ export const arrowUp$ = fromEvent(document, "keydown").pipe(
 );
 export const arrowDown$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "ArrowDown"),
-    throttleTime(100)  
 );
 export const arrowLeft$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "ArrowLeft"),

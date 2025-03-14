@@ -5,15 +5,16 @@ import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
 import { checkGameOver,checkGameWin,gameOver } from './gameOver.js';
-import { gameState, levelMoveIntervals, roomId, timeToLevelUp, userName } from '../methods/gameDefaultValues.js';
+import { gameState, levelMoveIntervals, roomId, timeToLevelUp } from '../methods/gameDefaultValues.js';
 import { addScore, updateLeaderboard } from './gameScore.js';
 import { socket } from '../socket.js';
 import { addLines } from './addLine.js';
+import { TETROMINOES } from "../methods/tetrominoes.js";
 
 let lastTime = 0;
 
-export function gameLoop(gameloopObject) {
-    if(gameloopObject.gameState.isGameOver || gameloopObject.gameState.isGamePaused ){
+export function gameLoop(mainGameloopObject) {
+    if(mainGameloopObject.gameState.isGameOver || mainGameloopObject.gameState.isGamePaused ){
         return;
     }
 
@@ -22,45 +23,45 @@ export function gameLoop(gameloopObject) {
         gameOver(); 
         return;
     }
-    if (gameloopObject.gameState.gameOverPending) {
+    if (mainGameloopObject.gameState.gameOverPending) {
         gameOver(); 
-        gameloopObject.gameState.gameOverPending = false; 
+        mainGameloopObject.gameState.gameOverPending = false; 
         return;
     }
 
-    const deltaTime = gameloopObject.timestamp - lastTime;
-    lastTime = gameloopObject.timestamp;
+    const deltaTime = mainGameloopObject.timestamp - lastTime;
+    lastTime = mainGameloopObject.timestamp;
 
 
     if (!gameState.activeTetromino) {
-        [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.gameState,gameloopObject.tetrominoes);
+        [mainGameloopObject.gameState.activeTetromino, mainGameloopObject.gameState.tetrominoType] = selectRandomTetromino(mainGameloopObject.gameState, TETROMINOES);
     }
 
-    if(gameloopObject.botGameLoopObjects.length >= 1){
-        for(let i = 0; i < gameloopObject.botGameLoopObjects.length; i++) {
-            updateGame(deltaTime,gameloopObject.botGameLoopObjects[i])
+    if(mainGameloopObject.botGameLoopObjects.length >= 1){
+        for(let i = 0; i < mainGameloopObject.botGameLoopObjects.length; i++) {
+            updateGame(deltaTime,mainGameloopObject.botGameLoopObjects[i])
         }
     }
 
-    updateGame(deltaTime, gameloopObject);  
-    renderGameBoard(gameloopObject.gameBoardGrid, gameloopObject.gameGridArray);
+    updateGame(deltaTime, mainGameloopObject);  
+    renderGameBoard(mainGameloopObject.gameBoardGrid, mainGameloopObject.gameGridArray);
 
-    if (gameloopObject.socket) {   
-        gameloopObject.socket.emit('board state', roomId, gameloopObject.gameGridArray)
-        for (let i = 0; i < gameloopObject.opponentGridDataArray.length; i++) {
-            const opponentGameBoardGrid = gameloopObject.opponentGridDataArray[i].gameBoardGrid 
-            const opponentGameGridArray = gameloopObject.opponentGridDataArray[i].gameGridArray 
+    if (mainGameloopObject.socket) {   
+        mainGameloopObject.socket.emit('board state', roomId, mainGameloopObject.gameGridArray)
+        for (let i = 0; i < mainGameloopObject.opponentGridDataArray.length; i++) {
+            const opponentGameBoardGrid = mainGameloopObject.opponentGridDataArray[i].gameBoardGrid 
+            const opponentGameGridArray = mainGameloopObject.opponentGridDataArray[i].gameGridArray 
             renderGameBoard(opponentGameBoardGrid, opponentGameGridArray)
         }
     }
     requestAnimationFrame((newTimestamp) => {
-        gameloopObject.timestamp = newTimestamp
-        if(gameloopObject.botGameLoopObjects.length >= 1){
-            for(let i = 0; i < gameloopObject.botGameLoopObjects.length; i++) {
-                gameloopObject.botGameLoopObjects[i].timestamp = newTimestamp
+        mainGameloopObject.timestamp = newTimestamp
+        if(mainGameloopObject.botGameLoopObjects.length >= 1){
+            for(let i = 0; i < mainGameloopObject.botGameLoopObjects.length; i++) {
+                mainGameloopObject.botGameLoopObjects[i].timestamp = newTimestamp
             }
         }
-        gameLoop(gameloopObject)
+        gameLoop(mainGameloopObject)
     }); 
 }
 
@@ -77,19 +78,24 @@ function updateGame(deltaTime,gameloopObject){
 
             let { newBoard, clearedLines } = clearFullLine(gameloopObject.gameGridArray);
             const score = addScore(clearedLines, gameloopObject)
-            updateLeaderboard(score, userName, gameloopObject)
+            updateLeaderboard(score, gameloopObject.name, gameloopObject)
 
             if (clearedLines > 1) {
                 const users = gameloopObject.users
                 let target = gameloopObject.gameState.target
+                console.log(users, target)
                 for (let i = 0; i < users.length; i++) {
                     // TESTING ONLY
-                    if (!target && users[i].name != userName) {target = users[i].name}
+                    if (!target && users[i].name != gameloopObject.name) {target = users[i].name}
                     // TESTING ONLY
                     console.log("users, target", users, target)
                     if (users[i].name === target) {
                         console.log("garbage send", users, target)
-                        socket.emit('garbage', users[i].socketId, clearedLines)
+                        if (gameState.isBotGame) {
+                            gameloopObject.botGameLoopObjects
+                        } else {
+                            socket.emit('garbage', users[i].socketId, clearedLines)
+                        }
                     }
                 }
             }
@@ -113,7 +119,7 @@ function updateGame(deltaTime,gameloopObject){
                 gameloopObject.gameState.gameOverPending = true; 
                 return;
             }
-            [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.gameState,gameloopObject.tetrominoes);
+            [gameloopObject.gameState.activeTetromino, gameloopObject.gameState.tetrominoType] = selectRandomTetromino(gameloopObject.gameState, TETROMINOES);
             gameloopObject.position.row = 0;
             gameloopObject.position.col = 4; 
 
