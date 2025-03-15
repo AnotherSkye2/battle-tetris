@@ -150,8 +150,7 @@ io.on('connection', (socket) => {
 
 
   socket.on('joinBot', (roomId, botName, callback) => {
-    console.log("roomId:", roomId);
-    console.log("botName:", botName);
+
   
     const botSocketClient = clientIo.connect('http://localhost:4000');  
   

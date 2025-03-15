@@ -18,7 +18,6 @@ export function moveTetrominoDown(gameloopObject){
     }
     const collisionDetected= checkCollisions(tetromino,position,"down",gameGridArray)
     if(collisionDetected){
-        console.log("collisionDetected")
         placeTetromino(gameloopObject)
         return false;
     }
@@ -119,14 +118,11 @@ export function moveTetrominoLowestPoint(gameloopObject, gameLoopObjectArray) {
     }
     if (gameloopObject.gameState.garbageLines > 0) {
         newBoard = addLines(newBoard, gameloopObject.gameState.garbageLines)
-        console.log(newBoard, gameloopObject.gameGridArray)
         gameloopObject.gameState.garbageLines = 0
     }
 
-    console.log(gameloopObject.gameState.timeSinceLastLevel)
     if (gameloopObject.gameState.timeSinceLastLevel >= timeToLevelUp) {
         gameloopObject.gameState.level++
-        console.log("level up", gameloopObject.gameState.level)
         gameloopObject.gameState.timeSinceLastLevel = 0
     }
     

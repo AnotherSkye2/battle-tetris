@@ -116,13 +116,11 @@ function updateGame(deltaTime,gameloopObject, gameLoopObjectArray){
             }
             if (gameloopObject.gameState.garbageLines > 0) {
                 newBoard = addLines(newBoard, gameloopObject.gameState.garbageLines)
-                console.log(newBoard, gameloopObject.gameGridArray)
                 gameloopObject.gameState.garbageLines = 0
             }
 
             gameloopObject.gameGridArray.length = 0;
             gameloopObject.gameGridArray.push(...newBoard); 
-            console.log(gameState.timeSinceLastLevel)
             if (gameState.timeSinceLastLevel >= timeToLevelUp) {
                 gameloopObject.gameState.level++
                 console.log("level up", gameloopObject.gameState.level)

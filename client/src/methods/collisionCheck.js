@@ -72,12 +72,10 @@ export function checkCollisions(tetromino,position,direction,board){
             return true; 
     }
     if (wallCollisionCheck(tetromino, newPosition)) {
-        console.log("wallCollisionCheck")
         return true; 
     }
 
     if (tetrominoCollisionCheck(tetromino, newPosition, board)) {
-        console.log("tetrominoCollisionCheck")
        return true; 
    }
 

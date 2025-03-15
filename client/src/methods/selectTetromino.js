@@ -1,5 +1,4 @@
 export function selectRandomTetromino(gameState, tetrominoes) {
-    console.log("bag", gameState.bag, tetrominoes, Object.keys(tetrominoes))
     if (gameState.bag.length === 0) {
         gameState.bag = Object.keys(tetrominoes);  
         shuffleBag(gameState);  
@@ -8,7 +7,6 @@ export function selectRandomTetromino(gameState, tetrominoes) {
     if(!randomKey){
         return
     } 
-    console.log("selected tetetrroomino", tetrominoes[randomKey])
     const tetromino = tetrominoes[randomKey]
     const tetrominoType = getTetrominoType(tetromino)
     return [tetromino, tetrominoType];
@@ -17,7 +15,6 @@ export function selectRandomTetromino(gameState, tetrominoes) {
 function getTetrominoType(tetromino) {
     for (let r = 0; r < tetromino.length; r++) {
         for (let c = 0; c < tetromino[r].length; c++) {
-            console.log(tetromino[r][c])
             if (tetromino[r][c] !== "") { 
                 return tetromino[r][c]
             }

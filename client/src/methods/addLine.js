@@ -22,7 +22,7 @@ function generateGarbageLines(gameGridArray, lines) {
             linesToGenerate = 4;
             break;
         default:
-            console.log("generateGarbageLines: Not enough lines!", lines)
+            console.error("generateGarbageLines: Not enough lines!", lines)
             linesToGenerate = 0;
             break;
     }
