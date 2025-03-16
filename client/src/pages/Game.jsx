@@ -103,10 +103,8 @@ export default function Game() {
     escKey$.subscribe(() =>{
         console.log(gameState, socket)
         if (gameState.isGamePaused && !gameState.isGameOver && socket) {
-            console.log("resume")
             socket.emit("resume", {roomId,userName})
         }else{
-            console.log("pause")
             socket.emit('pause', { roomId,userName });
         }
     })

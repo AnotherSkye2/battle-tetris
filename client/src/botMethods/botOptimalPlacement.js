@@ -13,8 +13,6 @@ export function botMostOptimalPlacement(botLoopObject) {
 
     let leftCol, rightCol
     const tetrominoProfiles = getTetrominoProfiles(tetromino, botLoopObject.profileDepth)
-    const heightArray = getAggregateHeight(botLoopObject)
-    console.log("heightArray: ", heightArray)
 
 
 
@@ -59,40 +57,64 @@ export function botMostOptimalPlacement(botLoopObject) {
     let height = -1;
     let pos = null;
     let matchValue = 0;
+    let heightValue = gameGridArray.length;
     let bestMatchValue = 0;
-    const profile = tetrominoProfiles[0]
+    let bestMatchHeight = 0;
+    let loopCounter = 0;
+    const profile = tetrominoProfiles[tetrominoProfiles.length-1]
+    console.log("NEW TETROMINO FOR MATCH -------------------------------------------------------\n", botLoopObject.gameState.tetrominoType, profile)
+    const heightArray = getAggregateHeight(botLoopObject)
+    console.log("heightArray: ", heightArray)
 
-    for (let i = 0; i < heightArray.length; i++) {
-        if (height == -1) {
-            console.log("match: height", height)
-            height = heightArray[i]
-            pos = { row: gameGridArray.length - 1 - height, col: i}
+    for (let i = profile.length - 1; i < heightArray.length; i++) {
+        loopCounter++
+        if (loopCounter >= 30) {
+            console.error(`Placement search of ${botLoopObject.gameState.tetrominoType} looped too many times!`)
+            break
         }
-        if (!bestPosition || matchValue > bestMatchValue) {
-            console.log("full match", botLoopObject.gameState.tetrominoType, "matchValue: ", matchValue,  `\npos: ${JSON.stringify(pos)}`, `bestPosition: ${JSON.stringify(bestPosition)}`)
+        if (height == -1) {
+            height = heightArray[i]
+            pos = { row: gameGridArray.length - 1 - height, col: i - (profile.length - 1)}
+            console.log("match: set initial:", botLoopObject.gameState.tetrominoType, "height", height,"pos", pos)
+        }
+        heightValue = Math.max(...heightArray.slice(i - (profile.length - 1), i))
+        for (let j = profile.length - 1; j >= 0; j--) {
+            const checkHeight = heightArray[i - ((profile.length - 1) - j)]
+            console.log("check placement: height, i, matchValue, checkHeight", height, i, matchValue, checkHeight)
+            console.log(checkHeight == height+1 && profile[j] == 0 || (checkHeight == height && profile[j] == 1 ))
+            if (checkHeight == height+1 && profile[j] == 0 || (checkHeight == height && profile[j] == 1 )) {
+                if (checkHeight < height && profile[j] == 1) {
+                    height = heightValue
+                }
+                console.log("pos: ", pos)
+                console.log(botLoopObject.gameState.tetrominoType, "heightValue:", heightValue)
+                matchValue++
+            } else {
+                height = heightValue
+            }
+        }
+        
+        if (!bestPosition || matchValue > bestMatchValue || (heightValue < bestMatchHeight && matchValue == bestMatchValue) ) {
+            console.log("match: set pos", botLoopObject.gameState.tetrominoType, "matchValue: ", matchValue, "heightValue: ", heightValue,  `\npos: ${JSON.stringify(pos)}`)
             bestPosition = pos;
             bestMatchValue = matchValue
-            if (matchValue == profile.length) {
+            bestMatchHeight = heightValue
+            if (bestMatchValue == profile.length && bestMatchHeight == Math.min(...heightArray)) {
                 break
             }
         }
-        if (heightArray[i] == height && profile[matchValue] == 1 || heightArray[i] == height+1 && profile[matchValue] == 0) {
-            console.log("match!: heightArray[i], height, profile[matchValue], matchValue", heightArray[i], height, profile[matchValue], matchValue)
-            console.log("pos: ", pos)
-            matchValue++
-        } else {
-            height = -1
-            matchValue = 0
-            pos = null
-        }
+        matchValue = 0
+        heightValue = gameGridArray.length
+        height = -1
     }
     
-    if (leftCol && bestPosition.col <= 0) {
+    if (leftCol) {
         bestPosition.col -= leftCol
     }
-    if (rightCol && bestPosition.col >= 9) {
+    if (rightCol && bestPosition.col >= heightArray - profile.length) {
         bestPosition.col -= rightCol
     }
+
 
     const bestRotation = 0
     

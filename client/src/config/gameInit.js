@@ -9,6 +9,7 @@ import { pauseGame, resumeGame} from "../methods/pauseGame.js"
 import { startTimer} from "../methods/createTimer.js"
 import deleteBoard from "../methods/deleteBoard.js";
 import { checkGameWin } from "../methods/gameOver.js";
+import { TETROMINOES } from "../methods/tetrominoes.js";
 
 export default function gameInit() {
     const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(userNames, userName);
@@ -75,6 +76,11 @@ export default function gameInit() {
                 difficulty: difficulty,
             };
             botIndex++
+            // Testing!!!
+            botGameLoopObject.gameGridArray[19][0] = "g"
+            botGameLoopObject.gameGridArray[19][1] = "g"
+
+            // Testing!!!
             botGameLoopObjects.push(botGameLoopObject); 
             gameLoopObjectArray.push(botGameLoopObject)
         }
