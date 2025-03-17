@@ -19,6 +19,6 @@ export default function getEmptyTetrominoColumns(tetromino) {
         }
 
     }
-    console.log("leftCol, rightCol, tetromino: ", leftCol, rightCol, tetromino)
+    // console.log("leftCol, rightCol, tetromino: ", leftCol, rightCol, tetromino)
     return [leftCol, rightCol]
 }

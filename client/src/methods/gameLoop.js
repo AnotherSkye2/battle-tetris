@@ -121,9 +121,9 @@ function updateGame(deltaTime,gameloopObject, gameLoopObjectArray){
 
             gameloopObject.gameGridArray.length = 0;
             gameloopObject.gameGridArray.push(...newBoard); 
-            if (gameState.timeSinceLastLevel >= timeToLevelUp) {
+            if (gameState.timeSinceLastLevel >= timeToLevelUp && gameloopObject.gameState.level < 10) {
                 gameloopObject.gameState.level++
-                console.log("level up", gameloopObject.gameState.level)
+                console.log("level up", gameloopObject.gameState.level, gameState.timeSinceLastLevel, gameloopObject.name)
                 gameState.timeSinceLastLevel = 0
             }
 
