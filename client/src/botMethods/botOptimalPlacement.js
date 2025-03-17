@@ -50,14 +50,12 @@ export function botMostOptimalPlacement(botLoopObject) {
             for (let j = profile.length - 1; j >= 0; j--) {
                 const checkHeight = heightArray[i - ((profile.length - 1) - j)]
                 if (checkHeight > height && profile[j] == 0) {
-                    console.log("checkHeight, height: ", checkHeight, height)
                     height = checkHeight
                 }
                 if (checkHeight == height+profile[j]) {
                     // console.log("pos: ", pos)
                     // console.log(botLoopObject.gameState.tetrominoType, "maxHeight:", maxHeight)
                     matchValue++
-                    console.log("match data: ", botLoopObject.gameState.tetrominoType, `${checkHeight} == ${height} + ${profile[j]}`, profile)
                 } else if (profile[j] == 0 && checkHeight == maxHeight && height != maxHeight) {
                     height = maxHeight - (tetrominoHeight - 1)
                     if (height < 0) {height = 0}

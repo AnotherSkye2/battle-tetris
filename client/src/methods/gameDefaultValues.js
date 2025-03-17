@@ -13,7 +13,7 @@ export const userNames = JSON.parse(sessionStorage.getItem("userNames"))?.map((u
     };
 }) || [];
 export const userName = sessionStorage.getItem("userName")
-export const timeToLevelUp = 60000
+export const timeToLevelUp = 20000
 export const levelMoveIntervals = {
     1:	1000,
     2:	833,

@@ -75,7 +75,8 @@ export function moveTetrominoRight(gameloopObject){
 }
 
 export function moveTetrominoLowestPoint(gameloopObject, gameLoopObjectArray) {
-    const tetromino = gameloopObject.gameState.activeTetromino
+    const gameState = gameloopObject.gameState
+    const tetromino = gameState.activeTetromino
     const position = gameloopObject.position
     const gameGridArray = gameloopObject.gameGridArray
 
@@ -93,7 +94,7 @@ export function moveTetrominoLowestPoint(gameloopObject, gameLoopObjectArray) {
     updateLeaderboard(score, gameloopObject.name, gameloopObject)
     if (clearedLines > 1) {
         const users = gameloopObject.users
-        let target = gameloopObject.gameState.target
+        let target = gameState.target
         console.log(users, target)
         for (let i = 0; i < users.length; i++) {
             // TESTING ONLY
@@ -101,37 +102,38 @@ export function moveTetrominoLowestPoint(gameloopObject, gameLoopObjectArray) {
             // TESTING ONLY
             console.log("users, target", users, target)
             if (users[i].name === target) {
-                console.log("garbage send", users, target, gameloopObject)
+                console.log("garbage send", users, target)
                 if (gameloopObject.isBotGame) {
                     for (let i = 0; i < gameLoopObjectArray.length; i++) {
-                        console.log("gameLoopObjectArray, target: ", gameLoopObjectArray, target)
+                        console.log(gameLoopObjectArray, target)
                         if ( gameLoopObjectArray[i].name == target) {
                             gameLoopObjectArray[i].gameState.garbageLines += clearedLines
                         }
                     }
                 } else {
-                    console.log("garbage emit")
                     socket.emit('garbage', users[i].socketId, clearedLines)
                 }
             }
         }
     }
-    if (gameloopObject.gameState.garbageLines > 0) {
-        newBoard = addLines(newBoard, gameloopObject.gameState.garbageLines)
-        gameloopObject.gameState.garbageLines = 0
+    if (gameState.garbageLines > 0) {
+        newBoard = addLines(newBoard, gameState.garbageLines)
+        gameState.garbageLines = 0
     }
 
-    if (gameloopObject.gameState.timeSinceLastLevel >= timeToLevelUp) {
+    if (gameState.timeSinceLastLevel >= timeToLevelUp && gameloopObject.gameState.level < 10) {
         gameloopObject.gameState.level++
-        gameloopObject.gameState.timeSinceLastLevel = 0
+        console.log("level up", gameloopObject.gameState.level, gameState.timeSinceLastLevel, gameloopObject.name)
+        gameState.timeSinceLastLevel = 0
     }
-    
+
+
     gameGridArray.length = 0;
     gameGridArray.push(...newBoard); 
 
     position.row = 0
     position.col = 3;
-    gameloopObject.gameState.activeTetromino = null;
-    gameloopObject.gameState.tetrominoType = null;
+    gameState.activeTetromino = null;
+    gameState.tetrominoType = null;
 
 }
