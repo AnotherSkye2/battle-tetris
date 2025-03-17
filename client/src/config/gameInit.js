@@ -76,11 +76,6 @@ export default function gameInit() {
                 difficulty: difficulty,
             };
             botIndex++
-            // Testing!!!
-            botGameLoopObject.gameGridArray[19][0] = "g"
-            botGameLoopObject.gameGridArray[19][1] = "g"
-
-            // Testing!!!
             botGameLoopObjects.push(botGameLoopObject); 
             gameLoopObjectArray.push(botGameLoopObject)
         }
