@@ -68,7 +68,7 @@ export default function gameInit() {
                 isBotGame: true, 
                 timeSinceLastMove: 0, 
                 timeSinceLastBotMove: 0, 
-                botMoveTimeInterval: difficulty == "Easy" ? 1000 : 500, 
+                botMoveTimeInterval: difficulty == "Easy" ? 1000 : difficulty == "Medium" ? 500 : 300, 
                 profileDepth: 4, 
                 nextPosition: null, 
                 nextRotation: null,
@@ -79,7 +79,6 @@ export default function gameInit() {
             // Testing!!!
             botGameLoopObject.gameGridArray[19][0] = "g"
             botGameLoopObject.gameGridArray[19][1] = "g"
-
             // Testing!!!
             botGameLoopObjects.push(botGameLoopObject); 
             gameLoopObjectArray.push(botGameLoopObject)
