@@ -19,9 +19,11 @@ export default function gameInit() {
 
     quitButton.addEventListener("click", () =>{ 
         const path = window.location.pathname; 
+        const pathLength = path.length
         const gameId = path.split("/").pop(); 
         const baseUrl = window.location.origin; 
-         window.location.href = `${baseUrl}/lobby/${gameId}`
+
+        window.location.href = `${baseUrl}/${pathLength == 2 ? "lobby" : "single/lobby"}/${gameId}`
         if(socket){
             socket.emit("disconnectUser",{roomId,userName})
         }

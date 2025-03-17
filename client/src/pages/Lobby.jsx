@@ -31,6 +31,7 @@ export default function Lobby() {
   }
 
   const handleSubmit = (e) => {
+    sessionStorage.clear();
     if (socket.connected === false) { socket.connect() }
     e.preventDefault();
     setOpen(false)
