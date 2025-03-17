@@ -2,7 +2,7 @@
 
 ## Overview
 
-Multiplayer Tetris game.
+A multiplayer Tetris-like game with bots for singleplayer play.
 
 ## Setup
 
@@ -22,12 +22,12 @@ Then clone the repository using:
 
 4.  Now open another terminal and navigate to the server directory
 
-5.  Create a .env file inside the server directory  
+5.  Create a .env file inside the server directory  s
     add the following content inside it:
 
         PORT=4000
         NGROK=true
-        NGROK_AUTHTOKEN=<auth-token>
+        NGROK_AUTHTOKEN=<your-auth-token>
 
 6.  Run the following commands:
 
