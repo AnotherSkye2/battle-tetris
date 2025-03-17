@@ -1,6 +1,7 @@
 import { rotateTetromino } from "../methods/tetrominoManipulation";
 import getAggregateHeight from "./getAggregateHeight";
 import getEmptyTetrominoColumns from "./getEmptyTetrominoColumns";
+import getTetrominoHeight from "./getTetrominoHeight";
 import getTetrominoProfiles from "./getTetrominoProfiles";
 
 export function botMostOptimalPlacement(botLoopObject) {
@@ -29,9 +30,9 @@ export function botMostOptimalPlacement(botLoopObject) {
         let maxHeight = gameGridArray.length;
         let loopCounter = 0;
         const profile = tetrominoProfiles[tetrominoProfiles.length-1]
-        const tetrominoHeight = tetrominoProfiles.length
+        const tetrominoHeight = getTetrominoHeight(tetrominoProfiles)
         console.log("profile , leftCol, rightCol", profile, leftCol, rightCol, botLoopObject.gameState.tetrominoType)
-        console.log("tetrominoHeight: ", tetrominoHeight)
+        console.log("tetrominoHeight: ", tetrominoHeight, botLoopObject.gameState.tetrominoType)
         for (let i = profile.length - 1; i < heightArray.length; i++) {
             loopCounter++
             if (loopCounter >= 30) {
