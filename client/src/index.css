@@ -1,7 +1,8 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: "Micro 5", sans-serif;
   font-weight: 400;
+  font-style: normal;
+  font-size: 2em;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
@@ -36,7 +37,7 @@ h1 {
 button {
   border-radius: 8px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 10px 20px;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -72,8 +73,6 @@ React Popup
 .popup-content {
   margin: auto;
   border-radius: 8px;
-  background-color: #242424;
-  width: 35%;
   padding: 5px;
 }
 .popup-arrow {
@@ -92,13 +91,16 @@ React Popup
 }
 
 .modal {
-  font-size: 12px;
+  background-color: #242424;
+  padding: 10px;
+  text-align: center;
 }
+
 .modal > .header {
   width: 100%;
-  font-size: 18px;
+  font-size: 2em;
   text-align: center;
-  padding: 5px;
+  padding: 10px;
 }
 .modal > .content {
   width: 100%;
@@ -130,6 +132,301 @@ React Popup
   border: 1px solid #cfcece;
 }
 
+.modal > #error-message {
+  color: rgb(214, 27, 27);
+}
+
 .w-100 {
   width: 100%;
+}
+
+input {
+  font-size: 1em;
+  font-family: "Micro 5", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/*
+Game
+*/
+
+.game {
+  margin: 0;
+  height: 100vh; 
+  display: flex;
+  justify-content: center; 
+  background-color: #979595; 
+}
+
+.game h2 {
+  margin: 0;
+}
+
+.game-grid {
+  display: grid;
+  grid-template-rows: repeat(20, 40px); 
+  grid-template-columns: repeat(10, 40px); 
+  gap: 2px; 
+  margin: 10px;
+  padding: 10px;
+  background-color: #444; 
+  
+}
+
+
+
+
+
+.game-board-container {
+  display:flex;
+  flex-direction: column;
+}
+
+
+
+.game-board-container {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+}
+
+.cell {
+  width: 40px; 
+  height: 40px; 
+  background-color: #222;
+}
+
+.i {
+  background-color: #00ffff;
+}
+.j {
+  background-color: #0000ff;
+}
+.t {
+  background-color: #800080;
+}
+.o {
+  background-color: #ffff00;
+}
+.l {
+  background-color: #ff7f00;
+}
+.s {
+  background-color: #00ff00;
+}
+.z {
+  background-color: #ff0000;
+}
+.g {
+  background-color: #989898;
+}
+
+.name {
+  text-align: center;
+  color:black;
+
+}
+
+/*
+Leaderboard
+*/
+
+.leaderboard-container {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 10px;
+  margin-top: 100px;
+}
+
+#timerDisplay {
+  width: -webkit-fill-available;
+  color: white;
+  background: rgba(0, 0, 0, 0.5); 
+  padding: 5px 10px;
+  text-align: center; 
+}
+
+.leaderboard {
+  width: -webkit-fill-available;
+  border-radius: 8px;
+  display: grid;
+  background-color: #242424;
+  padding: 10px 20px;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.leaderboard p {
+  margin: 0;
+}
+
+.score-container {
+  display: flex;
+  background-color: #606060;
+  padding: 5px 15px;
+  border-radius: 8px;
+}
+
+.score-container{
+  margin: 0;
+}
+
+.user-score {
+  text-align: center;
+}
+
+.user-name{
+  margin-left: auto;
+}
+
+.kanit-medium {
+  font-family: "Kanit", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+.kanit-regular {
+  font-family: "Kanit", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.micro-5-regular {
+  font-family: "Micro 5", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.pixel-corners,
+.pixel-corners--wrapper {
+  clip-path: polygon(0px calc(100% - 8px),
+    4px calc(100% - 8px),
+    4px calc(100% - 4px),
+    8px calc(100% - 4px),
+    8px 100%,
+    calc(100% - 8px) 100%,
+    calc(100% - 8px) calc(100% - 4px),
+    calc(100% - 4px) calc(100% - 4px),
+    calc(100% - 4px) calc(100% - 8px),
+    100% calc(100% - 8px),
+    100% 8px,
+    calc(100% - 4px) 8px,
+    calc(100% - 4px) 4px,
+    calc(100% - 8px) 4px,
+    calc(100% - 8px) 0px,
+    8px 0px,
+    8px 4px,
+    4px 4px,
+    4px 8px,
+    0px 8px);
+  position: relative;
+}
+.pixel-corners {
+  border: 4px solid transparent;
+}
+.pixel-corners--wrapper {
+  width: fit-content;
+  height: fit-content;
+}
+.pixel-corners--wrapper .pixel-corners {
+  display: block;
+  clip-path: polygon(4px 8px,
+    8px 8px,
+    8px 4px,
+    calc(100% - 8px) 4px,
+    calc(100% - 8px) 8px,
+    calc(100% - 4px) 8px,
+    calc(100% - 4px) calc(100% - 8px),
+    calc(100% - 8px) calc(100% - 8px),
+    calc(100% - 8px) calc(100% - 4px),
+    8px calc(100% - 4px),
+    8px calc(100% - 8px),
+    4px calc(100% - 8px));
+}
+.pixel-corners::after,
+.pixel-corners--wrapper::after {
+  content: "";
+  position: absolute;
+  clip-path: polygon(0px calc(100% - 8px),
+    4px calc(100% - 8px),
+    4px calc(100% - 4px),
+    8px calc(100% - 4px),
+    8px 100%,
+    calc(100% - 8px) 100%,
+    calc(100% - 8px) calc(100% - 4px),
+    calc(100% - 4px) calc(100% - 4px),
+    calc(100% - 4px) calc(100% - 8px),
+    100% calc(100% - 8px),
+    100% 8px,
+    calc(100% - 4px) 8px,
+    calc(100% - 4px) 4px,
+    calc(100% - 8px) 4px,
+    calc(100% - 8px) 0px,
+    8px 0px,
+    8px 4px,
+    4px 4px,
+    4px 8px,
+    0px 8px,
+    0px 50%,
+    4px 50%,
+    4px 8px,
+    8px 8px,
+    8px 4px,
+    calc(100% - 8px) 4px,
+    calc(100% - 8px) 8px,
+    calc(100% - 4px) 8px,
+    calc(100% - 4px) calc(100% - 8px),
+    calc(100% - 8px) calc(100% - 8px),
+    calc(100% - 8px) calc(100% - 4px),
+    8px calc(100% - 4px),
+    8px calc(100% - 8px),
+    4px calc(100% - 8px),
+    4px 50%,
+    0px 50%);
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #444;
+  display: block;
+  pointer-events: none;
+}
+.pixel-corners::after {
+  margin: -4px;
+}
+
+/*
+Menu
+*/
+
+.game-menu {
+  position: fixed;  
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);  
+  
+  width: 300px;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8); 
+  color: white;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.game-over-screen {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
 }

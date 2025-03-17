@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    height: 100vh; 
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    background-color: #979595; 
+}
+
+.game-board {
+    display: grid;
+    grid-template-rows: repeat(20, 40px); 
+    grid-template-columns: repeat(10, 40px); 
+    gap: 2px; 
+    background-color: #444; 
+}
+
+.cell {
+    width: 40px; 
+    height: 40px; 
+    background-color: #222;
+}
+
+.cell.filled {
+    background-color: #ff4757;
+}
