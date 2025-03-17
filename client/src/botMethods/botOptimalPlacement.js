@@ -23,7 +23,7 @@ export function botMostOptimalPlacement(botLoopObject) {
     for (let rotation = 0; rotation <= 3; rotation++) {
         if (rotation > 0) {tetromino = rotateTetromino(tetromino)}
         const tetrominoProfiles = getTetrominoProfiles(tetromino, botLoopObject.profileDepth);
-        console.log("tetrominoProfiles: ", tetrominoProfiles)
+        // console.log("tetrominoProfiles: ", tetrominoProfiles)
         let height = -1;
         let pos = null;
         let matchValue = 0;
@@ -31,7 +31,6 @@ export function botMostOptimalPlacement(botLoopObject) {
         let loopCounter = 0;
         const profile = tetrominoProfiles[tetrominoProfiles.length-1]
         const tetrominoHeight = getTetrominoHeight(tetrominoProfiles)
-        console.log("profile , leftCol, rightCol", profile, leftCol, rightCol, botLoopObject.gameState.tetrominoType)
         console.log("tetrominoHeight: ", tetrominoHeight, botLoopObject.gameState.tetrominoType)
         for (let i = profile.length - 1; i < heightArray.length; i++) {
             loopCounter++
@@ -43,26 +42,23 @@ export function botMostOptimalPlacement(botLoopObject) {
             if (height == -1) {
                 height = maxHeight - (tetrominoHeight - 1)
                 if (height < 0) {height = 0}
-                console.log("height: ", height)
                 pos = { row: gameGridArray.length - 1 - height, col: i - (profile.length - 1)}
-                console.log("match: initial:", botLoopObject.gameState.tetrominoType, "height", height,"pos", pos)
+                // console.log("match: initial:", botLoopObject.gameState.tetrominoType, "height", height,"pos", pos)
             }
-            console.log("maxHeight: ", maxHeight, heightArray.slice(i - (profile.length - 1), i+1), i)
+            // console.log(heightArray.slice(i - (profile.length - 1), i+1), i)
             for (let j = profile.length - 1; j >= 0; j--) {
                 const checkHeight = heightArray[i - ((profile.length - 1) - j)]
-                if (checkHeight > height && profile[j] == 1) {
+                if (checkHeight > height && profile[j] == 0) {
                     height = checkHeight
                 }
-                console.log("check placement: height, i, matchValue, checkHeight", height, i, matchValue, checkHeight)
-                console.log(checkHeight == height+1 && profile[j] == 0 || (checkHeight == height && profile[j] == 1 ))
-                if (checkHeight == height+1 && profile[j] == 0 || ((checkHeight == height) && profile[j] == 1 )) {
+                // console.log(checkHeight == height+profile[j])
+                if (checkHeight == height+profile[j]) {
                     // console.log("pos: ", pos)
                     // console.log(botLoopObject.gameState.tetrominoType, "maxHeight:", maxHeight)
                     matchValue++
                 } else if (profile[j] == 0 && checkHeight == maxHeight && height != maxHeight) {
                     height = maxHeight - (tetrominoHeight - 1)
                     if (height < 0) {height = 0}
-                    console.log("height: ", height)
                 }
             }
 
