@@ -69,7 +69,7 @@ export default function gameInit() {
                 timeSinceLastMove: 0, 
                 timeSinceLastBotMove: 0, 
                 botMoveTimeInterval: difficulty == "Easy" ? 1000 : 500, 
-                profileDepth: difficulty == "Easy" ? 1 : 2, 
+                profileDepth: 4, 
                 nextPosition: null, 
                 nextRotation: null,
                 botName: username.name, 
@@ -141,7 +141,7 @@ export default function gameInit() {
             if (gameMenu){
                 
                 gameMenu.style.visibility = "visible"; 
-                gameMenu.style.opacity = "1";
+                // gameMenu.style.opacity = "1" FOR  TESTING ONLY
                 gameMenu.style.pointerEvents = "auto"; 
                 if (menuText) {
                     menuText.innerText = `Game Paused by: ${name}`; 
