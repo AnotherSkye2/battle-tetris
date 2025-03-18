@@ -29,7 +29,7 @@ export function startTimer() {
 
 export function updateTimer(timestamp) {
     
-    if (gameState.isGamePaused) {
+    if (gameState.isGamePaused || gameState.isGameOver) {
         pausedTime = timestamp - startTime; 
         gameState.isTimerRunning = false; 
         return; 
