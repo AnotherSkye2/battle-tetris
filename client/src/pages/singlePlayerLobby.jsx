@@ -9,6 +9,8 @@ export default function SinglePlayerLobby(){
   const {roomId} = useParams()
 
   useEffect(() => {
+    sessionStorage.clear();
+
     if (!socket.connected) {
       console.log("Reconnecting socket...");
       socket.connect();
@@ -49,10 +51,6 @@ export default function SinglePlayerLobby(){
     setUsers([...users, newUser]);
     sessionStorage.setItem("userNames", JSON.stringify([...users, newUser]));
   
-    socket.emit("joinBot", roomId, botName, (updatedUsers) => {
-      setUsers(updatedUsers);
-      sessionStorage.setItem("userNames", JSON.stringify(updatedUsers));
-    });
   };
 
      return(

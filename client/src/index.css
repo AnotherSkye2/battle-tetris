@@ -155,7 +155,7 @@ Game
   margin: 0;
   height: 100vh; 
   display: flex;
-  justify-content: center; 
+  justify-content: end; 
   background-color: #979595; 
 }
 
@@ -165,24 +165,31 @@ Game
 
 .game-grid {
   display: grid;
-  grid-template-rows: repeat(20, 40px); 
-  grid-template-columns: repeat(10, 40px); 
+  grid-template-rows: repeat(20, 1em); 
+  grid-template-columns: repeat(10, 1em); 
   gap: 2px; 
   margin: 10px;
-  padding: 10px;
+  padding: 5px 5px;
   background-color: #444; 
   
 }
 
-
-
-
-
-.game-board-container {
-  display:flex;
-  flex-direction: column;
+.game-board {
+  display: grid;
+  justify-items: center;
 }
 
+.player {
+  display: flex;
+   flex-direction: column;
+  justify-content: center;
+}
+
+.cell {
+  width: 1em; 
+  height: 1em; 
+  background-color: #222;
+}
 
 
 .game-board-container {
@@ -190,11 +197,18 @@ Game
   grid-template-rows: repeat(3, 1fr);
 }
 
-.cell {
-  width: 40px; 
-  height: 40px; 
-  background-color: #222;
+.opponent > .game-grid {
+  grid-template-rows: repeat(20, 0.3em); 
+  grid-template-columns: repeat(10, 0.3em); 
+  gap: 1px; 
+
 }
+
+.opponent .cell {
+  width: 0.3em; 
+  height: 0.3em; 
+}
+
 
 .i {
   background-color: #00ffff;

@@ -9,11 +9,9 @@ export const arrowDown$ = fromEvent(document, "keydown").pipe(
 );
 export const arrowLeft$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "ArrowLeft"),
-    throttleTime(100)  
 );
 export const arrowRight$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "ArrowRight"),
-    throttleTime(100)  
 );
 export const spaceBar$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === " "),
@@ -22,5 +20,5 @@ export const spaceBar$ = fromEvent(document, "keydown").pipe(
 
 export const escKey$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "Escape"),
-    throttleTime(100)
+    throttleTime(100)  
 )

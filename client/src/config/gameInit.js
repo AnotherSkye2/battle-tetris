@@ -18,10 +18,13 @@ export default function gameInit() {
     const {gameMenu,menuText,quitButton,restartButton} = createGameMenu()
 
     quitButton.addEventListener("click", () =>{ 
-        const path = window.location.pathname; 
-        const gameId = path.split("/").pop(); 
+        const path = window.location.pathname.split("/"); 
+        const pathLength = JSON.parse(JSON.stringify(path.length))
+        console.info(path, pathLength)
+        const gameId = path.pop(); 
         const baseUrl = window.location.origin; 
-         window.location.href = `${baseUrl}/lobby/${gameId}`
+
+        window.location.href = `${baseUrl}/${pathLength == 3 ? "lobby" : "single/lobby"}/${gameId}`
         if(socket){
             socket.emit("disconnectUser",{roomId,userName})
         }
@@ -63,12 +66,12 @@ export default function gameInit() {
                     timeSinceLastLevel: 0
                 },
                 userScoreElementArray: userScoreElementArray,
-                users: [],
+                users: userNames,
                 socket: socket,
                 isBotGame: true, 
                 timeSinceLastMove: 0, 
                 timeSinceLastBotMove: 0, 
-                botMoveTimeInterval: difficulty == "Easy" ? 1000 : 500, 
+                botMoveTimeInterval: difficulty == "Easy" ? 600 : difficulty == "Medium" ? 300 : 200, 
                 profileDepth: 4, 
                 nextPosition: null, 
                 nextRotation: null,
@@ -76,11 +79,6 @@ export default function gameInit() {
                 difficulty: difficulty,
             };
             botIndex++
-            // Testing!!!
-            botGameLoopObject.gameGridArray[19][0] = "g"
-            botGameLoopObject.gameGridArray[19][1] = "g"
-
-            // Testing!!!
             botGameLoopObjects.push(botGameLoopObject); 
             gameLoopObjectArray.push(botGameLoopObject)
         }
@@ -104,6 +102,7 @@ export default function gameInit() {
     } 
     gameLoopObjectArray.push(gameloopObject)
     gameloopObject.botGameLoopObjects = botGameLoopObjects;
+
     console.log("BOT GAME LOOPS", botGameLoopObjects)
     console.log("gamingLOOP", gameloopObject)
 
@@ -141,7 +140,7 @@ export default function gameInit() {
             if (gameMenu){
                 
                 gameMenu.style.visibility = "visible"; 
-                // gameMenu.style.opacity = "1" FOR  TESTING ONLY
+                gameMenu.style.opacity = "1"
                 gameMenu.style.pointerEvents = "auto"; 
                 if (menuText) {
                     menuText.innerText = `Game Paused by: ${name}`; 
@@ -152,7 +151,7 @@ export default function gameInit() {
 
         socket.on("resumeGame", () =>{
 
-            resumeGame(gameloopObject)
+            resumeGame(gameloopObject, gameLoopObjectArray)
             startTimer()
             if (gameMenu){
                 gameMenu.style.visibility = "hidden"; 
@@ -188,6 +187,7 @@ export default function gameInit() {
           }
         window.addEventListener("pagehide", listener);
     }   
+
 
     console.log("gameBoardElement, gameBoardGrid, gameGridArray, gameLoopObjectArray",gameBoardElement, gameBoardGrid, gameGridArray, gameLoopObjectArray)
 
