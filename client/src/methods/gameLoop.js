@@ -50,6 +50,7 @@ export function gameLoop(mainGameloopObject, gameLoopObjectArray) {
                 updateGame(deltaTime,mainGameloopObject.botGameLoopObjects[i], gameLoopObjectArray)
             } else {
                 botGameState.isGameOver = true
+                gameState.playersLost += 1
                 mainGameloopObject.gameState.gameOverPending = false; 
             }
         }
