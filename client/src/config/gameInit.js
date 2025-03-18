@@ -70,7 +70,7 @@ export default function gameInit() {
                 isBotGame: true, 
                 timeSinceLastMove: 0, 
                 timeSinceLastBotMove: 0, 
-                botMoveTimeInterval: difficulty == "Easy" ? 1000 : difficulty == "Medium" ? 500 : 300, 
+                botMoveTimeInterval: difficulty == "Easy" ? 600 : difficulty == "Medium" ? 300 : 200, 
                 profileDepth: 4, 
                 nextPosition: null, 
                 nextRotation: null,
