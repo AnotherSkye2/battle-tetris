@@ -5,13 +5,13 @@ import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
 import { checkGameOver,checkGameWin,gameOver } from './gameOver.js';
-import { gameState, levelMoveIntervals, roomId, timeToLevelUp, userNames } from '../methods/gameDefaultValues.js';
+import { gameState, levelMoveIntervals, roomId, timeToLevelUp } from '../methods/gameDefaultValues.js';
 import { addScore, updateLeaderboard } from './gameScore.js';
-import { socket } from '../socket.js';
 import { addLines } from './addLine.js';
 import { TETROMINOES } from "../methods/tetrominoes.js";
 import makeBotMove from '../botMethods/makeBotMove.js';
 import sendGarbage from './sendGarbage.js';
+import { updateTimer } from './createTimer.js';
 
 let lastTime = 0;
 
@@ -74,6 +74,7 @@ export function gameLoop(mainGameloopObject, gameLoopObjectArray) {
                 mainGameloopObject.botGameLoopObjects[i].timestamp = newTimestamp
             }
         }
+        updateTimer(newTimestamp)
         gameLoop(mainGameloopObject, gameLoopObjectArray)
     }); 
 }
