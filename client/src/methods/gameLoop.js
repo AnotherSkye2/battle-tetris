@@ -5,7 +5,7 @@ import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
 import { checkGameOver,checkGameWin,gameOver } from './gameOver.js';
-import { gameState, levelMoveIntervals, roomId, timeToLevelUp, userNames } from '../methods/gameDefaultValues.js';
+import { gameState, levelMoveIntervals, roomId, timeToLevelUp } from '../methods/gameDefaultValues.js';
 import { addScore, updateLeaderboard } from './gameScore.js';
 import { addLines } from './addLine.js';
 import { TETROMINOES } from "../methods/tetrominoes.js";
@@ -48,7 +48,7 @@ export function gameLoop(mainGameloopObject, gameLoopObjectArray) {
                 }
                 makeBotMove(deltaTime, mainGameloopObject.botGameLoopObjects[i], gameLoopObjectArray)
                 updateGame(deltaTime,mainGameloopObject.botGameLoopObjects[i], gameLoopObjectArray)
-            } else {
+            } else if (!botGameState.isGameOver) {
                 botGameState.isGameOver = true
                 gameState.playersLost += 1
                 mainGameloopObject.gameState.gameOverPending = false; 
@@ -93,6 +93,7 @@ function updateGame(deltaTime,gameloopObject, gameLoopObjectArray){
             const score = addScore(clearedLines, gameloopObject)
             updateLeaderboard(score, gameloopObject.name, gameloopObject)
             if (clearedLines > 1) {
+                console.log("garbage: clearedLines: ", clearedLines)
                 sendGarbage(clearedLines, gameloopObject, gameLoopObjectArray)
             }
             if (gameloopObject.gameState.garbageLines > 0) {

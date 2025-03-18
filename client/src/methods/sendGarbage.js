@@ -11,9 +11,16 @@ export default function sendGarbage(clearedLines, gameloopObject, gameLoopObject
     let target = gameloopObject.gameState.target
     console.log("garbage: users, target: ", users, target)
     for (let i = 0; i < users.length; i++) {
-        // TESTING ONLY
-        if (!target && users[i].name != gameloopObject.name) {target = users[i].name}
-        // TESTING ONLY
+        if (!target) {
+            let randomTargetIndex;
+            while (true) {
+                randomTargetIndex = Math.floor(Math.random() * users.length)
+                if (users[randomTargetIndex].name != gameloopObject.name) {
+                    break
+                }
+            }
+            target = users[randomTargetIndex].name
+        }
         console.log("garbage: users, target: ", users, target)
         if (users[i].name === target) {
             if (gameloopObject.isBotGame) {

@@ -5,6 +5,7 @@ import { addScore, updateLeaderboard } from "./gameScore.js";
 import { timeToLevelUp } from "./gameDefaultValues.js";
 import { addLines } from "./addLine.js";
 import sendGarbage from "./sendGarbage.js";
+import { checkGameOver, checkGameWin } from "./gameOver.js";
 
 export function moveTetrominoDown(gameloopObject){
     const tetromino = gameloopObject.gameState.activeTetromino
@@ -93,6 +94,7 @@ export function moveTetrominoLowestPoint(gameloopObject, gameLoopObjectArray) {
     const score = addScore(clearedLines, gameloopObject)
     updateLeaderboard(score, gameloopObject.name, gameloopObject)
     if (clearedLines > 1) {
+        console.log("garbage: clearedLines: ", clearedLines)
         sendGarbage(clearedLines, gameloopObject, gameLoopObjectArray)
     }
     if (gameState.garbageLines > 0) {
@@ -104,6 +106,12 @@ export function moveTetrominoLowestPoint(gameloopObject, gameLoopObjectArray) {
         gameloopObject.gameState.level++
         console.log("level up", gameloopObject.gameState.level, gameState.timeSinceLastLevel, gameloopObject.name)
         gameState.timeSinceLastLevel = 0
+    }
+
+    if (checkGameOver(gameloopObject.gameGridArray) || checkGameWin()) {
+        console.log("checkGameOver")
+        gameloopObject.gameState.gameOverPending = true; 
+        return;
     }
 
 

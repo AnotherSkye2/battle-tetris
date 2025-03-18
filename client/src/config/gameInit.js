@@ -151,7 +151,7 @@ export default function gameInit() {
 
         socket.on("resumeGame", () =>{
 
-            resumeGame(gameloopObject)
+            resumeGame(gameloopObject, gameLoopObjectArray)
             startTimer()
             if (gameMenu){
                 gameMenu.style.visibility = "hidden"; 
