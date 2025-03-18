@@ -41,9 +41,11 @@ export function botMostOptimalPlacement(botLoopObject) {
                 console.error(`Placement search of ${botLoopObject.gameState.tetrominoType} looped too many times!`)
                 break
             }
-            maxHeight = Math.max(...heightArray.slice(i - (profile.length - 1), i+1))
+            const currentHeightArray = heightArray.slice(i - (profile.length - 1), i+1)
+            maxHeight = Math.max(...currentHeightArray)
             height = maxHeight - (tetrominoHeight - 1)
-            if (profile.every(h => h == profile[0]) || heightArray.every(h => h == heightArray[0]) ) {
+            if (profile.every(h => h == profile[0]) || currentHeightArray.every(h => h == currentHeightArray[0]) ) {
+                console.log("height = maxHeight", profile.every(h => h == profile[0]), heightArray.every(h => h == heightArray[0]))
                 height = maxHeight
             }
             if (height <= 0) {height = Math.min(...heightArray.slice(i - (profile.length - 1), i+1))}
@@ -56,7 +58,7 @@ export function botMostOptimalPlacement(botLoopObject) {
                     height = checkHeight
                 }
                 if (checkHeight == height+profile[j]) {
-                    // console.log("pos: ", pos)
+                    console.log("currentHeightArray: ", currentHeightArray)
                     // console.log(botLoopObject.gameState.tetrominoType, "maxHeight:", maxHeight)
                     matchValue++
 
