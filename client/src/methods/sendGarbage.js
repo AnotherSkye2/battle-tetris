@@ -17,7 +17,7 @@ export default function sendGarbage(clearedLines, gameloopObject, gameLoopObject
         console.log("garbage: users, target: ", users, target)
         if (users[i].name === target) {
             if (gameloopObject.isBotGame) {
-                console.log("garbage: bot game send", users, target)
+                console.log("garbage: bot game send", gameLoopObjectArray, target)
                 for (let i = 0; i < gameLoopObjectArray.length; i++) {
                     console.log("garbage: gameLoopObjectArray, target", gameLoopObjectArray, target, gameLoopObjectArray[i].name)
                     if ( gameLoopObjectArray[i].name == target) {
