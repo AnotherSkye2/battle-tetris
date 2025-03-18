@@ -12,6 +12,9 @@ function generateGarbageLines(gameGridArray, lines) {
     let garbageLines = [];
     let linesToGenerate;
     switch (lines) {
+        case 1:
+            linesToGenerate = 0;
+            break;        
         case 2:
             linesToGenerate = 1;
             break;
@@ -22,8 +25,7 @@ function generateGarbageLines(gameGridArray, lines) {
             linesToGenerate = 4;
             break;
         default:
-            console.error("generateGarbageLines: Not enough lines!", lines)
-            linesToGenerate = 0;
+            linesToGenerate = lines;
             break;
     }
     for (let i = 0; i < linesToGenerate; i++) {
