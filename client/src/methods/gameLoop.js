@@ -5,12 +5,13 @@ import { moveTetrominoDown } from './tetrominoMoves.js';
 import { clearTetromino } from './tetrominoManipulation.js';
 import { clearFullLine } from './clearLine.js';
 import { checkGameOver,checkGameWin,gameOver } from './gameOver.js';
-import { gameState, levelMoveIntervals, roomId, timeToLevelUp } from '../methods/gameDefaultValues.js';
+import { gameState, levelMoveIntervals, roomId, timeToLevelUp, userNames } from '../methods/gameDefaultValues.js';
 import { addScore, updateLeaderboard } from './gameScore.js';
 import { socket } from '../socket.js';
 import { addLines } from './addLine.js';
 import { TETROMINOES } from "../methods/tetrominoes.js";
 import makeBotMove from '../botMethods/makeBotMove.js';
+import sendGarbage from './sendGarbage.js';
 
 let lastTime = 0;
 
@@ -89,30 +90,8 @@ function updateGame(deltaTime,gameloopObject, gameLoopObjectArray){
             let { newBoard, clearedLines } = clearFullLine(gameloopObject.gameGridArray);
             const score = addScore(clearedLines, gameloopObject)
             updateLeaderboard(score, gameloopObject.name, gameloopObject)
-
             if (clearedLines > 1) {
-                const users = gameloopObject.users
-                let target = gameloopObject.gameState.target
-                console.log(users, target)
-                for (let i = 0; i < users.length; i++) {
-                    // TESTING ONLY
-                    if (!target && users[i].name != gameloopObject.name) {target = users[i].name}
-                    // TESTING ONLY
-                    console.log("users, target", users, target)
-                    if (users[i].name === target) {
-                        console.log("garbage send", users, target)
-                        if (gameloopObject.isBotGame) {
-                            for (let i = 0; i < gameLoopObjectArray.length; i++) {
-                                console.log(gameLoopObjectArray, target)
-                                if ( gameLoopObjectArray[i].name == target) {
-                                    gameLoopObjectArray[i].gameState.garbageLines += clearedLines
-                                }
-                            }
-                        } else {
-                            socket.emit('garbage', users[i].socketId, clearedLines)
-                        }
-                    }
-                }
+                sendGarbage(clearedLines, gameloopObject, gameLoopObjectArray)
             }
             if (gameloopObject.gameState.garbageLines > 0) {
                 newBoard = addLines(newBoard, gameloopObject.gameState.garbageLines)

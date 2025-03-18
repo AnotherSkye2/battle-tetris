@@ -65,7 +65,7 @@ export default function gameInit() {
                     timeSinceLastLevel: 0
                 },
                 userScoreElementArray: userScoreElementArray,
-                users: [],
+                users: userNames,
                 socket: socket,
                 isBotGame: true, 
                 timeSinceLastMove: 0, 
@@ -101,6 +101,7 @@ export default function gameInit() {
     } 
     gameLoopObjectArray.push(gameloopObject)
     gameloopObject.botGameLoopObjects = botGameLoopObjects;
+
     console.log("BOT GAME LOOPS", botGameLoopObjects)
     console.log("gamingLOOP", gameloopObject)
 
@@ -185,6 +186,7 @@ export default function gameInit() {
           }
         window.addEventListener("pagehide", listener);
     }   
+
 
     console.log("gameBoardElement, gameBoardGrid, gameGridArray, gameLoopObjectArray",gameBoardElement, gameBoardGrid, gameGridArray, gameLoopObjectArray)
 

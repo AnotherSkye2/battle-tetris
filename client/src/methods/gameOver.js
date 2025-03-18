@@ -40,7 +40,12 @@ function createGameOverScreen() {
     const restartButton = document.createElement("button");
     restartButton.innerText = "Restart";
     restartButton.classList.add("pixel-corners")
-    //needs restart functionality
+    restartButton.addEventListener("click", () =>{
+        if(socket){
+            socket.emit("restart",{roomId,userName})
+        }
+    })
+
     gameOverScreen.appendChild(restartButton);
 
     const quitButton = document.createElement("button")
