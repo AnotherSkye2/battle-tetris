@@ -70,7 +70,7 @@ export default function gameInit() {
                 isBotGame: true, 
                 timeSinceLastMove: 0, 
                 timeSinceLastBotMove: 0, 
-                botMoveTimeInterval: difficulty == "Easy" ? 1000 : difficulty == "Medium" ? 500 : 300, 
+                botMoveTimeInterval: difficulty == "Easy" ? 600 : difficulty == "Medium" ? 300 : 200, 
                 profileDepth: 4, 
                 nextPosition: null, 
                 nextRotation: null,
@@ -138,7 +138,7 @@ export default function gameInit() {
             if (gameMenu){
                 
                 gameMenu.style.visibility = "visible"; 
-                gameMenu.style.opacity = "1"
+                // gameMenu.style.opacity = "1"
                 gameMenu.style.pointerEvents = "auto"; 
                 if (menuText) {
                     menuText.innerText = `Game Paused by: ${name}`; 
