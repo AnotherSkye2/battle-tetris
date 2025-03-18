@@ -91,6 +91,19 @@ io.on('connection', (socket) => {
     }
   })
 
+  socket.on('singleplayer join', (roomId, userName, callback) => {
+    socket.userName = userName
+    // socket.userId = userId
+    const clients = io.sockets.adapter.rooms.get(roomId)
+    if (!clients) {
+      socket.join(roomId)
+      callback(true)
+    } else {
+      console.log(clients)
+      callback(false)
+    }
+  })
+
   socket.on('leave', (roomId) => {
     socket.to(roomId).emit('chat message', `${socket.userName} has left!`);
     socket.to(roomId).emit('leave', {          

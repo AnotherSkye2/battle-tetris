@@ -16,18 +16,18 @@ export default function SinglePlayerLobby(){
       socket.connect();
     }
 
-    socket.on("connect", () => {
-      console.log("Socket connected!", socket.id);
-    });
-
     const userName = `Player`;
-    socket.emit('join', roomId, userName, (users) => {
-      console.log("Player joined:", userName);
-      setUsers(users);  // Set initial users list
-    });
-
+    socket.emit('singleplayer join', roomId, userName, (success) => {
+      console.log("success" ,success)
+      if (!success) {
+          const baseUrl = window.location.origin; 
+          window.location.href = `${baseUrl}/single/lobby/${Math.floor(Math.random() * 100000)}`
+      }
+  });
+    setUsers([...users, {name: userName}])
     return () => {
       socket.off("connect");
+      socket.disconnect()
     };
   }, [roomId]);
 
@@ -70,7 +70,7 @@ export default function SinglePlayerLobby(){
               </div>
             </main>
             <div>
-              <h4>Bots:</h4>
+              <h4>Players:</h4>
               <ul>
               {users.map((user, i) => (
                <li key={i}>{user.name}</li>
