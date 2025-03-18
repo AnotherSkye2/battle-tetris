@@ -48,7 +48,7 @@ export function botMostOptimalPlacement(botLoopObject) {
                 console.log("height = maxHeight", profile.every(h => h == profile[0]), heightArray.every(h => h == heightArray[0]))
                 height = maxHeight
             }
-            if (height <= 0) {height = Math.min(...heightArray.slice(i - (profile.length - 1), i+1))}
+            if (height < Math.min(...currentHeightArray)) {height = Math.min(...currentHeightArray)}
             pos = { row: gameGridArray.length - 1 - height, col: i - (profile.length - 1)}
             // console.log("match: initial:", botLoopObject.gameState.tetrominoType, "height", height,"pos", pos)
             // console.log(heightArray.slice(i - (profile.length - 1), i+1), i)
