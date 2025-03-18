@@ -138,7 +138,7 @@ export default function gameInit() {
             if (gameMenu){
                 
                 gameMenu.style.visibility = "visible"; 
-                // gameMenu.style.opacity = "1"
+                gameMenu.style.opacity = "1"
                 gameMenu.style.pointerEvents = "auto"; 
                 if (menuText) {
                     menuText.innerText = `Game Paused by: ${name}`; 
