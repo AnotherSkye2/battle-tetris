@@ -9,13 +9,11 @@ export default function getBumpiness(tetrominoProfiles, i, height, heightArray) 
 
 function getModifiedHeightArray(tetrominoProfiles, position, height, heightArray) {
     const tetrominoProfilesSum = getTetrominoProfilesSum(tetrominoProfiles)
-    console.log("bumpiness: tetrominoProfilesSum, position, height, heightArray ", tetrominoProfilesSum, position, height, heightArray)
     for(let i = 0; i < heightArray.length; i++) {
         if (i >= position &&i - position < tetrominoProfilesSum.length) {
             heightArray[i] = tetrominoProfilesSum[i-position] + height
         }
     }
-    console.log("bumpiness:  heightArray ", heightArray)
     return heightArray
 }
 
@@ -28,6 +26,5 @@ function getTetrominoProfilesSum(tetrominoProfiles) {
             }
         }
     }
-    console.log("bumpiness: tetrominoProfilesSum, tetrominoProfiles ", profileSum, tetrominoProfiles)
     return profileSum
 }

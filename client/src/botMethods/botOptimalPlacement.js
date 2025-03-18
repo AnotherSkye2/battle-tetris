@@ -18,6 +18,7 @@ export function botMostOptimalPlacement(botLoopObject) {
     let bestHeight = 0;
     let bestHoles = 0;
     let bestRotation = 0;
+    let bestBumpiness = 99999;
 
     console.log("NEW TETROMINO FOR MATCH -------------------------------------------------------\n", botLoopObject.gameState.tetrominoType)
     const heightArray = getAggregateHeight(botLoopObject)
@@ -26,7 +27,6 @@ export function botMostOptimalPlacement(botLoopObject) {
     for (let rotation = 0; rotation <= 3; rotation++) {
         if (rotation > 0) {tetromino = rotateTetromino(tetromino)}
         const tetrominoProfiles = getTetrominoProfiles(tetromino, botLoopObject.profileDepth);
-        console.log("tetrominoProfiles: ", tetrominoProfiles)
         let height = null;
         let position = null;
         let matchValue = 0;
@@ -35,7 +35,6 @@ export function botMostOptimalPlacement(botLoopObject) {
         let loopCounter = 0;
         const profile = tetrominoProfiles[tetrominoProfiles.length-1]
         const tetrominoHeight = getTetrominoHeight(tetrominoProfiles)
-        console.log("tetrominoHeight: ", tetrominoHeight, botLoopObject.gameState.tetrominoType)
         for (let i = profile.length - 1; i < heightArray.length; i++) {
             loopCounter++
             if (loopCounter >= 30) {
@@ -46,7 +45,6 @@ export function botMostOptimalPlacement(botLoopObject) {
             maxHeight = Math.max(...currentHeightArray)
             height = maxHeight - (tetrominoHeight - 1)
             if (profile.every(h => h == profile[0]) || currentHeightArray.every(h => h == currentHeightArray[0]) ) {
-                console.log("height = maxHeight", profile.every(h => h == profile[0]), heightArray.every(h => h == heightArray[0]))
                 height = maxHeight
             }
             if (height < Math.min(...currentHeightArray)) {height = Math.min(...currentHeightArray)}
@@ -59,7 +57,6 @@ export function botMostOptimalPlacement(botLoopObject) {
                     height = checkHeight
                 }
                 if (checkHeight == height+profile[j]) {
-                    console.log("currentHeightArray: ", currentHeightArray)
                     // console.log(botLoopObject.gameState.tetrominoType, "maxHeight:", maxHeight)
                     matchValue++
 
@@ -69,8 +66,9 @@ export function botMostOptimalPlacement(botLoopObject) {
                     holes += height - checkHeight
                 }
             }
-            console.log("bumpiness", getBumpiness(tetrominoProfiles, i, height, JSON.parse(JSON.stringify(heightArray))), height)
-            if (!bestPosition || holes < bestHoles ||holes == bestHoles && (height < bestHeight || (height == bestHeight && (matchValue > bestValue ||(matchValue == bestValue && profile.length < bestProfileLength))))) {
+            const bumpiness = getBumpiness(tetrominoProfiles, i - (profile.length - 1), height, JSON.parse(JSON.stringify(heightArray)))
+            console.log("bumpiness: (bumpiness < bestBumpiness", bumpiness, bestBumpiness)
+            if (!bestPosition || holes < bestHoles || holes == bestHoles && (height < bestHeight || height == bestHeight && (bumpiness < bestBumpiness || bumpiness >= bestBumpiness && ( (matchValue > bestValue ||(matchValue == bestValue && profile.length < bestProfileLength)))))) {
                 console.log(botLoopObject.gameState.tetrominoType, "\nmatch: set pos", "matchValue:", matchValue, " height:", height, "bestHoles", bestHoles, "holes", holes, " maxHeight:", maxHeight,`\npos: ${JSON.stringify(position)}`);                [leftCol, rightCol] = getEmptyTetrominoColumns(tetromino);
                 bestPosition = position;
                 bestValue = matchValue
@@ -78,6 +76,7 @@ export function botMostOptimalPlacement(botLoopObject) {
                 bestHeight = height
                 bestHoles = holes
                 bestRotation = rotation
+                bestBumpiness = bumpiness
                 if (bestValue == profile.length && bestHeight == Math.min(...heightArray)) {
                     break
                 }
