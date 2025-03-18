@@ -6,15 +6,36 @@ export default function getTetrominoProfiles(tetromino, depth) {
         const profile = [];
         for(let c =0; c < tetromino[r].length; c++) {
             if (tetromino[r][c] !== "") {profile.push(0)}
+            if (r == 0) {
+                if (tetromino[r][c] === "" && tetromino[r + 1][c] !== "") {
+                    profile.push(1)
+                    continue
+                }
+            }
             if (r > 0) {
                 if (tetromino[r][c] === "" && tetromino[r - 1][c] !== "") {
                     profile.push(1)
                     continue
                 }
-                if (r == 2) {
-                    if (tetromino[r][c] === "" && tetromino[r - 2][c] !== "") {
-                        profile.push(2)
-                    }
+
+            }
+            if (tetromino.length == 3 && tetromino[r][c] === "") {
+                switch (r) {
+                    case 2:
+                        if (tetromino[r - 2][c] !== "") {
+                            profile.push(2)
+                        }
+                        break;
+                    case 1:
+                        if (tetromino[r - 1][c] !== "" || tetromino[r + 1][c] !== "") {
+                            profile.push(1)
+                        }
+                        break;
+                    case 0:
+                        if (tetromino[r + 2][c] !== "") {
+                            profile.push(2)
+                        }
+                        break;
                 }
             }
         }
