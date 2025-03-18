@@ -18,12 +18,13 @@ export default function gameInit() {
     const {gameMenu,menuText,quitButton,restartButton} = createGameMenu()
 
     quitButton.addEventListener("click", () =>{ 
-        const path = window.location.pathname; 
-        const pathLength = path.length
-        const gameId = path.split("/").pop(); 
+        const path = window.location.pathname.split("/"); 
+        const pathLength = JSON.parse(JSON.stringify(path.length))
+        console.info(path, pathLength)
+        const gameId = path.pop(); 
         const baseUrl = window.location.origin; 
 
-        window.location.href = `${baseUrl}/${pathLength == 2 ? "lobby" : "single/lobby"}/${gameId}`
+        window.location.href = `${baseUrl}/${pathLength == 3 ? "lobby" : "single/lobby"}/${gameId}`
         if(socket){
             socket.emit("disconnectUser",{roomId,userName})
         }

@@ -3,7 +3,6 @@ import { checkCollisions } from "./collisionCheck.js";
 import { clearFullLine } from "./clearLine.js";
 import { addScore, updateLeaderboard } from "./gameScore.js";
 import { timeToLevelUp } from "./gameDefaultValues.js";
-import { socket } from "../socket.js";
 import { addLines } from "./addLine.js";
 import sendGarbage from "./sendGarbage.js";
 

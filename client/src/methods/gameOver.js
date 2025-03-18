@@ -51,13 +51,16 @@ function createGameOverScreen() {
     const quitButton = document.createElement("button")
     quitButton.innerText = "Quit";
     quitButton.classList.add("pixel-corners")
-    quitButton.addEventListener("click", () =>{  // liigutan selle createGameMenusse
+    quitButton.addEventListener("click", () =>{ 
         const path = window.location.pathname; 
+        const pathLength = path.length
+        alert(path, pathLength)
         const gameId = path.split("/").pop(); 
         const baseUrl = window.location.origin; 
-        window.location.href = `${baseUrl}/lobby/${gameId}`
+
+        window.location.href = `${baseUrl}/${pathLength == 2 ? "lobby" : "single/lobby"}/${gameId}`
         if(socket){
-            socket.emit("disconnectUser",userName)
+            socket.emit("disconnectUser",{roomId,userName})
         }
     })
     gameOverScreen.appendChild(quitButton);
