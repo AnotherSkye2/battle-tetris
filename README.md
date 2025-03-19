@@ -43,3 +43,10 @@ After running npm start you should see a message like this in the terminal:
 Open the website in your browser using the link provided by the terminal.  
 Instructions how to create/join a game are listed in the website  
 Have fun :)
+
+# Bots
+
+The bots each have a difficulty:  
+Easy, Medium or Hard
+
+The difficulty changes the speed at which the bot plays, with Easy being slow and Hard being fast.

@@ -40,19 +40,26 @@ function createGameOverScreen() {
     const restartButton = document.createElement("button");
     restartButton.innerText = "Restart";
     restartButton.classList.add("pixel-corners")
-    //needs restart functionality
+    restartButton.addEventListener("click", () =>{
+        if(socket){
+            socket.emit("restart",{roomId,userName})
+        }
+    })
+
     gameOverScreen.appendChild(restartButton);
 
     const quitButton = document.createElement("button")
     quitButton.innerText = "Quit";
     quitButton.classList.add("pixel-corners")
-    quitButton.addEventListener("click", () =>{  // liigutan selle createGameMenusse
+    quitButton.addEventListener("click", () =>{ 
         const path = window.location.pathname; 
+        const pathLength = path.length
         const gameId = path.split("/").pop(); 
         const baseUrl = window.location.origin; 
-        window.location.href = `${baseUrl}/lobby/${gameId}`
+
+        window.location.href = `${baseUrl}/${pathLength == 2 ? "lobby" : "single/lobby"}/${gameId}`
         if(socket){
-            socket.emit("disconnectUser",userName)
+            socket.emit("disconnectUser",{roomId,userName})
         }
     })
     gameOverScreen.appendChild(quitButton);

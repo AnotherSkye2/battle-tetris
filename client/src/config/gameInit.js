@@ -18,12 +18,13 @@ export default function gameInit() {
     const {gameMenu,menuText,quitButton,restartButton} = createGameMenu()
 
     quitButton.addEventListener("click", () =>{ 
-        const path = window.location.pathname; 
-        const pathLength = path.length
-        const gameId = path.split("/").pop(); 
+        const path = window.location.pathname.split("/"); 
+        const pathLength = JSON.parse(JSON.stringify(path.length))
+        console.info(path, pathLength)
+        const gameId = path.pop(); 
         const baseUrl = window.location.origin; 
 
-        window.location.href = `${baseUrl}/${pathLength == 2 ? "lobby" : "single/lobby"}/${gameId}`
+        window.location.href = `${baseUrl}/${pathLength == 3 ? "lobby" : "single/lobby"}/${gameId}`
         if(socket){
             socket.emit("disconnectUser",{roomId,userName})
         }
@@ -65,7 +66,7 @@ export default function gameInit() {
                     timeSinceLastLevel: 0
                 },
                 userScoreElementArray: userScoreElementArray,
-                users: [],
+                users: userNames,
                 socket: socket,
                 isBotGame: true, 
                 timeSinceLastMove: 0, 
@@ -101,15 +102,26 @@ export default function gameInit() {
     } 
     gameLoopObjectArray.push(gameloopObject)
     gameloopObject.botGameLoopObjects = botGameLoopObjects;
+
     console.log("BOT GAME LOOPS", botGameLoopObjects)
     console.log("gamingLOOP", gameloopObject)
 
     if (socket) {
         console.log("socket",socket)
         socket.connect();
-        socket.emit('join', roomId, userName, (roomUsers) => {
-            console.log("roomUsers, socket.id", roomUsers, socket.id)
-        });
+        if (gameloopObject.isBotGame) {
+            socket.emit('singleplayer join', roomId, userName, (success) => {
+                if (!success) {
+                    const baseUrl = window.location.origin; 
+                    window.location.href = `${baseUrl}/single/lobby/${Math.floor(Math.random() * 100000)}`
+                }
+            });
+            console.log('singleplayer join')
+        } else {
+            socket.emit('join', roomId, userName, (roomUsers) => {
+                console.log("roomUsers, socket.id", roomUsers, socket.id)
+            });
+        }
         socket.emit('users', roomId, (users) => {
             console.log("users emitting: ", users, socket.id)
             gameloopObject.users = users
@@ -149,7 +161,7 @@ export default function gameInit() {
 
         socket.on("resumeGame", () =>{
 
-            resumeGame(gameloopObject)
+            resumeGame(gameloopObject, gameLoopObjectArray)
             startTimer()
             if (gameMenu){
                 gameMenu.style.visibility = "hidden"; 
@@ -185,6 +197,7 @@ export default function gameInit() {
           }
         window.addEventListener("pagehide", listener);
     }   
+
 
     console.log("gameBoardElement, gameBoardGrid, gameGridArray, gameLoopObjectArray",gameBoardElement, gameBoardGrid, gameGridArray, gameLoopObjectArray)
 

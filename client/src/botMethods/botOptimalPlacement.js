@@ -1,5 +1,6 @@
 import { rotateTetromino } from "../methods/tetrominoManipulation";
 import getAggregateHeight from "./getAggregateHeight";
+import getBumpiness from "./getBumpiness";
 import getEmptyTetrominoColumns from "./getEmptyTetrominoColumns";
 import getTetrominoHeight from "./getTetrominoHeight";
 import getTetrominoProfiles from "./getTetrominoProfiles";
@@ -17,6 +18,7 @@ export function botMostOptimalPlacement(botLoopObject) {
     let bestHeight = 0;
     let bestHoles = 0;
     let bestRotation = 0;
+    let bestBumpiness = 99999;
 
     console.log("NEW TETROMINO FOR MATCH -------------------------------------------------------\n", botLoopObject.gameState.tetrominoType)
     const heightArray = getAggregateHeight(botLoopObject)
@@ -25,31 +27,29 @@ export function botMostOptimalPlacement(botLoopObject) {
     for (let rotation = 0; rotation <= 3; rotation++) {
         if (rotation > 0) {tetromino = rotateTetromino(tetromino)}
         const tetrominoProfiles = getTetrominoProfiles(tetromino, botLoopObject.profileDepth);
-        console.log("tetrominoProfiles: ", tetrominoProfiles)
         let height = null;
-        let pos = null;
+        let position = null;
         let matchValue = 0;
         let holes = 0;
         let maxHeight = gameGridArray.length;
         let loopCounter = 0;
         const profile = tetrominoProfiles[tetrominoProfiles.length-1]
         const tetrominoHeight = getTetrominoHeight(tetrominoProfiles)
-        console.log("tetrominoHeight: ", tetrominoHeight, botLoopObject.gameState.tetrominoType)
         for (let i = profile.length - 1; i < heightArray.length; i++) {
             loopCounter++
             if (loopCounter >= 30) {
                 console.error(`Placement search of ${botLoopObject.gameState.tetrominoType} looped too many times!`)
                 break
             }
-            maxHeight = Math.max(...heightArray.slice(i - (profile.length - 1), i+1))
+            const currentHeightArray = heightArray.slice(i - (profile.length - 1), i+1)
+            maxHeight = Math.max(...currentHeightArray)
             height = maxHeight - (tetrominoHeight - 1)
-            if (profile.every(h => h == profile[0]) || heightArray.every(h => h == heightArray[0]) ) {
+            if (profile.every(h => h == profile[0]) || currentHeightArray.every(h => h == currentHeightArray[0]) ) {
                 height = maxHeight
-                console.log(botLoopObject.gameState.tetrominoType, "height = maxHeight", height)
             }
-            if (height <= 0) {height = Math.min(...heightArray.slice(i - (profile.length - 1), i+1))}
-            pos = { row: gameGridArray.length - 1 - height, col: i - (profile.length - 1)}
-            console.log("match: initial:", botLoopObject.gameState.tetrominoType, "height", height,"pos", pos)
+            if (height < Math.min(...currentHeightArray)) {height = Math.min(...currentHeightArray)}
+            position = { row: gameGridArray.length - 1 - height, col: i - (profile.length - 1)}
+            // console.log("match: initial:", botLoopObject.gameState.tetrominoType, "height", height,"pos", pos)
             // console.log(heightArray.slice(i - (profile.length - 1), i+1), i)
             for (let j = profile.length - 1; j >= 0; j--) {
                 const checkHeight = heightArray[i - ((profile.length - 1) - j)]
@@ -57,27 +57,26 @@ export function botMostOptimalPlacement(botLoopObject) {
                     height = checkHeight
                 }
                 if (checkHeight == height+profile[j]) {
-                    // console.log("pos: ", pos)
                     // console.log(botLoopObject.gameState.tetrominoType, "maxHeight:", maxHeight)
                     matchValue++
 
                 } else if (profile[j] != 0) {
                     holes++
-                    console.log(botLoopObject.gameState.tetrominoType, "\nholes:", holes, profile[j])
                 } else if (profile[j] == 0) {
                     holes += height - checkHeight
                 }
             }
-
-            if (!bestPosition || holes < bestHoles || holes == bestHoles && (height < bestHeight || (height == bestHeight && (matchValue > bestValue || (matchValue == bestValue && profile.length < bestProfileLength)))) ) {
-                console.log(botLoopObject.gameState.tetrominoType, "\nmatch: set pos", "matchValue:", matchValue, " height:", height, "bestHoles", bestHoles, "holes", holes, " maxHeight:", maxHeight,`\npos: ${JSON.stringify(pos)}`);                [leftCol, rightCol] = getEmptyTetrominoColumns(tetromino);
-                bestPosition = pos;
+            const bumpiness = getBumpiness(tetrominoProfiles, i - (profile.length - 1), height, JSON.parse(JSON.stringify(heightArray)))
+            console.log("bumpiness: (bumpiness < bestBumpiness", bumpiness, bestBumpiness)
+            if (!bestPosition || holes < bestHoles || holes == bestHoles && (height < bestHeight || height == bestHeight && (bumpiness < bestBumpiness || bumpiness >= bestBumpiness && ( (matchValue > bestValue ||(matchValue == bestValue && profile.length < bestProfileLength)))))) {
+                console.log(botLoopObject.gameState.tetrominoType, "\nmatch: set pos", "matchValue:", matchValue, " height:", height, "bestHoles", bestHoles, "holes", holes, " maxHeight:", maxHeight,`\npos: ${JSON.stringify(position)}`);                [leftCol, rightCol] = getEmptyTetrominoColumns(tetromino);
+                bestPosition = position;
                 bestValue = matchValue
                 bestProfileLength = profile.length
                 bestHeight = height
                 bestHoles = holes
-                console.log("bestHoles: ", bestHoles)
                 bestRotation = rotation
+                bestBumpiness = bumpiness
                 if (bestValue == profile.length && bestHeight == Math.min(...heightArray)) {
                     break
                 }
