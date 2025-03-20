@@ -2,7 +2,7 @@ import { fromEvent,filter,throttleTime } from 'https://cdn.jsdelivr.net/npm/rxjs
 
 export const arrowUp$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "ArrowUp"),
-    throttleTime(100)  
+    throttleTime(10)  
 );
 export const arrowDown$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "ArrowDown"),
@@ -15,10 +15,10 @@ export const arrowRight$ = fromEvent(document, "keydown").pipe(
 );
 export const spaceBar$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === " "),
-    throttleTime(100)  
+    throttleTime(10)  
 );
 
 export const escKey$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "Escape"),
-    throttleTime(100)  
+    throttleTime(10)  
 )
