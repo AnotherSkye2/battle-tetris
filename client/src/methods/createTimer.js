@@ -46,8 +46,6 @@ export function updateTimer(timestamp) {
 
         const timerDisplay = document.getElementById("timerDisplay");
         timerDisplay.innerText = timeString;
-
-        requestAnimationFrame(updateTimer); 
     }
 }
 
