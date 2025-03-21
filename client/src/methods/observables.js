@@ -2,7 +2,7 @@ import { fromEvent,filter,throttleTime } from 'https://cdn.jsdelivr.net/npm/rxjs
 
 export const arrowUp$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "ArrowUp"),
-    throttleTime(10)  
+    throttleTime(50)  
 );
 export const arrowDown$ = fromEvent(document, "keydown").pipe(
     filter((event) => event.key === "ArrowDown"),
