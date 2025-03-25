@@ -1,6 +1,6 @@
 
 export default function getEmptyTetrominoColumns(tetromino) {
-    const colLength = 4
+    const colLength = 3
     let hasSeenBlock = false;
     let rightCol = 0
     let leftCol = 0;

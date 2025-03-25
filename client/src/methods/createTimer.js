@@ -29,7 +29,7 @@ export function startTimer() {
 
 export function updateTimer(timestamp) {
     
-    if (gameState.isGamePaused) {
+    if (gameState.isGamePaused || gameState.isGameOver) {
         pausedTime = timestamp - startTime; 
         gameState.isTimerRunning = false; 
         return; 
@@ -46,8 +46,6 @@ export function updateTimer(timestamp) {
 
         const timerDisplay = document.getElementById("timerDisplay");
         timerDisplay.innerText = timeString;
-
-        requestAnimationFrame(updateTimer); 
     }
 }
 

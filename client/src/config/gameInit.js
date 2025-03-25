@@ -109,9 +109,19 @@ export default function gameInit() {
     if (socket) {
         console.log("socket",socket)
         socket.connect();
-        socket.emit('join', roomId, userName, (roomUsers) => {
-            console.log("roomUsers, socket.id", roomUsers, socket.id)
-        });
+        if (gameloopObject.isBotGame) {
+            socket.emit('singleplayer join', roomId, userName, (success) => {
+                if (!success) {
+                    const baseUrl = window.location.origin; 
+                    window.location.href = `${baseUrl}/single/lobby/${Math.floor(Math.random() * 100000)}`
+                }
+            });
+            console.log('singleplayer join')
+        } else {
+            socket.emit('join', roomId, userName, (roomUsers) => {
+                console.log("roomUsers, socket.id", roomUsers, socket.id)
+            });
+        }
         socket.emit('users', roomId, (users) => {
             console.log("users emitting: ", users, socket.id)
             gameloopObject.users = users

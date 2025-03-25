@@ -6,7 +6,6 @@ export default function makeBotMove(deltaTime, botGameloopObject, gameLoopObject
     let nextPosition = botGameloopObject.nextPosition
     let bestPosition, bestRotation;
     if (botGameloopObject.timeSinceLastBotMove >= botGameloopObject.botMoveTimeInterval) {
-        console.log("makeBotMove:", botGameloopObject, gameLoopObjectArray)
         if (!nextPosition) {
             [bestPosition, bestRotation] = botMostOptimalPlacement(botGameloopObject)
             botGameloopObject.nextPosition = bestPosition

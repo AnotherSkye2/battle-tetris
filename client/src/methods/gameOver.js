@@ -54,7 +54,6 @@ function createGameOverScreen() {
     quitButton.addEventListener("click", () =>{ 
         const path = window.location.pathname; 
         const pathLength = path.length
-        alert(path, pathLength)
         const gameId = path.split("/").pop(); 
         const baseUrl = window.location.origin; 
 
