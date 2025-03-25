@@ -127,8 +127,8 @@ export default function gameInit() {
             gameloopObject.users = users
         })
         socket.on('join', (user) => {
-            console.log(user)
-            socket.emit('users joining', roomId, (users) => {
+            console.log("join: ", user)
+            socket.emit('users', roomId, (users) => {
                 console.log("users: ", users, socket.id)
                 gameloopObject.users = users
             })
@@ -186,7 +186,7 @@ export default function gameInit() {
         })
         socket.on('game over', (userName) => {
             console.log(userName)
-            gameState.playersLost += 1
+            gameState.playersLost.push(userName)
             checkGameWin()
         })
         
