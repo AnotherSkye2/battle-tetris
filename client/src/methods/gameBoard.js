@@ -9,7 +9,7 @@ export function InitializeGameBoard(userNames, userName) {
     const gameBoardElement = document.createElement("div");
     gameBoardElement.classList.add("player", "game-board");
 
-    const gameBoardName = document.createElement("h2");
+    const gameBoardName = document.createElement("h1");
     gameBoardName.classList.add("name", "micro-5-regular");
     gameBoardName.innerHTML = userName
     gameBoardElement.appendChild(gameBoardName)

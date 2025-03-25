@@ -10,18 +10,17 @@ export default function createGameMenu() {
     menuText.innerText = "Game Paused by: ";
     gameMenu.appendChild(menuText);
 
-    const resumeButton = document.createElement("button");
-    resumeButton.classList.add("pixel-corners")
+    const resumeButton = document.createElement("p");
     resumeButton.innerText = "press ESC to resume";
     gameMenu.appendChild(resumeButton);
 
     const quitButton = document.createElement("button")
     quitButton.classList.add("pixel-corners")
-    quitButton.innerText = "click here to quit game";
+    quitButton.innerText = "Quit";
     gameMenu.appendChild(quitButton);
 
     const restartButton = document.createElement("button")
-    restartButton.innerText = "click here to restart the game"
+    restartButton.innerText = "Restart"
     gameMenu.appendChild(restartButton);
 
     document.body.appendChild(gameMenu);
