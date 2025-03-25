@@ -1,4 +1,4 @@
-import { userNames } from "./gameDefaultValues"
+import { gameState, userNames } from "./gameDefaultValues"
 import { socket } from "../socket"
 
 export default function sendGarbage(clearedLines, gameloopObject, gameLoopObjectArray) {
@@ -19,7 +19,7 @@ export default function sendGarbage(clearedLines, gameloopObject, gameLoopObject
                 if (target) loopCounter = 101;
                 loopCounter++
                 randomTargetIndex = Math.floor(Math.random() * users.length)
-                if (users[randomTargetIndex].name != gameloopObject.name && !gameloopObject.gameState.playersLost.includes(users[randomTargetIndex].name)) {
+                if (users[randomTargetIndex].name != gameloopObject.name && !gameState.playersLost.includes(users[randomTargetIndex].name)) {
                     target = users[randomTargetIndex].name
                 } else {
                     console.log(" !=  loopCounter, target, randomTargetIndex, users[randomTargetIndex].name, gameLoopObjectArray[i].name" ,loopCounter, target, randomTargetIndex, users[randomTargetIndex].name, gameLoopObjectArray[i].name, i)
