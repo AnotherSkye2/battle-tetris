@@ -9,7 +9,6 @@ import { pauseGame, resumeGame} from "../methods/pauseGame.js"
 import { startTimer} from "../methods/createTimer.js"
 import deleteBoard from "../methods/deleteBoard.js";
 import { checkGameWin } from "../methods/gameOver.js";
-import { TETROMINOES } from "../methods/tetrominoes.js";
 
 export default function gameInit() {
     const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(userNames, userName);
@@ -183,6 +182,8 @@ export default function gameInit() {
         socket.on('garbage', (lines, userName) => {
             console.log("garbage", lines, userName)
             gameState.garbageLines += lines
+            gameState.garbageSender = userName
+            console.log("garbageSender", userName, gameState.garbageSender)
         })
         socket.on('game over', (userName) => {
             console.log(userName)

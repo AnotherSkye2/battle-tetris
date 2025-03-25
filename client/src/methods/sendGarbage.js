@@ -35,6 +35,7 @@ export default function sendGarbage(clearedLines, gameloopObject, gameLoopObject
                     if ( gameLoopObjectArray[i].name == target) {
                         console.log(`garbage: ${clearedLines} sent to ${target} by ${gameloopObject.name}`)
                         gameLoopObjectArray[i].gameState.garbageLines += clearedLines
+                        gameLoopObjectArray[i].gameState.garbageSender = gameloopObject.name
                     }
                 }
             } else {

@@ -31,7 +31,7 @@ function createGameOverScreen() {
     gameOverScreen.classList.add("game-menu", "game-over-screen", "pixel-corners");
     
     const menuText = document.createElement("h2");
-    menuText.innerText = gameState.isGameWon ? "You won!" : "You lost...";
+    menuText.innerText = gameState.isGameWon ? "You won!" : `You lost...\nYou were KO'd by ${gameState.garbageSender}`;
     gameOverScreen.appendChild(menuText);
 
     const leaderboard = document.getElementById("leaderboard")

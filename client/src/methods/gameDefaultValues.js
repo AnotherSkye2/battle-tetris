@@ -1,5 +1,5 @@
 export const position = {row: 0, col: 3}; 
-export const gameState = { activeTetromino: null, tetrominoType: null, isGameOver: false, isGamePaused: false, isTimerRunning: false, gameScore: 0, gameOverPending: false, bag: [], targetingMethod: "random", target: null, garbageLines: 0, playersLost: [], isGameWon: false, level: 1, timeSinceLastLevel: 0}; 
+export const gameState = { activeTetromino: null, tetrominoType: null, isGameOver: false, isGamePaused: false, isTimerRunning: false, gameScore: 0, gameOverPending: false, bag: [], targetingMethod: "random", target: null, garbageLines: 0, garbageSender: "", playersLost: [], isGameWon: false, level: 1, timeSinceLastLevel: 0}; 
 const url = window.location.href.split("/")
 console.log("window.location.href.split(), url: ", window.location.href.split("/"), url)
 export const roomId = url[url.length-1]
