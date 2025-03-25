@@ -45,6 +45,7 @@ export function updateTimer(timestamp) {
         const timeString = `${padZero(hours)}:${padZero(minutes)}:${padZero(seconds)}`;
 
         const timerDisplay = document.getElementById("timerDisplay");
+        timerDisplay.classList.add("pixel-corners");
         timerDisplay.innerText = timeString;
     }
 }
