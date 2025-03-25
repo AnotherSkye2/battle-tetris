@@ -11,7 +11,7 @@ export function checkGameOver(gameGridArray) {
 }
 
 export function checkGameWin() {
-    if (userNames.length > 1 && gameState.playersLost >= userNames.length - 1 && !gameState.isGameOver) {
+    if (userNames.length > 1 && gameState.playersLost.length >= userNames.length - 1 && !gameState.isGameOver) {
         gameState.isGameWon = true
         return true; 
     }
