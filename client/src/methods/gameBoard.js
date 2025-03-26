@@ -14,6 +14,9 @@ export function InitializeGameBoard(userNames, userName) {
     gameBoardName.innerHTML = userName
     gameBoardElement.appendChild(gameBoardName)
 
+    const gameBoardGridContainer = document.createElement("div");
+    gameBoardGridContainer.classList.add("game-grid-container");
+
     const gameBoardGrid = document.createElement("div");
     gameBoardGrid.classList.add("game-grid");
     for (let row = 0; row < ROWS; row++) {
@@ -23,7 +26,23 @@ export function InitializeGameBoard(userNames, userName) {
             gameBoardGrid.appendChild(cell);
         }
     }
-    gameBoardElement.appendChild(gameBoardGrid)
+
+    const gameBoardGridBarContainer = document.createElement("div");
+    gameBoardGridBarContainer.classList.add("game-grid-bar-container");
+
+    const gameBoardGridBar = document.createElement("div");
+    gameBoardGridBar.classList.add("game-grid-bar");
+
+    const gameBoardGridBarProgress = document.createElement("div");
+    gameBoardGridBarProgress.classList.add("game-grid-bar-progress");
+
+
+
+    gameBoardGridBar.appendChild(gameBoardGridBarProgress)
+    gameBoardGridBarContainer.appendChild(gameBoardGridBar)
+    gameBoardGridContainer.appendChild(gameBoardGridBarContainer)
+    gameBoardGridContainer.appendChild(gameBoardGrid)
+    gameBoardElement.appendChild(gameBoardGridContainer)
     gameElement.appendChild(gameBoardElement)
 
     let opponentGridDataArray = [];

@@ -179,11 +179,16 @@ export default function gameInit() {
         socket.on("dcUser", (user) =>{
             deleteBoard(user)
         })
+        const garbageProgressBar = document.getElementsByClassName("game-grid-bar-progress")[0]
+        garbageProgressBar.style.height = "0%"
+        console.log("garbageProgressBar: ", garbageProgressBar)
+        console.log("garbageSender", userName, gameState.garbageSender, garbageProgressBar.style, garbageProgressBar.style.height, garbageProgressBar.style.height.slice(0, -1))
         socket.on('garbage', (lines, userName) => {
             console.log("garbage", lines, userName)
             gameState.garbageLines += lines
             gameState.garbageSender = userName
-            console.log("garbageSender", userName, gameState.garbageSender)
+            garbageProgressBar.style.height = `${parseInt(garbageProgressBar.style.height.slice(0, -1)) + lines * 5}%`
+            console.log("garbageSender", userName, gameState.garbageSender, garbageProgressBar.style, garbageProgressBar.style.height, parseInt(garbageProgressBar.style.height.slice(0, -1)))
         })
         socket.on('game over', (userName) => {
             console.log(userName)
