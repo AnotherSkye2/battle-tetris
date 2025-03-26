@@ -48,7 +48,7 @@
 <!-- ABOUT THE PROJECT -->
 # About The Project
 
-![Game screenshot with 4 players][product-screenshot]
+<img src="README_images/tetris-gameplay.png" alt="Logo" width="104" height="70">
 
 This is the last project in the JS module of kood/Jõhvi, where we got to choose a game to make!  
 The aim of the exercise was to create a multiplayer game, where the gameplay had interactivity between the players. I will admit that we were a bit strapped for time, so we decided to choose a tighter scope for the project. So, drawing inspiration from games like Tetris 99 and the website tetr.io, we created Battle Tetris. The entire project took about 2 weeks.
