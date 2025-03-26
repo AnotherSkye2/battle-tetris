@@ -151,27 +151,63 @@ input {
 Game
 */
 
+h1, h2 {
+  margin: 0;
+}
+
 .game {
   margin: 0;
   height: 100vh; 
   display: flex;
   justify-content: end; 
-  background-color: #979595; 
+  background-color: #a3b7ea; 
+  --block-border-width: 0.18em;
 }
 
-.game h2 {
-  margin: 0;
+.game-board-container {
+  min-width: 4em;
+  display: grid;
+  grid-template-rows: repeat(3, 0.1fr);
+  margin: 0 1em;
 }
+
+.game-grid-container {
+  display: flex;
+}
+
 
 .game-grid {
   display: grid;
   grid-template-rows: repeat(20, 1em); 
   grid-template-columns: repeat(10, 1em); 
   gap: 2px; 
-  margin: 10px;
-  padding: 5px 5px;
+  margin: 0.4em 0;
+  padding: 0.4em 0.4em;
   background-color: #444; 
-  
+  box-shadow: rgba(0, 0, 0, 0.33)  3px 3px;
+  grid-auto-rows: min-content;
+}
+
+.game-grid-bar-container {
+  display: flex;
+  margin: 0.4em 0;
+  padding: 0.4em 0.4em;
+  padding-right: 0;
+  background-color: #444; 
+  box-shadow: rgba(0, 0, 0, 0.33)  3px 3px;
+}
+
+.game-grid-bar {
+  display: flex;
+  align-items: end;
+  padding: 0.1em 0.1em;
+  background-color: #a1a1a1; 
+}
+
+.game-grid-bar-progress{
+  padding: 0 0.2em;
+  background-color: #cf3636; 
+  height: 0%;
 }
 
 .game-board {
@@ -181,34 +217,31 @@ Game
 
 .player {
   display: flex;
-   flex-direction: column;
+  flex-direction: column;
   justify-content: center;
+  margin: 1em
 }
 
 .cell {
-  width: 1em; 
-  height: 1em; 
   background-color: #222;
 }
 
-
-.game-board-container {
-  display: grid;
-  grid-template-rows: repeat(3, 1fr);
+.filled {
+  border-left: var(--block-border-width) solid rgba(255, 255, 255, .3);
+  border-top: var(--block-border-width) solid rgba(255, 255, 255, .3);
+  border-right: var(--block-border-width) solid rgba(0, 0, 0, .3);
+  border-bottom: var(--block-border-width) solid rgba(0, 0, 0, .3);
 }
+
 
 .opponent > .game-grid {
-  grid-template-rows: repeat(20, 0.3em); 
-  grid-template-columns: repeat(10, 0.3em); 
+  font-size: 0.3em;
   gap: 1px; 
-
 }
 
-.opponent .cell {
-  width: 0.3em; 
-  height: 0.3em; 
+.opponent h2 {
+  margin-bottom: 0;
 }
-
 
 .i {
   background-color: #00ffff;

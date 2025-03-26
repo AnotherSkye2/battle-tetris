@@ -11,7 +11,7 @@ export function checkGameOver(gameGridArray) {
 }
 
 export function checkGameWin() {
-    if (userNames.length > 1 && gameState.playersLost >= userNames.length - 1 && !gameState.isGameOver) {
+    if (userNames.length > 1 && gameState.playersLost.length >= userNames.length - 1 && !gameState.isGameOver) {
         gameState.isGameWon = true
         return true; 
     }
@@ -31,7 +31,7 @@ function createGameOverScreen() {
     gameOverScreen.classList.add("game-menu", "game-over-screen", "pixel-corners");
     
     const menuText = document.createElement("h2");
-    menuText.innerText = gameState.isGameWon ? "You won!" : "You lost...";
+    menuText.innerText = gameState.isGameWon ? "You won!" : `You lost...\nYou were KO'd by ${gameState.garbageSender}`;
     gameOverScreen.appendChild(menuText);
 
     const leaderboard = document.getElementById("leaderboard")

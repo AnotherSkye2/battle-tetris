@@ -9,7 +9,6 @@ import { pauseGame, resumeGame} from "../methods/pauseGame.js"
 import { startTimer} from "../methods/createTimer.js"
 import deleteBoard from "../methods/deleteBoard.js";
 import { checkGameWin } from "../methods/gameOver.js";
-import { TETROMINOES } from "../methods/tetrominoes.js";
 
 export default function gameInit() {
     const { gameElement, gameBoardElement, gameBoardGrid, gameGridArray, opponentGridDataArray} = InitializeGameBoard(userNames, userName);
@@ -127,8 +126,8 @@ export default function gameInit() {
             gameloopObject.users = users
         })
         socket.on('join', (user) => {
-            console.log(user)
-            socket.emit('users joining', roomId, (users) => {
+            console.log("join: ", user)
+            socket.emit('users', roomId, (users) => {
                 console.log("users: ", users, socket.id)
                 gameloopObject.users = users
             })
@@ -180,13 +179,20 @@ export default function gameInit() {
         socket.on("dcUser", (user) =>{
             deleteBoard(user)
         })
+        const garbageProgressBar = document.getElementsByClassName("game-grid-bar-progress")[0]
+        garbageProgressBar.style.height = "0%"
+        console.log("garbageProgressBar: ", garbageProgressBar)
+        console.log("garbageSender", userName, gameState.garbageSender, garbageProgressBar.style, garbageProgressBar.style.height, garbageProgressBar.style.height.slice(0, -1))
         socket.on('garbage', (lines, userName) => {
             console.log("garbage", lines, userName)
             gameState.garbageLines += lines
+            gameState.garbageSender = userName
+            garbageProgressBar.style.height = `${parseInt(garbageProgressBar.style.height.slice(0, -1)) + lines * 5}%`
+            console.log("garbageSender", userName, gameState.garbageSender, garbageProgressBar.style, garbageProgressBar.style.height, parseInt(garbageProgressBar.style.height.slice(0, -1)))
         })
         socket.on('game over', (userName) => {
             console.log(userName)
-            gameState.playersLost += 1
+            gameState.playersLost.push(userName)
             checkGameWin()
         })
         

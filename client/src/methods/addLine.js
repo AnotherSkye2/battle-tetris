@@ -5,30 +5,14 @@ export function addLines(gameGridArray, lines){
     while (newBoard.length > gameGridArray.length) {
         newBoard.shift();
     }
+    const garbageProgressBar = document.getElementsByClassName("game-grid-bar-progress")[0]
+    garbageProgressBar.style.height = "0%"
     return newBoard ;
 }
 
 function generateGarbageLines(gameGridArray, lines) {
     let garbageLines = [];
-    let linesToGenerate;
-    switch (lines) {
-        case 1:
-            linesToGenerate = 0;
-            break;        
-        case 2:
-            linesToGenerate = 1;
-            break;
-        case 3:
-            linesToGenerate = 2;
-            break;
-        case 4:
-            linesToGenerate = 4;
-            break;
-        default:
-            linesToGenerate = lines;
-            break;
-    }
-    for (let i = 0; i < linesToGenerate; i++) {
+    for (let i = 0; i < lines; i++) {
         const garbageLine = new Array(gameGridArray[0].length).fill("g")
         garbageLine[Math.floor(Math.random() * (gameGridArray[0].length))] = ""
         garbageLines.push(garbageLine)
