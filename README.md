@@ -10,7 +10,7 @@
 <h1 align="center">Battle Tetris</h1>
 
   <p align="center">
-     A multiplayer puzzle game, where you face off against opponents in the classic game of Tetris with a twist...
+     A real-time web game, where you face off against opponents in the classic game of Tetris with a twist...
     <br />
     <br />
     <a href="#getting-started">Play the Game!</a>
@@ -46,16 +46,23 @@
 
 
 <!-- ABOUT THE PROJECT -->
-# About The Project
+## About The Project
 
 <img src="README_images/tetris-gameplay.PNG" alt="Logo" width="374" height="188">  
 <br >
 
 This is the last project in the JS module of kood/Jõhvi, where we got to choose a game to make!  
-The aim of the exercise was to create a multiplayer game, where the gameplay had interactivity between the players. I will admit that we were a bit strapped for time, so we decided to choose a tighter scope for the project. So, drawing inspiration from games like Tetris 99 and the website tetr.io, we created Battle Tetris. The entire project took about 2 weeks.
+The aim of the exercise was to create a real-time web application, where users could connect to a lobby and play a game with each other. The entire project took about 2 weeks.
+
+### Features
+* Lobby system, where users connect through a URL.
+* A real-time chat in the lobby, for displaying sytem and user messages.
+* A real-time game.
+* A pause menu with options to resume, restart or quit.
 
 ### The game
 
+Drawing inspiration from games like [Tetris 99](https://tetris.com/topic/tetris-99) and the web game [tetr.io](https://tetr.io), we created Battle Tetris!
 The game is similar to Tetris, in that you have a board with a grid, where you drop pieces and if a line is filled, it disappears and you get points. However, upon clearing 2 or more lines, you send garbage lines to a random opponent, which are filled lines with a single block missing. So, whoever can clear the most lines, with emphasis on clearing multiple lines at once, wins!  
 The controls are similar to most other Tetris games, except there is no hold, where you store a block for later use.  
 The game features 2 game modes:  
