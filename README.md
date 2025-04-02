@@ -52,7 +52,7 @@
 <br >
 
 This is the last project in the JS module of kood/Jõhvi, where we got to choose a game to make!  
-The aim of the exercise was to create a real-time web application, where users could connect to a lobby and play a game with each other. The entire project took about 2 weeks.
+The aim of the exercise was to create a real-time web application, where users could connect to a lobby and play a game with each other. The entire project took about 3 weeks.
 
 ### Features
 * Lobby system, where users connect through a URL.
