@@ -10,7 +10,7 @@
 <h1 align="center">Battle Tetris</h1>
 
   <p align="center">
-     A real-time web game, where you face off against opponents in the classic game of Tetris with a twist...
+     A real-time web application, where you play a classic game of Tetris, but with a twist...
     <br />
     <br />
     <a href="#getting-started">Play the Game!</a>
